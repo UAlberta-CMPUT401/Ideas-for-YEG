@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="None">
+        
+        
+        <link rel="shortcut icon" href="img/favicon.ico">
+        <title>Ideas4YEG</title>
+        <link href="css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="css/font-awesome.min.css" rel="stylesheet">
+        <link href="css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+        <script src="js/jquery-1.10.2.min.js" defer></script>
+        <script src="js/bootstrap-3.0.3.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body class="homepage">
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="container">
+
+                <!-- Collapsed navigation -->
+                <div class="navbar-header">
+                    <a class="navbar-brand" href=".">Ideas4YEG</a>
+                </div>
+
+                <!-- Expanded navigation -->
+                <div class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+                <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+        <li class="main active"><a href="#project-overview">Project Overview:</a></li>
+        <li class="main "><a href="#project-glossary">Project Glossary</a></li>
+        <li class="main "><a href="#storyboard">Storyboard</a></li>
+        <li class="main "><a href="#use-cases-or-user-stories">Use Cases or User Stories</a></li>
+            <li><a href="#must-have">Must Have</a></li>
+            <li><a href="#should-have">Should Have</a></li>
+            <li><a href="#would-have">Would Have</a></li>
+            <li><a href="#could-have">Could Have</a></li>
+        <li class="main "><a href="#technical-resources">Technical Resources:</a></li>
+            <li><a href="#backend">Backend</a></li>
+            <li><a href="#devops">DevOps</a></li>
+            <li><a href="#frontend">Frontend</a></li>
+        <li class="main "><a href="#similar-products">Similar Products:</a></li>
+            <li><a href="#reddit">Reddit</a></li>
+            <li><a href="#kickstarter">Kickstarter</a></li>
+        <li class="main "><a href="#similar-open-source-projects">Similar Open Source Projects:</a></li>
+            <li><a href="#todo">TODO</a></li>
+        <li class="main "><a href="#contributors">Contributors</a></li>
+            <li><a href="#contributed-by-christian-lo-colin-kushniruk-monica-bui">Contributed By Christian Lo, Colin Kushniruk, Monica Bui</a></li>
+            <li><a href="#jan-20-2020">Jan 20 2020</a></li>
+    </ul>
+</div></div>
+                <div class="col-md-9" role="main">
+
+<h1 id="project-overview">Project Overview:</h1>
+<p>By the words of the client, Ideas for Yeg is a project with the goal of connecting developers/tinkerers/students with interesting project ideas born from their own community. Ideas for Yeg will bring these people together to generate ideas to improve their community/city which can be upvoted, donated to and volunteered for. The system is to be a mobile-friendly open-source project that can be used by any community to host their own fork for themselves.</p>
+<h1 id="project-glossary">Project Glossary</h1>
+<p>Idea - The name of the entities that users can vote on and donate to. Everything under this category will fall under the umbrella term of idea which will be used synonymously with the word project. Ideas will include the following information: Title, Description, Status, Idea Creator, Date of Creation/Updated, Number of Followers, Backers, Volunteers, and Upvotes, How much of Honorarium is provided</p>
+<p><strong>YEG</strong> - Edmonton Airport Code. Represents the Edmonton Area</p>
+<p><strong>Visitor</strong> - A person who has navigated to the page, can scroll through the list of projects, and view their details.</p>
+<p><strong>Location Admin</strong> - Someone who has access to spin up new location subsites for example /vvr, /yyc that would mimic the Edmonton idea page</p>
+<p><strong>Idea Creator</strong> - A user who has created a new idea. They will have admin access to their idea, can change the idea title, description, or status.</p>
+<p><strong>User</strong> - A visitor who has a registered account with their full name and email. They can upvote, back, or volunteer for an idea.</p>
+<p><strong>Follower</strong> - A user who subscribes to updates to an idea</p>
+<p><strong>Backer</strong> - A user who has donated money to an idea</p>
+<p><strong>Volunteer</strong> - A user who has donated their time to help support an idea</p>
+<p><strong>Donation</strong> - Monetary donation that has been given to an idea to help it grow further</p>
+<p><strong>Site Admin</strong> - A user that manages the maintenance of the entire site to ensure that the site is always available </p>
+<h1 id="storyboard">Storyboard</h1>
+<h1 id="use-cases-or-user-stories">Use Cases or User Stories</h1>
+<p><a href="https://docs.google.com/spreadsheets/d/1d1UYda6Yri3o0E0bkZSC-bgtwTXizyNDOPyZJkbL7w4/edit?usp=sharing">With Reference to Eugene Chen’s 401 ideas4.co Dev Details Document</a></p>
+<p>The user stories were chosen to meet the requirements because our client has outlined these before our first meeting. As a team, we then modified the stories to help better understand the overall project we were going for and as well added additional ones to tackle some of the details not mentioned in the details document.</p>
+<ol>
+<li><a href="#view-ideas"> View Ideas </a></li>
+<li><a href="#sort-ideas"> Sort Ideas </a></li>
+<li><a href="#search-ideas"> Search Ideas </a></li>
+<li><a href="#select-ideas"> Select Ideas </a></li>
+<li><a href="#create-account-login"> Create Account &amp; Log In </a></li>
+<li><a href="#upvote-idea"> Upvote Idea </a></li>
+<li><a href="#follow-idea"> Follow an Idea </a> </li>
+<li><a href="#volunteer"> Volunteer for a Project </a></li>
+<li><a href="#donation"> Donate to a Project </a></li>
+<li><a href="#contact-idea-creator"> Contact Idea Creators </a></li>
+<li><a href="#create-idea"> Create New Idea </a></li>
+<li><a href="#honorariam-note"> Honorarium Note </a></li>
+<li><a href="#project-message"> Project Message </a></li>
+<li><a href="#email-updates"> Email Updates </a></li>
+<li><a href="#update-project"> Update Project Details </a></li>
+<li><a href="#new-city"> New Website Route for a New City </a></li>
+</ol>
+<p><a name="view-ideas"></a></p>
+<pre><code>US 1.01 - View Ideas
+As a Visitor
+
+I want to see a listing of projects
+
+So that I can see what ideas/projects exist for my community
+
+Acceptance Tests
+
+* Navigate to the web page
+
+* See a listing of ideas that I can scroll through
+
+</code></pre>
+
+<p><a name="sort-ideas"></a></p>
+<pre><code>US 1.02 - Sort Ideas
+As a Visitor
+
+I want to sort the projects by the number of upvotes or date
+
+So that I can see what new or popular projects exist
+
+Acceptance Tests
+
+* Navigate to the idea listings part
+
+* Click a button to sort by date or popularity 
+
+* Resulting idea listing page has been sorted
+
+</code></pre>
+
+<p><a name="search-ideas"></a></p>
+<pre><code>US 1.03 - Search Ideas
+As a Visitor
+
+I want to fill in a search bar with an idea/project in mind
+
+So that I can find a specific idea/project or see if one already exists
+
+Acceptance Tests
+
+* Input some text into a search bar
+
+* Resulting idea listing page has been filtered by the text
+
+</code></pre>
+
+<p><a name="select-ideas"></a></p>
+<pre><code>US 1.04 - Select Ideas
+As a Visitor
+
+I want to select a project
+
+So that I can see more details about the project
+
+Acceptance Tests
+
+* Click on a project
+* Bring up a page that shows more details about a project
+
+</code></pre>
+
+<p><a name="create-account-login"></a></p>
+<pre><code>US 1.05 - Create an account and log in
+As a Visitor
+
+I want to create an account and log in
+
+So that I can do more, like upvote, back, or follow a project
+
+Acceptance Tests
+
+* Visitor clicks a sign-up button
+* Visitor enters their required information like full name and email
+* Visitor clicks confirm sign-up button
+* Account information is saved in some database
+* Visitor gets re-directed to the home page signed into their account
+
+</code></pre>
+
+<p><a name="upvote-idea"></a></p>
+<pre><code>US 2.01 - Upvote Idea
+As a logged in user
+
+I want to upvote a project
+
+So that other visitors and users can see that there is interest in the project
+
+Acceptance Tests
+
+* Click on an upvote button beside the project idea
+* Upvote count gets incremented by one for the respective idea
+
+</code></pre>
+
+<p><a name="upvote-idea"></a></p>
+<pre><code>US 2.01 - Upvote Idea
+As a logged in user
+
+I want to upvote a project
+
+So that other visitors and users can see that there is interest in the project
+
+Acceptance Tests
+
+* Click on an upvote button beside the project idea
+* Upvote count gets incremented by one for the respective idea
+
+</code></pre>
+
+<p><a name="follow-idea"></a></p>
+<pre><code>US 2.02 - Follow an Idea
+As a logged in user
+
+I want to &quot;follow&quot; a project by signing up for notifications
+
+So that I can find out about announced progress for the project
+
+Acceptance Tests
+
+* Click on a &quot;follow for notifications&quot; button on the project details page
+* User sees a successful message on screen that they are now successfully following the project
+
+</code></pre>
+
+<p><a name="volunteer"></a></p>
+<pre><code>US 2.03 - Volunteer for a Project
+As a logged in user
+
+I want to volunteer for a project
+
+So that I can show and provide support for the project
+
+Acceptance Tests
+
+* Click on a volunteer button on the project details page
+* Idea Creator gets notified of new volunteer and sends out email for more info on volunteering
+
+</code></pre>
+
+<p><a name="donate"></a></p>
+<pre><code>US 2.04 - Donate to a Project
+As a logged in user
+
+I want to donate to a project
+
+So that I can support a project I agree with financially
+
+Acceptance Tests
+
+* Click on a donate button on the project details page
+* User gets redirected to a 3rd party site like Paypal, Stripe etc. to enter their info and complete the transaction
+* Project detail's backer and money donated info gets updated
+
+</code></pre>
+
+<p><a name="contact-idea-creator"></a></p>
+<pre><code>US 2.05 - Contact Idea Creator
+As a logged in user
+
+I want to contact the creator and/or leads of the project
+
+So that I can ask questions or help support it in some other way
+
+Acceptance Tests
+
+* User views the idea creator's email on the project details page
+</code></pre>
+
+<p><a name="create-idea"></a></p>
+<pre><code>US 2.06 - Create New Idea
+As a logged in user
+
+I want to create an idea/project
+
+So that I can obtain support and interest from the community and the community can see that I need help with an idea
+
+Acceptance Tests
+
+* User clicks on a &quot;Create Idea&quot; button
+* User fills out info such as title, description, and status of the project
+* User sees a message saying that the idea has been successfully created
+</code></pre>
+
+<p><a name="honorarium-note"></a></p>
+<pre><code>US 3.01 - Create New Idea
+As an idea creator
+
+I want to add a note about honorariums for the idea
+
+So that other visitors can consider volunteering for the idea
+
+Acceptance Tests
+
+* Idea Creator clicks on &quot;add honorarium note&quot; button on their idea page
+* Idea Creator enters input for the notes
+* Idea details page gets successfully updated with the new note
+</code></pre>
+
+<p><a name="project-message"></a></p>
+<pre><code>US 3.02 - Post New Message on Project
+As an idea creator
+
+I want to put up a message on the project
+
+So that followers and volunteers will be notified of any updates
+
+Acceptance Tests
+
+* Idea Creator clicks on &quot;add new project message&quot; button on their idea page
+* Idea Creator enters input for their message
+* Followers and volunteers get a new update 
+</code></pre>
+
+<p><a name="email-updates"></a></p>
+<pre><code>US 3.03 - Send Email Update to Followers and Volunteers
+As an idea creator
+
+I want to send messages to notify followers and volunteers via email
+
+So that followers and volunteers will be notified of any updates
+
+Acceptance Tests
+
+* Idea Creator clicks on &quot;add new project message&quot; button on their idea page
+* Idea Creator enters input for their message
+* Followers and volunteers get a new update 
+</code></pre>
+
+<p><a name="update-project"></a></p>
+<pre><code>US 3.04 - Update Details on Project
+As an idea creator
+
+I want to update the project details, including status
+
+So that everyone can see updated details about the project
+
+Acceptance Tests
+
+* Idea Creator clicks on &quot;add new project message&quot; button on their idea page
+* Idea Creator enters input for their message
+* Followers and volunteers get a new update 
+</code></pre>
+
+<p><a name="new-city"></a></p>
+<pre><code>US 4.01 - Add New City Page On Website
+As an location admin
+
+I want to spin up a new website route for a city/town/location
+
+So that I can manage new ideas in a different location page
+
+Acceptance Tests
+
+* Idea Creator clicks on &quot;add new project message&quot; button on their idea page
+* Idea Creator enters input for their message
+* Followers and volunteers get a new update 
+</code></pre>
+
+<p><a name="must-have"></a></p>
+<h2 id="must-have">Must Have</h2>
+<p><a name="should-have"></a></p>
+<h2 id="should-have">Should Have</h2>
+<p><a name="would-have"></a></p>
+<h2 id="would-have">Would Have</h2>
+<p><a name="could-have"></a></p>
+<h2 id="could-have">Could Have</h2>
+<h1 id="technical-resources">Technical Resources:</h1>
+<h2 id="backend">Backend</h2>
+<ul>
+<li><a href="https://expressjs.com/">Express (Node.js)</a>, <a href="https://www.mongodb.com/">MongoDB</a></li>
+</ul>
+<h2 id="devops">DevOps</h2>
+<ul>
+<li><a href="https://www.docker.com/">Docker</a>, <a href="https://jenkins.io/">Jenkins</a></li>
+</ul>
+<h2 id="frontend">Frontend</h2>
+<ul>
+<li><a href="https://vuejs.org/v2/guide/">Vue.js</a>, <a href="https://getbootstrap.com/docs/4.4/getting-started/introduction/">Bootstrap</a>, <a href="https://eslint.org/docs/rules/">ES Lint</a>, <a href="https://jestjs.io/docs/en/getting-started.html">Jest</a></li>
+</ul>
+<h1 id="similar-products">Similar Products:</h1>
+<h2 id="reddit">Reddit</h2>
+<p>Reddit will be a heavy source of inspiration for many features, as its UI is simple and likely has solved a lot of UX issues that the site previously had years before. Reddit is a site where content can be voted on and viewed, so many of its features parallel that of the proposed site.</p>
+<h2 id="kickstarter">Kickstarter</h2>
+<p>Kickstarter is a site where users can donate various amounts of money to projects. This feature may be something we want to keep our eye on, as Kickstarter may have a smart system of handling donations and project funding. One feature is that funding can be withheld if a minimum donation threshold is not met. </p>
+<p><a name="similar-open-source"></a></p>
+<h1 id="similar-open-source-projects">Similar Open Source Projects:</h1>
+<h2 id="todo">TODO</h2>
+<p><a name="contributors"></a></p>
+<hr />
+<h1 id="contributors">Contributors</h1>
+<h3 id="contributed-by-christian-lo-colin-kushniruk-monica-bui">Contributed By Christian Lo, Colin Kushniruk, Monica Bui</h3>
+<h3 id="jan-20-2020">Jan 20 2020</h3></div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = ".",
+                shortcuts = {"search": 83, "next": 78, "help": 191, "previous": 80};
+        </script>
+        <script src="js/base.js" defer></script>
+        <script src="search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form role="form">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="Keyboard Shortcuts Modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Keyboard Shortcuts</h4>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
+
+<!--
+MkDocs version : 1.0.4
+Build Date UTC : 2020-01-22 22:21:33
+-->
