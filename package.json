@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://moclouis:Herveysburgers5@github.com/UAlberta-CMPUT401/Ideas-for-YEG.git"
+    "url": "git+https://github.com/UAlberta-CMPUT401/Ideas-for-YEG.git"
   },
   "author": "",
   "license": "MIT",
@@ -18,6 +18,8 @@
   "homepage": "https://github.com/UAlberta-CMPUT401/Ideas-for-YEG#readme",
   "dependencies": {
     "body-parser": "^1.19.0",
+    "dotenv": "^8.2.0",
+    "ejs": "^3.0.1",
     "express": "^4.17.1",
     "express-session": "^1.17.0"
   }
