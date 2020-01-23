@@ -476,7 +476,7 @@ Kickstarter is a site where users can donate various amounts of money to project
 <a name="similar-open-source"></a>
 # Similar Open Source Projects
 ## [Reddit: Slide for reddit](https://github.com/ccrama/Slide)
-Slide for reddit is an open sourced and ad free Reddit browser for Android. Spme aspects of the eventual user interface and features of slide for reddit align with the goals of #ideas4YEG. 
+Slide for reddit is an open sourced and ad free Reddit browser for Android. Some aspects of the eventual user interface and features of #ideas4YEG align with those of slide for reddit. 
 
 ## TODO
 
