@@ -1,53 +1,63 @@
 
-# Project Overview:
-By the words of the client, Ideas for Yeg is a project with the goal of connecting developers/tinkerers/students with interesting project ideas born from their own community. Ideas for Yeg will bring these people together to generate ideas to improve their community/city which can be upvoted, donated to and volunteered for. The system is to be a mobile-friendly open-source project that can be used by any community to host their own fork for themselves.
+# Project Overview
+By the words of the client, Ideas for YEG is a project with the goal of connecting developers/tinkerers/students with interesting project ideas born from their own community. Ideas for YEG will bring these people together to generate ideas to improve their community/city which can be upvoted, donated to and volunteered for. The system is to be a mobile-friendly open-source project that can be used by any community to host their own fork for themselves.
 
 # Project Glossary
-Idea - The name of the entities that users can vote on and donate to. Everything under this category will fall under the umbrella term of idea which will be used synonymously with the word project. Ideas will include the following information: Title, Description, Status, Idea Creator, Date of Creation/Updated, Number of Followers, Backers, Volunteers, and Upvotes, How much of Honorarium is provided
+**Idea** - The name of the entities that users can vote on and donate to. Everything under this category will fall under the umbrella term of idea which will be used synonymously with the word project. Ideas will include the following information: Title, Description, Status, Idea Creator, Date of Creation/Updated, Number of Followers, Backers, Volunteers, and Upvotes, How much of Honorarium is provided
 
 **YEG** - Edmonton Airport Code. Represents the Edmonton Area
 
-**Visitor** - A person who has navigated to the page, can scroll through the list of projects, and view their details.
+**Visitor** - A person who has navigated to the page, can scroll through the list of projects, and view project details.
 
-**Location Admin** - Someone who has access to spin up new location subsites for example /vvr, /yyc that would mimic the Edmonton idea page
+**Location Admin** - A user who has access to spin up new location subsites for example /vvr, /yyc that would mimic the Edmonton idea page. Can update the content of their own respective location page.
 
-**Idea Creator** - A user who has created a new idea. They will have admin access to their idea, can change the idea title, description, or status.
+**Idea Creator** - A user who has created a new idea. They will have full admin access to their idea and can change the idea title, description, or status. Can invite more users to be Idea Admins.
+
+**Idea Admin** - A user who has access to edit the content of an idea but cannot add new admins.
 
 **User** - A visitor who has a registered account with their full name and email. They can upvote, back, or volunteer for an idea.
 
-**Follower** - A user who subscribes to updates to an idea
+**Follower** - A user who subscribes to a project to receive updates
 
-**Backer** - A user who has donated money to an idea
+**Backer** - A user who has donated money to a project
 
-**Volunteer** - A user who has donated their time to help support an idea
+**Volunteer** - A user who supports the project through other non-monetary means
 
 **Donation** - Monetary donation that has been given to an idea to help it grow further
 
-**Site Admin** - A user that manages the maintenance of the entire site to ensure that the site is always available 
+**Site Admin** - A user that maintains the entire site. They can also add users to be Location Admins.
 
 # Storyboard
+### TODO Add when completed
 
 # Use Cases or User Stories
-[With Reference to Eugene Chen’s 401 ideas4.co Dev Details Document](https://docs.google.com/spreadsheets/d/1d1UYda6Yri3o0E0bkZSC-bgtwTXizyNDOPyZJkbL7w4/edit?usp=sharing)
+[With Reference to Eugene Chen’s 401 ideas4.co Dev Details Document](https://docs.google.com/spreadsheets/d/1d1UYda6Yri3o0E0bkZSC-bgtwTXizyNDOPyZJkbL7w4/edit?usp=sharing), user story
+and feature requrirements have been extracted from this file and been extended further to meet the overall goal of the project.
 
-The user stories were chosen to meet the requirements because our client has outlined these before our first meeting. As a team, we then modified the stories to help better understand the overall project we were going for and as well added additional ones to tackle some of the details not mentioned in the details document.
+The user stories were chosen to meet the requirements because our client has outlined these before our first meeting. As a team, we then modified the stories to help better understand the overall goal we were going for and as well added additional ones to tackle some of the details not mentioned in the details document.
 
 1. [ View Ideas ](#view-ideas)
 2. [ Sort Ideas ](#sort-ideas)
 3. [ Search Ideas ](#search-ideas)
 4. [ Select Ideas ](#select-ideas)
 5. [ Create Account & Log In ](#create-account-login)
-6. [ Upvote Idea ](#upvote-idea)
-7. [ Follow an Idea ](#follow-idea) 
-8. [ Volunteer for a Project ](#volunteer)
-9. [ Donate to a Project ](#donation)
-10. [ Contact Idea Creators ](#contact-idea-creator)
-11. [ Create New Idea ](#create-idea)
-12. [ Honorarium Note ](#honorariam-note)
-13. [ Project Message ](#project-message)
-14. [ Email Updates ](#email-updates)
-15. [ Update Project Details ](#update-project)
-16. [ New Website Route for a New City ](#new-city)
+6. [ App View Responsiveness ](#responsiveness)
+7. [ Upvote Idea ](#upvote-idea)
+8. [ Follow an Idea ](#follow-idea) 
+9. [ Volunteer for a Project ](#volunteer) 
+10. [ Donate to a Project ](#donation)
+11. [ Contact Idea Creators ](#contact-idea-creator)
+12. [ Email Digest ](#email-digest)
+13. [ Create New Idea ](#create-idea)
+14. [ Honorarium Note ](#honorariam-note)
+15. [ Project Message ](#project-message)
+16. [ Email Updates ](#email-updates)
+17. [ Update Project Details ](#update-project)
+18. [ Add Idea Admins ](#add-idea-admin)
+19. [ New Website Route for a New Location ](#new-location)
+20. [ Edit Location Page Content ](#edit-location)
+21. [ Edit Website Content ](#edit-website)
+22. [ Add Location Admins ](#add-location-admin)
 
 <a name="view-ideas"></a>
 ```
@@ -65,6 +75,7 @@ Acceptance Tests
 * See a listing of ideas that I can scroll through
 
 ```
+
 <a name="sort-ideas"></a>
 ```
 US 1.02 - Sort Ideas
@@ -76,11 +87,11 @@ So that I can see what new or popular projects exist
 
 Acceptance Tests
 
-* Navigate to the idea listings part
+* Navigate to the idea listings page
 
 * Click a button to sort by date or popularity 
 
-* Resulting idea listing page has been sorted
+* Resulting idea listing page has been sorted by specified metric
 
 ```
 
@@ -136,19 +147,20 @@ Acceptance Tests
 
 ```
 
-<a name="upvote-idea"></a>
+<a name="responsiveness"></a>
 ```
-US 2.01 - Upvote Idea
-As a logged in user
+US 1.06 - App View Responsiveness
+As a Visitor
 
-I want to upvote a project
+I want to view the page on mobile
 
-So that other visitors and users can see that there is interest in the project
+So that I can access the page anywhere on any device screen size
 
 Acceptance Tests
 
-* Click on an upvote button beside the project idea
-* Upvote count gets incremented by one for the respective idea
+* Visitor can view the page on desktop
+* Visitor can view the page on a mobile screen size
+* Visitor can view the page on a tablet screen size
 
 ```
 
@@ -247,9 +259,24 @@ Acceptance Tests
 * User sees a message saying that the idea has been successfully created
 ```
 
+<a name="email-digest"></a>
+```
+US 2.07 - Email Digest
+As a logged in user
+
+I want to receive updates from all the projects I've followed in a digest format
+
+So that I don't get spammed with many seperate emails
+
+Acceptance Tests
+
+* User follows 2 or more projects
+* User receives one email containing updates for those projexts
+```
+
 <a name="honorarium-note"></a>
 ```
-US 3.01 - Create New Idea
+US 3.01 - Add Honorarium
 As an idea creator
 
 I want to add a note about honorariums for the idea
@@ -259,7 +286,7 @@ So that other visitors can consider volunteering for the idea
 Acceptance Tests
 
 * Idea Creator clicks on "add honorarium note" button on their idea page
-* Idea Creator enters input for the notes
+* Idea Creator enters input for the note
 * Idea details page gets successfully updated with the new note
 ```
 
@@ -276,7 +303,7 @@ Acceptance Tests
 
 * Idea Creator clicks on "add new project message" button on their idea page
 * Idea Creator enters input for their message
-* Followers and volunteers get a new update 
+* Followers and volunteers get a new update on the website
 ```
 
 <a name="email-updates"></a>
@@ -290,9 +317,9 @@ So that followers and volunteers will be notified of any updates
 
 Acceptance Tests
 
-* Idea Creator clicks on "add new project message" button on their idea page
-* Idea Creator enters input for their message
-* Followers and volunteers get a new update 
+* Idea Creator clicks on "send email update" button on their project page
+* Idea Creator types in input
+* Website sends an email given previous input
 ```
 
 <a name="update-project"></a>
@@ -306,14 +333,30 @@ So that everyone can see updated details about the project
 
 Acceptance Tests
 
-* Idea Creator clicks on "add new project message" button on their idea page
-* Idea Creator enters input for their message
-* Followers and volunteers get a new update 
+* Idea Creator clicks on "update idea" on their project page
+* Idea Creator enters input to change all of some of the fields such as title, description, status
+* Idea page gets updated
 ```
 
-<a name="new-city"></a>
+<a name="add-idea-admin"></a>
 ```
-US 4.01 - Add New City Page On Website
+US 3.05 - Add Idea Admins
+As an idea creator
+
+I want to invite others to be idea admins
+
+So that I get more support to help maintain the page with others
+
+Acceptance Tests
+
+* Idea Creator navigates to idea settings page
+* Idea Creator can then add one or more users to be idea admins
+* Idea Admins can do everything an Idea Creator can but not add new admins
+```
+
+<a name="new-location"></a>
+```
+US 4.01 - Add New Location Page On Website
 As an location admin
 
 I want to spin up a new website route for a city/town/location
@@ -322,49 +365,121 @@ So that I can manage new ideas in a different location page
 
 Acceptance Tests
 
-* Idea Creator clicks on "add new project message" button on their idea page
-* Idea Creator enters input for their message
-* Followers and volunteers get a new update 
+* Location admin clicks on a "new location" button
+* Enters the city the page is for and the new route name
+* Home page is updated to add the new location and a new page is spun up for it
+```
+
+<a name="edit-location"></a>
+```
+US 4.02 - Edit Location Page Content
+As an location admin
+
+I want to edit the content on a location page
+
+So that I can add or remove ideas, and update content on a specific location page
+
+Acceptance Tests
+
+* Location admin navigates to a location settings page
+* Admin changes the content of the page
+```
+
+<a name="edit-website"></a>
+```
+US 4.03 - Edit Website Content
+As a site or location admin
+
+I want to edit the content on the website outside of a location page
+
+So that I can add a FAQ, About, and Splash pages
+
+Acceptance Tests
+
+* Site or Location admin navigates to an idea admin's settings page
+* Admin can edit the content of a specific page 
+```
+
+<a name="add-location-admin"></a>
+```
+US 4.04 - Add Location Admins
+As a site admin
+
+I want to add new location admins
+
+So that I can allow other admins to delegate their own location pages
+
+Acceptance Tests
+
+* Site admin navigates to an idea admin's settings page
+* Site admin can add new users to be location admins
+* Location admin can now edit the content of their location page but not the site
 ```
 
 <a name="must-have"></a>
 ## Must Have
+* US 1.01 - View Ideas
+* US 1.04 - Select Ideas
+* US 1.06 - App View Responsiveness
+* US 2.01 - Upvote Idea
+* US 1.05 - Create an account and log in
+* US 2.02 - Follow an Idea
+* US 2.06 - Create New Idea
+* US 3.04 - Update Details on Project
 
 <a name="should-have"></a>
 ## Should Have
+* US 1.02 - Sort Ideas
+* US 1.03 - Search Ideas
+* US 2.05 - Contact Idea Creator
+* US 3.02 - Post New Message on Project
+* US 4.01 - Add New Location Page on Website
+* US 4.02 - Edit Location Page Content
+* US 4.03 - Edit Website Content
+* US 4.04 - Add Location Admins
 
 <a name="would-have"></a>
 ## Would Have
+* US 2.04 - Donate to a Project
+* US 3.01 - Add Honorarium
+* US 3.03 - Send Email Update to Followers and Volunteers
+* US 3.05 - Add Idea Admins
 
 <a name="could-have"></a>
 ## Could Have
+* US 2.07 - Email Digest
 
-
-# Technical Resources:
+# Technical Resources
 ## Backend
-* [Express (Node.js)](https://expressjs.com/), [MongoDB](https://www.mongodb.com/)
+* [Express (Node.js)](https://expressjs.com/)
+* [MongoDB](https://www.mongodb.com/)
 
 ## DevOps
-* [Docker](https://www.docker.com/), [Jenkins](https://jenkins.io/)
+* [Docker](https://www.docker.com/)
+* [Jenkins](https://jenkins.io/)
 
 ## Frontend 
-* [Vue.js](https://vuejs.org/v2/guide/), [Bootstrap](https://getbootstrap.com/docs/4.4/getting-started/introduction/), [ES Lint](https://eslint.org/docs/rules/), [Jest](https://jestjs.io/docs/en/getting-started.html)
+* [Vue.js](https://vuejs.org/v2/guide/)
+* [Bootstrap](https://getbootstrap.com/docs/4.4/getting-started/introduction/)
+* [ES Lint](https://eslint.org/docs/rules/)
+* [Jest](https://jestjs.io/docs/en/getting-started.html)
+* [Sass](https://sass-lang.com/)
 
 
 # Similar Products:
-## Reddit
+## [Reddit](https://www.reddit.com/)
 Reddit will be a heavy source of inspiration for many features, as its UI is simple and likely has solved a lot of UX issues that the site previously had years before. Reddit is a site where content can be voted on and viewed, so many of its features parallel that of the proposed site.
 
-## Kickstarter
+## [Kickstarter](https://www.kickstarter.com/)
 Kickstarter is a site where users can donate various amounts of money to projects. This feature may be something we want to keep our eye on, as Kickstarter may have a smart system of handling donations and project funding. One feature is that funding can be withheld if a minimum donation threshold is not met. 
 
 <a name="similar-open-source"></a>
-# Similar Open Source Projects:
+# Similar Open Source Projects
 ## TODO
 
 
 <a name="contributors"></a>
 ***
 # Contributors
-### Contributed By Christian Lo, Colin Kushniruk, Monica Bui
-### Jan 20 2020
+* Contributed By Christian Lo, Colin Kushniruk, Monica Bui
+* Jan 20 2020
