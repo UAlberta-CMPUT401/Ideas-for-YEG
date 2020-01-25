@@ -303,7 +303,7 @@ Acceptance Tests
 
 * Idea Creator clicks on "add new project message" button on their idea page
 * Idea Creator enters input for their message
-* Followers and volunteers get a new update on the website
+* Followers and volunteers get a new notification on the website regarding the new message
 ```
 
 <a name="email-updates"></a>
@@ -420,9 +420,9 @@ Acceptance Tests
 ## Must Have
 * US 1.01 - View Ideas
 * US 1.04 - Select Ideas
+* US 1.05 - Create an account and log in
 * US 1.06 - App View Responsiveness
 * US 2.01 - Upvote Idea
-* US 1.05 - Create an account and log in
 * US 2.02 - Follow an Idea
 * US 2.06 - Create New Idea
 * US 3.04 - Update Details on Project
@@ -440,6 +440,7 @@ Acceptance Tests
 
 <a name="would-have"></a>
 ## Would Have
+* US 2.03 - Volunteer for a Project
 * US 2.04 - Donate to a Project
 * US 3.01 - Add Honorarium
 * US 3.03 - Send Email Update to Followers and Volunteers
@@ -453,6 +454,7 @@ Acceptance Tests
 ## Backend
 * [Express (Node.js)](https://expressjs.com/)
 * [MongoDB](https://www.mongodb.com/)
+* [Strapi](https://strapi.io/)
 
 ## DevOps
 * [Docker](https://www.docker.com/)
@@ -460,10 +462,12 @@ Acceptance Tests
 
 ## Frontend 
 * [Vue.js](https://vuejs.org/v2/guide/)
+* [Vuex](https://vuex.vuejs.org/guide/)
 * [Bootstrap](https://getbootstrap.com/docs/4.4/getting-started/introduction/)
 * [ES Lint](https://eslint.org/docs/rules/)
 * [Jest](https://jestjs.io/docs/en/getting-started.html)
 * [Sass](https://sass-lang.com/)
+* [NPM](https://www.npmjs.com/)
 
 
 # Similar Products:
@@ -478,11 +482,7 @@ Kickstarter is a site where users can donate various amounts of money to project
 ## [Reddit: Slide for reddit](https://github.com/ccrama/Slide)
 Slide for reddit is an open sourced and ad free Reddit browser for Android. Some aspects of the eventual user interface and features of #ideas4YEG align with those of slide for reddit. 
 
-## TODO
-
-
 <a name="contributors"></a>
-***
 # Contributors
-* Contributed By Christian Lo, Colin Kushniruk, Monica Bui
+* Contributed By Christian Lo, Colin Kushniruk, Monica Bui, Rehab El-Hajj
 * Jan 20 2020
