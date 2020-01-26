@@ -27,6 +27,12 @@ By the words of the client, Ideas for YEG is a project with the goal of connecti
 
 **Site Admin** - A user that maintains the entire site. They can also add users to be Location Admins.
 
+# Storyboarding
+The following is a complete flowchart of the desktop web UI, compressed so that it fits this document:
+![Desktop Flowchart](https://github.com/UAlberta-CMPUT401/Ideas-for-YEG/blob/master/docs/Storyboard_Desktop_Downsized.png)
+
+The uncompressed flowchart can be found [here](https://github.com/UAlberta-CMPUT401/Ideas-for-YEG/blob/master/docs/Storyboard_Desktop.jpg).
+
 # Sprint Progress Charts
 * [Sprint 1](https://ualberta-cmput401.github.io/Ideas-for-YEG/Gantt_Chart_Sprint1.pdf)
 
