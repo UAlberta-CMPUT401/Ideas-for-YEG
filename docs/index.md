@@ -27,8 +27,8 @@ By the words of the client, Ideas for YEG is a project with the goal of connecti
 
 **Site Admin** - A user that maintains the entire site. They can also add users to be Location Admins.
 
-# Storyboard
-### TODO Add when completed
+# Sprint Progress Charts
+* [Sprint 1](https://ualberta-cmput401.github.io/Ideas-for-YEG/Gantt_Chart_Sprint1.pdf)
 
 # Use Cases or User Stories
 [With Reference to Eugene Chen’s 401 ideas4.co Dev Details Document](https://docs.google.com/spreadsheets/d/1d1UYda6Yri3o0E0bkZSC-bgtwTXizyNDOPyZJkbL7w4/edit?usp=sharing), user story
