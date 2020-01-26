@@ -424,6 +424,7 @@ Acceptance Tests
 * US 1.06 - App View Responsiveness
 * US 2.01 - Upvote Idea
 * US 2.02 - Follow an Idea
+* US 2.03 - Volunteer for a Project
 * US 2.06 - Create New Idea
 * US 3.04 - Update Details on Project
 
@@ -440,7 +441,6 @@ Acceptance Tests
 
 <a name="would-have"></a>
 ## Would Have
-* US 2.03 - Volunteer for a Project
 * US 2.04 - Donate to a Project
 * US 3.01 - Add Honorarium
 * US 3.03 - Send Email Update to Followers and Volunteers
