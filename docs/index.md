@@ -28,15 +28,13 @@ By the words of the client, Ideas for YEG is a project with the goal of connecti
 **Site Admin** - A user that maintains the entire site. They can also add users to be Location Admins.
 
 # Storyboarding
-The following is a complete flowchart of the desktop web UI, downsized so that it fits this document:
-![Desktop Flowchart](https://github.com/UAlberta-CMPUT401/Ideas-for-YEG/blob/master/docs/Storyboard_Desktop_Downsized.png)
+The following complete downsized flowchart of the desktop web UI  can be found [here](https://github.com/UAlberta-CMPUT401/Ideas-for-YEG/blob/master/docs/Storyboard_Desktop_Downsized.png)
 
-The uncompressed flowchart can be found [here](https://github.com/UAlberta-CMPUT401/Ideas-for-YEG/blob/master/docs/Storyboard_Desktop.jpg).
+The uncompressed desktop flowchart can be found [here](https://github.com/UAlberta-CMPUT401/Ideas-for-YEG/blob/master/docs/Storyboard_Desktop.jpg).
 
-The following is a complete flowchart of the mobile web UI, downsized do that it fits this document:
-![Mobile Flowchart](https://github.com/UAlberta-CMPUT401/Ideas-for-YEG/blob/master/docs/Storyboard_Mobile_Downsized.png)
+The following complete downsized flowchart of the mobile web UI  can be found [here](https://github.com/UAlberta-CMPUT401/Ideas-for-YEG/blob/master/docs/Storyboard_Mobile_Downsized.png)
 
-The uncompressed flowchart can be found [here](https://github.com/UAlberta-CMPUT401/Ideas-for-YEG/blob/master/docs/Storyboard_Mobile.jpg).
+The uncompressed mobile flowchart can be found [here](https://github.com/UAlberta-CMPUT401/Ideas-for-YEG/blob/master/docs/Storyboard_Mobile.jpg).
 
 Individual storyboard slides can be found for desktop [here](https://github.com/UAlberta-CMPUT401/Ideas-for-YEG/blob/master/docs/Storyboard_Desktop_Frames.pdf) and for mobile [here](https://github.com/UAlberta-CMPUT401/Ideas-for-YEG/blob/master/docs/Storyboard_Mobile_Frames.pdf)
 # Sprint Progress Charts
