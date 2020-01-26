@@ -1,3 +1,4 @@
 site_name: Ideas4YEG
 nav:
   - Overview: index.md
+  - Software Design: software.md
