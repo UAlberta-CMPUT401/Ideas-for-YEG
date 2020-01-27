@@ -465,6 +465,9 @@ Acceptance Tests
 * [Express (Node.js)](https://expressjs.com/)
 * [MongoDB](https://www.mongodb.com/)
 * [Strapi](https://strapi.io/)
+* [Mailchimp](https://mailchimp.com/)
+* [Stripe](https://stripe.com/)
+* [Paypal](https://developer.paypal.com/)
 
 ## DevOps
 * [Docker](https://www.docker.com/)
