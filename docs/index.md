@@ -37,7 +37,9 @@ The following complete downsized flowchart of the mobile web UI  can be found [h
 The uncompressed mobile flowchart can be found [here](https://github.com/UAlberta-CMPUT401/Ideas-for-YEG/blob/master/docs/Storyboard_Mobile.jpg).
 
 Individual storyboard slides can be found for desktop [here](https://github.com/UAlberta-CMPUT401/Ideas-for-YEG/blob/master/docs/Storyboard_Desktop_Frames.pdf) and for mobile [here](https://github.com/UAlberta-CMPUT401/Ideas-for-YEG/blob/master/docs/Storyboard_Mobile_Frames.pdf)
-# Sprint Progress Charts
+# Project Management Document
+The team is split half way, with half of our team focusing primarily on back-end work (Csaba, Colin, Louis) and half our team focusing primarily on front-end work (Monica, Rehab, Christian). The following is our GANTT chart, outlining the tasks for each spring and assignees:
+
 * [Sprint 1](https://ualberta-cmput401.github.io/Ideas-for-YEG/Gantt_Chart_Sprint1.pdf)
 
 # Use Cases or User Stories
