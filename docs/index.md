@@ -38,7 +38,11 @@ The uncompressed mobile flowchart can be found [here](https://github.com/UAlbert
 
 Individual storyboard slides can be found for desktop [here](https://github.com/UAlberta-CMPUT401/Ideas-for-YEG/blob/master/docs/Storyboard_Desktop_Frames.pdf) and for mobile [here](https://github.com/UAlberta-CMPUT401/Ideas-for-YEG/blob/master/docs/Storyboard_Mobile_Frames.pdf)
 # Project Management Document
-The team is split half way, with half of our team focusing primarily on back-end work (Csaba, Colin, Louis) and half our team focusing primarily on front-end work (Monica, Rehab, Christian). The following is our GANTT chart, outlining the tasks for each sprint and assignees:
+The team is split half way, with half of our team focusing primarily on back-end work (Csaba, Colin, Louis) and half our team focusing primarily on front-end work (Monica, Rehab, Christian). 
+
+We created a GANTT chart outlining the tasks for each sprint and assignees. The blue tasks are back-end tasks, the red tasks are front-end tasks, and grey tasks are either documentation (most of sprint 1) or un-assigned tasks (sprint 3 and 4). 
+
+GANTT chart:
 
 * [Sprint 1](https://ualberta-cmput401.github.io/Ideas-for-YEG/Gantt_Chart_Sprint1.pdf)
 
@@ -500,4 +504,4 @@ Slide for reddit is an open sourced and ad free Reddit browser for Android. Some
 <a name="contributors"></a>
 # Contributors
 * Contributed By Christian Lo, Colin Kushniruk, Monica Bui, Rehab El-Hajj
-* Jan 20 2020
+* Jan 26 2020
