@@ -10,8 +10,8 @@
 
 ## Sequence Diagram
 ### January, 25th, 2020 ( Louis Moc )
-![](Sequence_Page_1.png)
-![](Sequence_Page_2.png)
-![](Sequence_Page_3.png)
-![](Sequence_Page_4.png)
-![](Sequence_Page_5.png)
+![](software/Sequence_Page_1.png)
+![](software/Sequence_Page_2.png)
+![](software/Sequence_Page_3.png)
+![](software/Sequence_Page_4.png)
+![](software/Sequence_Page_5.png)
