@@ -87,8 +87,11 @@ So that I can see what ideas/projects exist for my community
 Acceptance Tests
 
 * Navigate to the web page
-
-* See a listing of ideas that I can scroll through
+* If there is at least one idea on the page, I can view a listing of ideas that I can scroll through
+* If there are no existing ideas, I can view a page that
+shows a message stating "No Ideas Have Been Created" and will
+suggest that I can create the first idea on the page if I have
+an existing account or can direct me to create a new account
 
 ```
 
@@ -104,10 +107,13 @@ So that I can see what new or popular projects exist
 Acceptance Tests
 
 * Navigate to the idea listings page
-
 * Click a button to sort by date or popularity 
-
-* Resulting idea listing page has been sorted by specified metric
+* Resulting idea listing page has been sorted by specified metric if there
+are existing ideas
+* If the idea list was empty to begin with, the view
+shows a message stating "No Ideas Have Been Created" and will
+suggest that I can create theo first idea on the page if I have
+an existing account or can direct me to create a new account
 
 ```
 
@@ -123,8 +129,10 @@ So that I can find a specific idea/project or see if one already exists
 Acceptance Tests
 
 * Input some text into a search bar
-
-* Resulting idea listing page has been filtered by the text
+* Resulting idea listing page has been filtered by the text indicating if the 
+search term is found within the title or description
+* If listing page is empty, I see a warning message saying that there are no ideas
+of that search term found and to try a different search instead
 
 ```
 
@@ -140,7 +148,8 @@ So that I can see more details about the project
 Acceptance Tests
 
 * Click on a project
-* Bring up a page that shows more details about a project
+* Navigate to a new page that shows more details about a project such 
+as the title, description,status, name of the Idea Creator, date of creation/updated, number of followers, backers, volunteers, and upvotes, and how much of honorarium is provided
 
 ```
 
@@ -156,10 +165,13 @@ So that I can do more, like upvote, back, or follow a project
 Acceptance Tests
 
 * Visitor clicks a sign-up button
-* Visitor enters their required information like full name and email
+* Visitor enters their required information like full name, email, and password
 * Visitor clicks confirm sign-up button
 * Account information is saved in some database
-* Visitor gets re-directed to the home page signed into their account
+* Visitor then checks their email account to verify their account
+* Visitor confirms their account by hitting a confirm account button within the email
+* Visitor gets re-directed to the home page asking them to log into their account
+* Visitor enters their email and password and if done so correctly, will be redirected to the home page otherwise they will get an error message to try entering their info again
 
 ```
 
@@ -209,6 +221,8 @@ Acceptance Tests
 
 * Click on a "follow for notifications" button on the project details page
 * User sees a successful message on screen that they are now successfully following the project
+* Number of followers metric gets incremented by one for the project
+* For any new idea updates, the user will get a notification on the webpage via the navigation bar where they can select the notification to read more about the update
 
 ```
 
@@ -225,6 +239,7 @@ Acceptance Tests
 
 * Click on a volunteer button on the project details page
 * Idea Creator gets notified of new volunteer and sends out email for more info on volunteering
+* Number of volunteers metric gets incremented by one for the project
 
 ```
 
@@ -240,8 +255,10 @@ So that I can support a project I agree with financially
 Acceptance Tests
 
 * Click on a donate button on the project details page
-* User gets redirected to a 3rd party site like Paypal, Stripe etc. to enter their info and complete the transaction
-* Project detail's backer and money donated info gets updated
+* User gets redirected to a 3rd party site like Paypal to enter their payment information securely
+* Project's backer count metric gets updated
+* Project's number of money donated metric gets updated
+* Idea Creator gets notification that someone has donated money to specified idea
 
 ```
 
@@ -257,6 +274,8 @@ So that I can ask questions or help support it in some other way
 Acceptance Tests
 
 * User views the idea creator's email on the project details page
+* User can send an email with the idea creator's email
+* Idea Creator receives an email from the user and can reply back to it
 ```
 
 <a name="create-idea"></a>
@@ -272,7 +291,9 @@ Acceptance Tests
 
 * User clicks on a "Create Idea" button
 * User fills out info such as title, description, and status of the project
-* User sees a message saying that the idea has been successfully created
+* User sees a message saying that the idea has been successfully created given the information input in the previous step
+* Idea starts off with 0 upvotes, backers, volunteers, honorarium notes, updates
+* Idea listings page gets updated to show the idea for the given location
 ```
 
 <a name="email-digest"></a>
@@ -282,12 +303,12 @@ As a logged in user
 
 I want to receive updates from all the projects I've followed in a digest format
 
-So that I don't get spammed with many seperate emails
+So that I don't get spammed with many separate emails
 
 Acceptance Tests
 
 * User follows 2 or more projects
-* User receives one email containing updates for those projexts
+* User receives one email containing updates for those projects
 ```
 
 <a name="honorarium-note"></a>
@@ -302,7 +323,7 @@ So that other visitors can consider volunteering for the idea
 Acceptance Tests
 
 * Idea Creator clicks on "add honorarium note" button on their idea page
-* Idea Creator enters input for the note
+* Idea Creator enters text input for the note
 * Idea details page gets successfully updated with the new note
 ```
 
@@ -317,9 +338,9 @@ So that followers and volunteers will be notified of any updates
 
 Acceptance Tests
 
-* Idea Creator clicks on "add new project message" button on their idea page
-* Idea Creator enters input for their message
-* Followers and volunteers get a new notification on the website regarding the new message
+* Idea Creator clicks on "add new project message" button on their idea page if there is at least one or more followers and volunteers otherwise the button is disabled
+* Idea Creator enters text input for their message
+* Followers and volunteers get a new notification on the website regarding the new message to check out
 ```
 
 <a name="email-updates"></a>
@@ -333,9 +354,11 @@ So that followers and volunteers will be notified of any updates
 
 Acceptance Tests
 
-* Idea Creator clicks on "send email update" button on their project page
-* Idea Creator types in input
-* Website sends an email given previous input
+* Idea Creator clicks on "send email update" button on their project page if
+there is at least one or more followers and volunteers otherwise the button is disabled
+* Idea Creator types in text input
+* Website sends an email given this text input
+* All followers and volunteers associated with the idea can view the email
 ```
 
 <a name="update-project"></a>
@@ -349,9 +372,10 @@ So that everyone can see updated details about the project
 
 Acceptance Tests
 
-* Idea Creator clicks on "update idea" on their project page
-* Idea Creator enters input to change all of some of the fields such as title, description, status
-* Idea page gets updated
+* Idea Creator clicks on "update idea" button on their project page
+* Idea Creator enters input to change all or some of the fields such as title, description, status
+* Idea page gets updated with the changed info
+* If user decides to cancel updating the idea, the resulting idea page will reflect no changes
 ```
 
 <a name="add-idea-admin"></a>
@@ -365,9 +389,11 @@ So that I get more support to help maintain the page with others
 
 Acceptance Tests
 
-* Idea Creator navigates to idea settings page
-* Idea Creator can then add one or more users to be idea admins
+* Idea Creator navigates to the idea settings page
+* Idea Creator can then add one or more users to be idea admins if there are other users in the system besides themselves
+* New Idea Admins are notified that they have been added as admins to specified idea
 * Idea Admins can do everything an Idea Creator can but not add new admins
+* If there are no other users, Idea Creator will be shown with an empty menu stating that there is no one to select from and can try again when there are more registered users
 ```
 
 <a name="new-location"></a>
@@ -382,8 +408,8 @@ So that I can manage new ideas in a different location page
 Acceptance Tests
 
 * Location admin clicks on a "new location" button
-* Enters the city the page is for and the new route name
-* Home page is updated to add the new location and a new page is spun up for it
+* Enters the city location the page is for and the new route name if it does not exist otherwise an error message is shown stating that a different location name and/or route name must be used
+* Home page is updated to add the new location and a new page is spun up for it with a default splash screen indicating the location name
 ```
 
 <a name="edit-location"></a>
@@ -398,7 +424,10 @@ So that I can add or remove ideas, and update content on a specific location pag
 Acceptance Tests
 
 * Location admin navigates to a location settings page
-* Admin changes the content of the page
+* Location admin changes the content of the location page
+by either adding new ideas, removing ideas if ideas exist, and/or updating general content of the page
+* Resulting pages are updated successfully
+* If the operation is cancelled, no changes are reflected
 ```
 
 <a name="edit-website"></a>
@@ -412,8 +441,11 @@ So that I can add a FAQ, About, and Splash pages
 
 Acceptance Tests
 
-* Site or Location admin navigates to an idea admin's settings page
-* Admin can edit the content of a specific page 
+* Site or Location admin navigates to a site/location admin's settings page
+* Admin can edit, add, or delete the content of a specific page such as FAQ,
+Contact Site/Location Owners, About, and Splash pages
+* Resulting pages are updated, deleted, or added successfully
+* If the operation is cancelled, no changes are reflected
 ```
 
 <a name="add-location-admin"></a>
@@ -427,9 +459,10 @@ So that I can allow other admins to delegate their own location pages
 
 Acceptance Tests
 
-* Site admin navigates to an idea admin's settings page
-* Site admin can add new users to be location admins
-* Location admin can now edit the content of their location page but not the site
+* Site admin navigates to an site admin's settings page
+* Site admin can add new users to be location admins if there are registered users in the system
+* Location admins can now edit the content of their location page but not the site
+* If there are no other users, Site admin will be shown with an empty menu stating that there is no one to select from and can try again when there are more registered users
 ```
 
 <a name="must-have"></a>
@@ -471,8 +504,7 @@ Acceptance Tests
 * [Express (Node.js)](https://expressjs.com/)
 * [MongoDB](https://www.mongodb.com/)
 * [Strapi](https://strapi.io/)
-* [Mailchimp](https://mailchimp.com/)
-* [Stripe](https://stripe.com/)
+* [Send Grid](https://sendgrid.com/)
 * [Paypal](https://developer.paypal.com/)
 
 ## DevOps
@@ -487,6 +519,7 @@ Acceptance Tests
 * [Jest](https://jestjs.io/docs/en/getting-started.html)
 * [Sass](https://sass-lang.com/)
 * [NPM](https://www.npmjs.com/)
+* [Prettier](https://prettier.io/)
 
 
 # Similar Products:
