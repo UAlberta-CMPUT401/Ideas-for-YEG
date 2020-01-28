@@ -1,0 +1,26 @@
+{
+  "name": "ideas-for-yeg",
+  "version": "1.0.0",
+  "description": "An application to connect local ideas and communities",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/UAlberta-CMPUT401/Ideas-for-YEG.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/UAlberta-CMPUT401/Ideas-for-YEG/issues"
+  },
+  "homepage": "https://github.com/UAlberta-CMPUT401/Ideas-for-YEG#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "dotenv": "^8.2.0",
+    "ejs": "^3.0.1",
+    "express": "^4.17.1",
+    "express-session": "^1.17.0"
+  }
+}
