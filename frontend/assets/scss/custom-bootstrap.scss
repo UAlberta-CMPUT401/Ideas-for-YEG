@@ -1,0 +1,11 @@
+/*
+Custom scss file used to customize and style bootstrap by changing various bootstrap variables.
+Loaded in the nuxt.config.js file.
+*/
+
+// Your variable overrides
+// $body-bg: #000;
+// $body-color: #111;
+
+// Bootstrap and its default variables
+@import "node_modules/bootstrap/scss/bootstrap";
