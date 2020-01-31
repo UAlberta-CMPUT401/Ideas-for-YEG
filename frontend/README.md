@@ -1,6 +1,6 @@
 # frontend
 
-> frontend made in Nuxt.js
+> Ideas-4-YEG
 
 ## Build Setup
 

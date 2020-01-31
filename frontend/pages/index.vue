@@ -6,7 +6,7 @@
         frontend
       </h1>
       <h2 class="subtitle">
-        frontend made in Nuxt.js
+        Ideas-4-YEG
       </h2>
       <div class="links">
         <a href="https://nuxtjs.org/" target="_blank" class="button--green">
