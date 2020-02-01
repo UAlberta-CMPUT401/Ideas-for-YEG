@@ -13,10 +13,7 @@
     "test": "jest"
   },
   "lint-staged": {
-    "*.{js,vue}": [
-      "eslint",
-      "prettier --write"
-    ]
+    "*.{js,vue}": ["eslint", "prettier --write"]
   },
   "husky": {
     "hooks": {
@@ -24,16 +21,16 @@
     }
   },
   "dependencies": {
-    "@nuxtjs/axios": "^5.3.6",
-    "@nuxtjs/dotenv": "^1.4.0",
-    "@nuxtjs/pwa": "^3.0.0-0",
+    "nuxt": "^2.0.0",
     "cross-env": "^5.2.0",
     "express": "^4.16.4",
-    "nuxt": "^2.0.0",
-    "vue-material": "^1.0.0-beta-11"
+    "@nuxtjs/axios": "^5.3.6",
+    "@nuxtjs/pwa": "^3.0.0-0",
+    "@nuxtjs/dotenv": "^1.4.0"
   },
   "devDependencies": {
     "nodemon": "^1.18.9",
+    "@nuxtjs/vuetify": "^1.0.0",
     "@nuxtjs/eslint-config": "^1.0.1",
     "@nuxtjs/eslint-module": "^1.0.0",
     "babel-eslint": "^10.0.1",
