@@ -65,7 +65,10 @@
 </template>
 
 <script>
+import store from '../store/index';
+
 export default {
+  store,
   data() {
     return {
       clipped: false,
@@ -79,14 +82,14 @@ export default {
         },
         {
           icon: 'mdi-chart-bubble',
-          title: 'Inspire',
-          to: '/inspire',
+          title: 'Idea Dashboard',
+          to: '/idea-dashboard',
         },
       ],
       miniVariant: false,
       right: true,
       rightDrawer: false,
-      title: 'Vuetify.js',
+      title: 'Ideas 4 YEG',
     };
   },
 };
