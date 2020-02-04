@@ -2,27 +2,64 @@
   <v-card class="mx-auto">
     <v-container fluid>
       <v-row>
-        <v-col v-for="idea in ideas" :key="idea.title" :cols="idea.flex">
-          <v-card elevation="12">
+        <v-col
+          v-for="idea in ideas"
+          :key="idea.title"
+          :cols="idea.flex"
+          class="card"
+        >
+          <v-card class="mx-auto">
+            <v-list-item>
+              <v-list-item-content>
+                <v-list-item-title class="headline">{{
+                  idea.title
+                }}</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
             <v-img
               :src="idea.src"
-              class="white--text align-end"
               gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-              height="200px"
+              height="194px"
             >
-              <v-card-title v-text="idea.title"></v-card-title>
             </v-img>
 
+            <v-card-text class="text--primary">
+              <div>{{ idea.description }}</div>
+            </v-card-text>
+
             <v-card-actions>
-              <v-spacer></v-spacer>
+              <v-list-item class="grow">
+                <v-list-item-avatar
+                  class="d-none d-sm-flex d-md-flex d-lg-flex d-xl-flex"
+                  color="grey darken-3"
+                >
+                  <v-img
+                    class="elevation-6"
+                    src="https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairShortCurly&accessoriesType=Prescription02&hairColor=Black&facialHairType=Blank&clotheType=Hoodie&clotheColor=White&eyeType=Default&eyebrowType=DefaultNatural&mouthType=Default&skinColor=Light"
+                  ></v-img>
+                </v-list-item-avatar>
 
-              <v-btn icon>
-                <v-icon>mdi-thumb-up</v-icon>
-              </v-btn>
+                <v-list-item-content>
+                  <v-list-item-title>{{ idea.ideaCreator }}</v-list-item-title>
+                </v-list-item-content>
 
-              <v-btn icon>
-                <v-icon>mdi-thumb-down</v-icon>
-              </v-btn>
+                <v-spacer> </v-spacer>
+
+                <v-btn color="grey darken-4" text>
+                  <v-icon>mdi-thumb-up</v-icon>
+                  <span class="subheading mr-2">{{ idea.upvotes }}</span>
+                </v-btn>
+
+                <v-btn color="grey darken-4" text>
+                  <v-icon>mdi-currency-usd</v-icon>
+                  <span class="subheading mr-2">{{ idea.donatedAmount }}</span>
+                </v-btn>
+
+                <v-btn color="grey darken-4" text>
+                  <v-icon>mdi-account-group</v-icon>
+                  <span class="subheading mr-2">{{ idea.volunteers }}</span>
+                </v-btn>
+              </v-list-item>
             </v-card-actions>
           </v-card>
         </v-col>
@@ -32,6 +69,11 @@
 </template>
 
 <script>
+/**
+ * Template Credits: https://vuetifyjs.com/en/components/cards
+ * MIT License
+ * https://github.com/vuetifyjs/vuetify
+ */
 export default {
   props: {
     ideas: {
@@ -43,3 +85,11 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.card {
+  margin: auto;
+  display: block;
+  width: 75%;
+}
+</style>

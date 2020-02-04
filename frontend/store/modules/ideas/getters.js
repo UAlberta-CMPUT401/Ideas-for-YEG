@@ -1,6 +1,6 @@
 const getters = {
-  getIdea: (state) => {
-    return state.idea;
+  getIdeas: (state) => {
+    return state.ideas;
   },
 };
 
