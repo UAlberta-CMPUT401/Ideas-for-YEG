@@ -6,7 +6,7 @@
           Sign Up
         </v-card-title>
         <v-card-text>
-          <v-form ref="form">
+          <v-form ref="form" class="my-3">
             <v-text-field
               v-model="email"
               :rules="emailRules"
