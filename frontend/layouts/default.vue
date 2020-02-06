@@ -32,9 +32,6 @@
       <v-btn @click.stop="clipped = !clipped" icon>
         <v-icon>mdi-application</v-icon>
       </v-btn>
-      <v-btn @click.stop="fixed = !fixed" icon>
-        <v-icon>mdi-minus</v-icon>
-      </v-btn>
       <v-toolbar-title v-text="title" />
       <v-spacer />
       <!--TODO: Need to have logic to check if a user is logged in-->
