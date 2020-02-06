@@ -47,8 +47,6 @@ export default {
   methods: {
     logIn() {
       console.log(`${this.email} ${this.password}`);
-
-      // go to location dashboard
     },
   },
 };
