@@ -1,0 +1,31 @@
+{
+  "connection": "default",
+  "collectionName": "ideas",
+  "info": {
+    "name": "idea"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "image": {
+      "model": "file",
+      "via": "related",
+      "plugin": "upload",
+      "required": false
+    },
+    "published_at": {
+      "type": "date"
+    },
+    "location": {
+      "model": "location"
+    }
+  }
+}

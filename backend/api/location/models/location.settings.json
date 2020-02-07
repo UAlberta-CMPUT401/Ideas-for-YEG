@@ -1,0 +1,25 @@
+{
+  "connection": "default",
+  "collectionName": "locations",
+  "info": {
+    "name": "location"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "image": {
+      "model": "file",
+      "via": "related",
+      "plugin": "upload",
+      "required": false
+    },
+    "route": {
+      "type": "string"
+    }
+  }
+}
