@@ -15,3 +15,6 @@ Then build strapi:
 Then run:
 
 ```strapi start```
+
+Or if the above build and run doesn't work:
+```npm run strapi dev```
