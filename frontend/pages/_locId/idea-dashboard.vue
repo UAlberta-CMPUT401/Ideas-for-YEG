@@ -7,9 +7,6 @@
 </template>
 
 <script>
-/*
-  Code used by looking at the following code snippet: https://codesandbox.io/s/github/nuxt/nuxt.js/tree/dev/examples/custom-routes?from-embed
- */
 import IdeaCard from '../../components/IdeaCard';
 
 export default {
@@ -17,7 +14,7 @@ export default {
     IdeaCard,
   },
   data() {
-    console.log(this.$route.params.locId);
+    // TODO: use this.$route.params.locId to get information about the given location
     return {
       ideas: this.$store.getters['ideas/getIdeas'],
     };

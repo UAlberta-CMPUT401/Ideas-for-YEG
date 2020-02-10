@@ -26,6 +26,9 @@
 </template>
 
 <script>
+/*
+Code used by looking at the following code snippet: https://codesandbox.io/s/github/nuxt/nuxt.js/tree/dev/examples/custom-routes?from-embed
+*/
 export default {
   props: {
     locations: {
