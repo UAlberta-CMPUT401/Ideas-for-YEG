@@ -6,6 +6,9 @@
           Sign Up
         </v-card-title>
         <v-card-text>
+          <p v-if="errorMessage !== null">
+            {{ errorMessage }}
+          </p>
           <v-form ref="form" class="my-3">
             <v-text-field
               v-model="username"
@@ -49,7 +52,6 @@
 </template>
 
 <script>
-import axios from '../.nuxt/axios';
 const EMAIL_VALIDATION_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 const PASSWORD_MIN_LENGTH = 6;
 const PASSWORD_MAX_LENGTH = 32;
@@ -61,6 +63,7 @@ export default {
 
   data() {
     return {
+      errorMessage: '',
       currentUser: this.$store.getters['users/getUser'],
       username: '',
       email: '',
@@ -94,14 +97,29 @@ export default {
     /*
     Validate input, then make a request to the backend.
      */
-    signUp() {
+    async signUp() {
       if (this.$refs.form.validate()) {
-        // console.log(`${this.email} ${this.password} ${this.passwordConf}`);
-        axios.post('/auth/local/register', {
-          username: this.username,
-          email: this.email,
-          password: this.password,
-        });
+        const data = await this.$axios
+          .$post('/auth/local/register', {
+            username: this.username,
+            email: this.email,
+            password: this.password,
+          })
+          .catch((error) => {
+            // Handle error.
+            this.errorMessage = error.response;
+            if (this.errorMessage.data.message[0].messages[0].message != null) {
+              this.errorMessage = this.errorMessage.data.message[0].messages[0].message;
+            }
+          });
+        // Handle success.
+        if (data !== undefined) {
+          // const user = data.user;
+          const jwt = data.jwt;
+          // Access token like so: console.log(document.cookie.replace(/(?:(?:^|.*;\s*)accessToken\s*=\s*([^;]*).*$)|^.*$/, "$1"));
+          document.cookie = 'accessToken=' + jwt;
+          await this.$router.push('/');
+        }
       }
     },
   },
