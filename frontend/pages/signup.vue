@@ -108,12 +108,19 @@ export default {
           .catch((error) => {
             // Handle error.
             this.errorMessage = error.response;
-            if (this.errorMessage.data.message[0].messages[0].message != null) {
+            if (
+              this.errorMessage &&
+              this.errorMessage.data &&
+              this.errorMessage.data.message.length > 0 &&
+              this.errorMessage.data.message[0].messages.length > 0 &&
+              this.errorMessage.data.message[0].messages[0] &&
+              this.errorMessage.data.message[0].messages[0].message
+            ) {
               this.errorMessage = this.errorMessage.data.message[0].messages[0].message;
             }
           });
         // Handle success.
-        if (data !== undefined) {
+        if (data) {
           // const user = data.user;
           const jwt = data.jwt;
           // Access token like so: console.log(document.cookie.replace(/(?:(?:^|.*;\s*)accessToken\s*=\s*([^;]*).*$)|^.*$/, "$1"));
