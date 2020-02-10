@@ -1,0 +1,21 @@
+{
+  "connection": "default",
+  "collectionName": "components_updates_updates",
+  "info": {
+    "name": "update",
+    "icon": "bell"
+  },
+  "options": {},
+  "attributes": {
+    "description": {
+      "type": "text",
+      "required": true
+    },
+    "image": {
+      "model": "file",
+      "via": "related",
+      "plugin": "upload",
+      "required": false
+    }
+  }
+}

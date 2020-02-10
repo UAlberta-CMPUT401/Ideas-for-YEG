@@ -1,0 +1,17 @@
+{
+  "info": {
+    "name": "honorarium",
+    "icon": "hand-paper"
+  },
+  "options": {},
+  "attributes": {
+    "note": {
+      "type": "string"
+    },
+    "amount": {
+      "type": "float"
+    }
+  },
+  "connection": "default",
+  "collectionName": "components_ideas_honorariums"
+}
