@@ -106,11 +106,11 @@ So that I can see what new or popular projects exist
 
 Acceptance Tests
 
-* Navigate to the idea listings page
+* Navigate to the idea listings page based on a selected location
 * Click a button to sort by date or popularity 
-* Resulting idea listing page has been sorted by specified metric if there
-are existing ideas
-* If the idea list was empty to begin with, the view
+* Resulting idea listing page has been sorted by specified metric if there are ideas that match the filter
+* If no ideas match the filter, a message is shown to the user to try a different filter 
+* If the idea list was empty to begin with before filtering occurred, the view
 shows a message stating "No Ideas Have Been Created" and will
 suggest that I can create theo first idea on the page if I have
 an existing account or can direct me to create a new account
@@ -171,7 +171,7 @@ Acceptance Tests
 * Visitor then checks their email account to verify their account
 * Visitor confirms their account by hitting a confirm account button within the email
 * Visitor gets re-directed to the home page asking them to log into their account
-* Visitor enters their email and password and if done so correctly, will be redirected to the home page otherwise they will get an error message to try entering their info again
+* Visitor enters their email and password and if done so correctly, will be redirected to the home page to choose a location otherwise they will get an error message to try entering their info again
 
 ```
 
@@ -205,6 +205,7 @@ Acceptance Tests
 
 * Click on an upvote button beside the project idea
 * Upvote count gets incremented by one for the respective idea
+* The user is no longer able to upvote the idea as it can only happen once per unique idea
 
 ```
 
@@ -238,6 +239,8 @@ So that I can show and provide support for the project
 Acceptance Tests
 
 * Click on a volunteer button on the project details page
+* User inputs details on what aspect of the project they'd like to volunteer for, their strengths/preferences, and time commitments into a form
+* User clicks submit volunteer interest button
 * Idea Creator gets notified of new volunteer and sends out email for more info on volunteering
 * Number of volunteers metric gets incremented by one for the project
 
@@ -275,7 +278,7 @@ Acceptance Tests
 
 * User views the idea creator's email on the project details page
 * User can send an email with the idea creator's email
-* Idea Creator receives an email from the user and can reply back to it
+* Idea Creator and/or Idea Admin receives an email from the user and can reply back to it
 ```
 
 <a name="create-idea"></a>
@@ -309,6 +312,7 @@ Acceptance Tests
 
 * User follows 2 or more projects
 * User receives one email containing updates for those projects
+* If user just follows 1 project, they will still get one email
 ```
 
 <a name="honorarium-note"></a>
@@ -356,8 +360,10 @@ Acceptance Tests
 
 * Idea Creator clicks on "send email update" button on their project page if
 there is at least one or more followers and volunteers otherwise the button is disabled
-* Idea Creator types in text input
-* Website sends an email given this text input
+* Idea Creator types in text input for a subject
+* Idea Creator types in text input which will be shown as is in the email body
+* Optionally the Idea Creator can attach pictures or links of external resources to the email
+* Website sends an email given this input
 * All followers and volunteers associated with the idea can view the email
 ```
 
@@ -510,6 +516,7 @@ Acceptance Tests
 ## DevOps
 * [Docker](https://www.docker.com/)
 * [Jenkins](https://jenkins.io/)
+* [Cybera](https://www.cybera.ca/services/rapid-access-cloud/)
 
 ## Frontend 
 * [Vue.js](https://vuejs.org/v2/guide/)
@@ -520,6 +527,8 @@ Acceptance Tests
 * [Sass](https://sass-lang.com/)
 * [NPM](https://www.npmjs.com/)
 * [Prettier](https://prettier.io/)
+* [Vuetify (Material for Vue)](https://vuetifyjs.com/en/components/api-explorer)
+* [Cypress](https://www.cypress.io/)
 
 
 # Similar Products:
