@@ -1,0 +1,73 @@
+{
+  "connection": "default",
+  "collectionName": "ideas",
+  "info": {
+    "name": "idea"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true,
+      "maxLength": 144
+    },
+    "description": {
+      "type": "text",
+      "required": true
+    },
+    "image": {
+      "model": "file",
+      "via": "related",
+      "plugin": "upload",
+      "required": false
+    },
+    "volunteers": {
+      "plugin": "users-permissions",
+      "collection": "user"
+    },
+    "admins": {
+      "plugin": "users-permissions",
+      "collection": "user"
+    },
+    "user_creator": {
+      "plugin": "users-permissions",
+      "model": "user",
+      "via": "ideas"
+    },
+    "user_upvoters": {
+      "plugin": "users-permissions",
+      "collection": "user"
+    },
+    "user_downvoters": {
+      "plugin": "users-permissions",
+      "collection": "user"
+    },
+    "update": {
+      "type": "component",
+      "repeatable": true,
+      "component": "ideas.update"
+    },
+    "donation": {
+      "type": "component",
+      "repeatable": true,
+      "component": "ideas.donation"
+    },
+    "honorarium": {
+      "type": "component",
+      "repeatable": true,
+      "component": "ideas.honorarium"
+    },
+    "followers": {
+      "plugin": "users-permissions",
+      "collection": "user"
+    },
+    "categories": {
+      "type": "component",
+      "repeatable": true,
+      "component": "categories.category"
+    }
+  }
+}

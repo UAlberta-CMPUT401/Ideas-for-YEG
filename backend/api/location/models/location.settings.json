@@ -1,0 +1,41 @@
+{
+  "connection": "default",
+  "collectionName": "locations",
+  "info": {
+    "name": "location"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "name": {
+      "type": "string",
+      "private": false,
+      "required": true,
+      "unique": true
+    },
+    "image": {
+      "model": "file",
+      "via": "related",
+      "plugin": "upload",
+      "required": true
+    },
+    "route": {
+      "type": "string",
+      "unique": true,
+      "required": true
+    },
+    "ideas": {
+      "collection": "idea"
+    },
+    "admins": {
+      "plugin": "users-permissions",
+      "collection": "user"
+    },
+    "categories": {
+      "model": "categories",
+      "via": "location"
+    }
+  }
+}

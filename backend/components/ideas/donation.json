@@ -1,0 +1,18 @@
+{
+  "info": {
+    "name": "donation",
+    "icon": "dollar-sign"
+  },
+  "options": {},
+  "attributes": {
+    "user": {
+      "plugin": "users-permissions",
+      "model": "user"
+    },
+    "amount": {
+      "type": "float"
+    }
+  },
+  "connection": "default",
+  "collectionName": "components_ideas_donations"
+}

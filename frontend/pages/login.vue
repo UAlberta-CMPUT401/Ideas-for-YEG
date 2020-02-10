@@ -20,7 +20,9 @@
               name="Password"
               label="Password"
             ></v-text-field>
-            <v-btn v-on:click="logIn">Log In</v-btn>
+            <v-btn v-on:click="logIn" nuxt href="/">
+              Log In
+            </v-btn>
           </v-form>
           <nuxt-link to="/signup">
             Don't have an account yet? Click here to sign up

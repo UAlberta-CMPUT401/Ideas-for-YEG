@@ -1,0 +1,19 @@
+{
+  "defaultConnection": "default",
+  "connections": {
+    "default": {
+      "connector": "mongoose",
+      "settings": {
+        "database": "ideas4",
+        "host": "ds035488.mlab.com",
+        "srv": false,
+        "port": "35488",
+        "username": "developer",
+        "password": "12345678a"
+      },
+      "options": {
+        "authenticationDatabase": "ideas4"
+      }
+    }
+  }
+}
