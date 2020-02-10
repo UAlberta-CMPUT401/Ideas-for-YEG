@@ -60,14 +60,9 @@ export default {
       fixed: false,
       items: [
         {
-          icon: 'mdi-apps',
-          title: 'Welcome',
-          to: '/',
-        },
-        {
           icon: 'mdi-chart-bubble',
-          title: 'Idea Dashboard',
-          to: '/idea-dashboard',
+          title: 'Location Selection',
+          to: '/',
         },
       ],
       miniVariant: false,
