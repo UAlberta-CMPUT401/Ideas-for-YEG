@@ -10,16 +10,32 @@
   },
   "attributes": {
     "name": {
-      "type": "string"
+      "type": "string",
+      "private": false,
+      "required": true,
+      "unique": true
     },
     "image": {
       "model": "file",
       "via": "related",
       "plugin": "upload",
-      "required": false
+      "required": true
     },
     "route": {
-      "type": "string"
+      "type": "string",
+      "unique": true,
+      "required": true
+    },
+    "ideas": {
+      "collection": "idea"
+    },
+    "admins": {
+      "plugin": "users-permissions",
+      "collection": "user"
+    },
+    "categories": {
+      "model": "categories",
+      "via": "location"
     }
   }
 }

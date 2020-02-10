@@ -1,0 +1,25 @@
+{
+  "connection": "default",
+  "collectionName": "categories",
+  "info": {
+    "name": "categories"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "category": {
+      "type": "component",
+      "repeatable": true,
+      "component": "categories.category"
+    },
+    "name": {
+      "type": "string"
+    },
+    "location": {
+      "via": "categories",
+      "model": "location"
+    }
+  }
+}

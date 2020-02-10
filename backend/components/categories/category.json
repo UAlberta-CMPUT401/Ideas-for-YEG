@@ -1,0 +1,14 @@
+{
+  "info": {
+    "name": "category",
+    "icon": "book"
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    }
+  },
+  "connection": "default",
+  "collectionName": "components_categories_categories"
+}
