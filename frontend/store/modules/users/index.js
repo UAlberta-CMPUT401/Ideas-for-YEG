@@ -4,6 +4,7 @@ import mutations from './mutations';
 
 const state = {
   user: 'Bob',
+  isAuthenticated: false,
 };
 
 export default {

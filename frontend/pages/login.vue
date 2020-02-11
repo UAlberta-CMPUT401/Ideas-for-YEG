@@ -39,6 +39,8 @@
 </template>
 
 <script>
+import * as UserMutationTypes from '../store/modules/users/mutation-types';
+
 export default {
   components: {},
 
@@ -109,6 +111,8 @@ export default {
         const jwt = data.jwt;
         // Access token like so: console.log(document.cookie.replace(/(?:(?:^|.*;\s*)accessToken\s*=\s*([^;]*).*$)|^.*$/, "$1"));
         document.cookie = 'accessToken=' + jwt;
+
+        this.$store.commit(`users/${UserMutationTypes.GET_AUTH}`);
         await this.$router.push('/');
       }
     },
