@@ -60,6 +60,16 @@
                   idea.volunteers
                 }}</span>
               </div>
+
+              <v-btn
+                text
+                class="pa-0 btnSpacing"
+                v-on:click="info"
+                nuxt
+                href="/idea-details"
+              >
+                <v-icon color="black">mdi-alert-circle-outline</v-icon>
+              </v-btn>
             </v-list-item>
           </v-card-actions>
         </v-card>
