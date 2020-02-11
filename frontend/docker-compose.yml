@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  nuxtjs:
+    container_name: nuxtjs
+    build: .
+    environment:
+        - NODE_ENV=production
+    ports:
+        - 3000:3000
+    command: 'npm run start'
