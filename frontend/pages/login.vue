@@ -6,19 +6,21 @@
           Log In
         </v-card-title>
         <v-card-text>
-          <p v-if="errorMessage !== null">
+          <v-banner v-if="errorMessage" color="red">
             {{ errorMessage }}
-          </p>
+          </v-banner>
           <v-form ref="form" class="my-3">
             <v-text-field
               v-model="identifier"
+              :error="identifierError"
               prepend-icon="mdi-account"
               name="Identifier"
-              label="Identifier"
+              label="Email"
             ></v-text-field>
             <v-text-field
               v-model="password"
               :type="'password'"
+              :error="passwordError"
               prepend-icon="mdi-lock"
               name="Password"
               label="Password"
@@ -44,6 +46,8 @@ export default {
     return {
       currentUser: this.$store.getters['users/getUser'],
       errorMessage: '',
+      identifierError: false,
+      passwordError: false,
       identifier: '',
       password: '',
     };
@@ -67,12 +71,41 @@ export default {
             this.errorMessage.data.message[0].messages[0] &&
             this.errorMessage.data.message[0].messages[0].message
           ) {
-            this.errorMessage = this.errorMessage.data.message[0].messages[0].message;
+            this.errorMessage = this.errorMessage.data.message[0].messages[0].message.toLowerCase();
+
+            if (
+              this.errorMessage.includes('identifier') ||
+              this.errorMessage.includes('username')
+            ) {
+              this.identifierError = true;
+            }
+            if (this.errorMessage.indexOf('password')) {
+              this.passwordError = true;
+            }
+            if (
+              !(
+                this.errorMessage.includes('identifier') ||
+                this.errorMessage.includes('username')
+              )
+            ) {
+              this.identifierError = false;
+            }
+            if (!this.errorMessage.indexOf('password')) {
+              this.passwordError = false;
+            }
+
+            this.errorMessage =
+              this.errorMessage.charAt(0).toUpperCase() +
+              this.errorMessage.substring(1);
           }
         });
       // Handle success.
       if (data) {
         // const user = data.user;
+        this.errorMessage = '';
+        this.identifierError = false;
+        this.passwordError = false;
+
         const jwt = data.jwt;
         // Access token like so: console.log(document.cookie.replace(/(?:(?:^|.*;\s*)accessToken\s*=\s*([^;]*).*$)|^.*$/, "$1"));
         document.cookie = 'accessToken=' + jwt;
