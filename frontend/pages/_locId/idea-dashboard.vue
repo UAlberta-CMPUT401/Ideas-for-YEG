@@ -24,7 +24,7 @@ export default {
     const response = await this.$axios
       .$post('/graphql', {
         query: `query {
-            locations(where: { route: ${this.$route.params.locId} }) {
+            locations(where: { route: "${this.$route.params.locId}" }) {
               ideas {
                 id
                 title

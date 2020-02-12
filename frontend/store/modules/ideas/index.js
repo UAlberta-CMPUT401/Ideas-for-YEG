@@ -9,6 +9,7 @@ const state = {
       src:
         'https://iso.500px.com/wp-content/uploads/2015/10/500px-wallpaper-desktop1-3000x2000.jpg',
       upvotes: 100,
+      followers: 10,
       ideaCreator: 'Rehab',
       volunteers: 3,
       amountReceived: 100,

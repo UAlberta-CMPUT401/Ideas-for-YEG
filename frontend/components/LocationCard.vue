@@ -1,11 +1,7 @@
 <template>
   <v-container fluid>
     <v-row justify="center">
-      <v-col
-        v-for="location in locations"
-        :key="location.name"
-        :cols="location.flex"
-      >
+      <v-col v-for="location in locations" :key="location.name" cols="10">
         <v-card d-flex justify-center class="mx-auto" max-width="700">
           <NuxtLink :to="location.code + '/idea-dashboard/'">
             <v-img
