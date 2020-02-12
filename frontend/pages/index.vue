@@ -15,6 +15,10 @@ export default {
   },
 
   data() {
+    /**
+     * default location image from rentals blog
+     * https://rentals.ca/blog/wp-content/uploads/2018/08/42276507674_d792f146ca_z.jpg
+     */
     return {
       locations: [
         {

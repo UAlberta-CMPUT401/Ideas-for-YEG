@@ -13,8 +13,8 @@ export default {
   components: {
     IdeaCard,
   },
+
   data() {
-    // initially the app renders an empty list of ideas unless we want to populate it?
     return {
       ideas: this.$store.getters['ideas/getIdeas'],
     };
@@ -74,7 +74,7 @@ export default {
               'https://images.unsplash.com/photo-1567177662154-dfeb4c93b6ae?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=80',
             // `http://localhost:1337${idea.image.url}`,
             volunteers: idea.volunteers.length,
-            // TODO fix API so it returns donated amount
+            // TODO fix API to return donated amount
             amountReceived: 100,
             followers: idea.followers.length,
             // temporarily use this now as localhost photos are hit/miss
