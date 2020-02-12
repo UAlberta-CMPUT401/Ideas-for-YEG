@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-row justify="center">
       <v-col v-for="idea in ideas" :key="idea.title" justify="center">
-        <v-card d-flex justify-center class="mx-auto" max-width="1400">
+        <v-card d-flex justify-center class="mx-auto" max-width="700">
           <v-list-item>
             <v-list-item-content>
               <v-list-item-title class="headline">{{
@@ -27,10 +27,7 @@
                 class="d-none d-sm-flex d-md-flex d-lg-flex d-xl-flex"
                 color="grey darken-3"
               >
-                <v-img
-                  class="elevation-6"
-                  src="https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairShortCurly&accessoriesType=Prescription02&hairColor=Black&facialHairType=Blank&clotheType=Hoodie&clotheColor=White&eyeType=Default&eyebrowType=DefaultNatural&mouthType=Default&skinColor=Light"
-                ></v-img>
+                <v-img class="elevation-6" :src="idea.user_avatar"></v-img>
               </v-list-item-avatar>
 
               <v-list-item-content
@@ -55,9 +52,16 @@
               </div>
 
               <div class="btnSpacing">
-                <v-icon color="black">mdi-account-group</v-icon>
+                <v-icon color="black">mdi-hand-heart</v-icon>
                 <span class="subheading mr-2" color="black">{{
                   idea.volunteers
+                }}</span>
+              </div>
+
+              <div class="btnSpacing">
+                <v-icon color="black">mdi-account-multiple-plus</v-icon>
+                <span class="subheading mr-2" color="black">{{
+                  idea.followers
                 }}</span>
               </div>
             </v-list-item>
@@ -88,6 +92,6 @@ export default {
 
 <style scoped>
 .btnSpacing {
-  padding: 0 8px;
+  padding: 0 6px;
 }
 </style>
