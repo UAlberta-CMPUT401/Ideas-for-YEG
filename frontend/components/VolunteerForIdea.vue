@@ -10,7 +10,7 @@
               outlined
               large
               fab
-              color="indigo"
+              color="black"
               v-on="{ ...tooltip, ...dialog }"
             >
               <v-icon>mdi-hand-heart</v-icon>

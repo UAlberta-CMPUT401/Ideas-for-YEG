@@ -17,15 +17,25 @@
     <v-divider></v-divider>
 
     <v-list-item class="d-flex justify-center">
-      <v-btn text class="pa-0 btnSpacing">
-        <v-icon>mdi-thumb-up</v-icon>
-        <span class="subheading mr-2">{{ upvotes }}</span>
-      </v-btn>
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on }">
+          <v-btn text class="pa-0 btnSpacing" v-on="on">
+            <v-icon>mdi-thumb-up</v-icon>
+            <span class="subheading mr-2">{{ upvotes }}</span>
+          </v-btn>
+        </template>
+        <span>Number of thumbs up</span>
+      </v-tooltip>
 
-      <v-btn text class="pa-0 btnSpacing">
-        <v-icon>mdi-thumb-down</v-icon>
-        <span class="subheading mr-2">{{ downvotes }}</span>
-      </v-btn>
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on }">
+          <v-btn text class="pa-0 btnSpacing" v-on="on">
+            <v-icon>mdi-thumb-down</v-icon>
+            <span class="subheading mr-2">{{ downvotes }}</span>
+          </v-btn>
+        </template>
+        <span>Number of thumbs down</span>
+      </v-tooltip>
 
       <template>
         <DonateDialog />
@@ -80,39 +90,54 @@
 
     <v-divider></v-divider>
 
-    <div class="text-center">
-      <v-row justify="center">
-        <tr v-for="item in tags" :key="item.tag">
-          <div class="my-2" color="black">
-            <v-btn text large disabled> {{ item.tag }} </v-btn>
-          </div>
-        </tr>
-      </v-row>
-    </div>
+    <v-expansion-panels v-model="panel" :disabled="disabled" multiple>
+      <v-expansion-panel>
+        <v-expansion-panel-header>Tags</v-expansion-panel-header>
+        <v-expansion-panel-content>
+          <v-row justify="space-around">
+            <v-col cols="12" lg="8">
+              <v-sheet elevation="10" class="py-4 px-1">
+                <v-chip-group multiple active-class="primary--text">
+                  <v-chip v-for="item in tags" :key="item.tag">
+                    {{ item.tag }}
+                  </v-chip>
+                </v-chip-group>
+              </v-sheet>
+            </v-col>
+          </v-row>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+    </v-expansion-panels>
 
     <v-divider></v-divider>
 
-    <h2 class="font-italic font-weight-light">Honorarium</h2>
-    <v-simple-table>
-      <template v-slot:default>
-        <thead>
-          <tr>
-            <th class="text-left">Item</th>
-            <th class="text-left">Amount</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="item in honorarium" :key="item.name">
-            <td>{{ item.name }}</td>
-            <td>{{ item.amount }}</td>
-          </tr>
-        </tbody>
-      </template>
-    </v-simple-table>
+    <v-expansion-panels v-model="panel" :disabled="disabled" multiple>
+      <v-expansion-panel>
+        <v-expansion-panel-header>Honorarium</v-expansion-panel-header>
+        <v-expansion-panel-content>
+          <v-simple-table>
+            <template v-slot:default>
+              <thead>
+                <tr>
+                  <th class="text-left">Item</th>
+                  <th class="text-left">Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="item in honorarium" :key="item.name">
+                  <td>{{ item.name }}</td>
+                  <td>{{ item.amount }}</td>
+                </tr>
+              </tbody>
+            </template>
+          </v-simple-table>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+    </v-expansion-panels>
 
     <v-divider></v-divider>
 
-    <p class="font-italic font-weight-light">Posted by {{ ideaCreator }}</p>
+    <p class="text-center">Posted by {{ ideaCreator }}</p>
   </v-card>
 </template>
 
@@ -183,6 +208,24 @@ export default {
         },
         {
           tag: 'drinks',
+        },
+        {
+          tag: 'dolphin',
+        },
+        {
+          tag: 'yoga',
+        },
+        {
+          tag: 'sports',
+        },
+        {
+          tag: 'happy',
+        },
+        {
+          tag: 'fundraiser',
+        },
+        {
+          tag: 'taggidytagtag',
         },
       ],
     };
