@@ -50,6 +50,11 @@
       <template>
         <VolunteerListDialog />
       </template>
+
+      <v-chip class="ma-2" color="red" text-color="white">
+        {{ status }}
+        <v-icon right>mdi-star</v-icon>
+      </v-chip>
     </v-list-item>
 
     <v-divider></v-divider>
@@ -61,13 +66,6 @@
         <v-list-item-content>
           <v-list-item-title>Description</v-list-item-title>
           <div>{{ description }}</div>
-        </v-list-item-content>
-      </v-list-item>
-
-      <v-list-item>
-        <v-list-item-content>
-          <v-list-item-title>Status</v-list-item-title>
-          <v-list-item-subtitle>{{ status }}</v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
     </v-list>
