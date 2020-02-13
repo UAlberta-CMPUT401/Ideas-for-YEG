@@ -64,25 +64,6 @@
 
     <v-divider></v-divider>
 
-    <v-simple-table>
-      <template v-slot:default>
-        <thead>
-          <tr>
-            <th class="text-left">Item</th>
-            <th class="text-left">Amount</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="item in honorarium" :key="item.name">
-            <td>{{ item.name }}</td>
-            <td>{{ item.amount }}</td>
-          </tr>
-        </tbody>
-      </template>
-    </v-simple-table>
-
-    <v-divider></v-divider>
-
     <v-row justify="center">
       <template>
         <DonateToIdea />
@@ -110,6 +91,27 @@
     </div>
 
     <v-divider></v-divider>
+
+    <h2 class="font-italic font-weight-light">Honorarium</h2>
+    <v-simple-table>
+      <template v-slot:default>
+        <thead>
+          <tr>
+            <th class="text-left">Item</th>
+            <th class="text-left">Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="item in honorarium" :key="item.name">
+            <td>{{ item.name }}</td>
+            <td>{{ item.amount }}</td>
+          </tr>
+        </tbody>
+      </template>
+    </v-simple-table>
+
+    <v-divider></v-divider>
+
     <p class="font-italic font-weight-light">Posted by {{ ideaCreator }}</p>
   </v-card>
 </template>
