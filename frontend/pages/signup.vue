@@ -6,11 +6,21 @@
           Sign Up
         </v-card-title>
         <v-card-text>
+          <p v-if="errorMessage !== null">
+            {{ errorMessage }}
+          </p>
           <v-form ref="form" class="my-3">
+            <v-text-field
+              v-model="username"
+              :rules="usernameRules"
+              prepend-icon="mdi-account"
+              name="Username"
+              label="Username"
+            ></v-text-field>
             <v-text-field
               v-model="email"
               :rules="emailRules"
-              prepend-icon="mdi-account"
+              prepend-icon="mdi-email"
               name="Email"
               label="Email"
             ></v-text-field>
@@ -45,26 +55,38 @@
 const EMAIL_VALIDATION_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 const PASSWORD_MIN_LENGTH = 6;
 const PASSWORD_MAX_LENGTH = 32;
+const USERNAME_MIN_LENGTH = 6;
+const USERNAME_MAX_LENGTH = 16;
 
 export default {
   components: {},
 
   data() {
     return {
+      errorMessage: '',
       currentUser: this.$store.getters['users/getUser'],
+      username: '',
       email: '',
       password: '',
       passwordConf: '',
+      usernameRules: [
+        (v) =>
+          v.length >= USERNAME_MIN_LENGTH ||
+          `Password must be at least ${USERNAME_MIN_LENGTH} characters long`,
+        (v) =>
+          v.length <= USERNAME_MAX_LENGTH ||
+          `Password cannot exceed ${USERNAME_MAX_LENGTH} characters`,
+      ],
       emailRules: [
         (v) => EMAIL_VALIDATION_REGEX.test(v) || 'Email must be valid',
       ],
       passwordRules: [
         (v) =>
           v.length >= PASSWORD_MIN_LENGTH ||
-          `Password must be at least ${PASSWORD_MIN_LENGTH} long`,
+          `Password must be at least ${PASSWORD_MIN_LENGTH} characters long`,
         (v) =>
           v.length <= PASSWORD_MAX_LENGTH ||
-          `Password cannot exceed ${PASSWORD_MAX_LENGTH} long`,
+          `Password cannot exceed ${PASSWORD_MAX_LENGTH} characters`,
       ],
       passwordConfRules: [
         (v) => v === this.password || 'Passwords do not match',
@@ -75,9 +97,36 @@ export default {
     /*
     Validate input, then make a request to the backend.
      */
-    signUp() {
+    async signUp() {
       if (this.$refs.form.validate()) {
-        console.log(`${this.email} ${this.password} ${this.passwordConf}`);
+        const data = await this.$axios
+          .$post('/auth/local/register', {
+            username: this.username,
+            email: this.email,
+            password: this.password,
+          })
+          .catch((error) => {
+            // Handle error.
+            this.errorMessage = error.response;
+            if (
+              this.errorMessage &&
+              this.errorMessage.data &&
+              this.errorMessage.data.message.length > 0 &&
+              this.errorMessage.data.message[0].messages.length > 0 &&
+              this.errorMessage.data.message[0].messages[0] &&
+              this.errorMessage.data.message[0].messages[0].message
+            ) {
+              this.errorMessage = this.errorMessage.data.message[0].messages[0].message;
+            }
+          });
+        // Handle success.
+        if (data) {
+          // const user = data.user;
+          const jwt = data.jwt;
+          // Access token like so: console.log(document.cookie.replace(/(?:(?:^|.*;\s*)accessToken\s*=\s*([^;]*).*$)|^.*$/, "$1"));
+          document.cookie = 'accessToken=' + jwt;
+          await this.$router.push('/');
+        }
       }
     },
   },

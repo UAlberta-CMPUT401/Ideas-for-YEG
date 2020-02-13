@@ -1,9 +1,25 @@
 <template>
   <v-row justify="center">
     <v-dialog v-model="dialog" persistent max-width="600px">
-      <template v-slot:activator="{ on }">
-        <v-btn color="primary" dark v-on="on">Open Dialog</v-btn>
+      <template #activator="{ on: dialog }">
+        <v-tooltip bottom>
+          <template #activator="{ on: tooltip }">
+            <v-btn
+              class="ma-2"
+              dark
+              outlined
+              large
+              fab
+              color="indigo"
+              v-on="{ ...tooltip, ...dialog }"
+            >
+              <v-icon>mdi-gift-outline</v-icon>
+            </v-btn>
+          </template>
+          <span>Donate to idea</span>
+        </v-tooltip>
       </template>
+
       <v-card>
         <v-card-title>
           <span class="headline">User Profile</span>
@@ -15,7 +31,10 @@
                 <v-text-field label="Legal first name*" required></v-text-field>
               </v-col>
               <v-col cols="12" sm="6" md="4">
-                <v-text-field label="Legal middle name" hint="example of helper text only on focus"></v-text-field>
+                <v-text-field
+                  label="Legal middle name"
+                  hint="example of helper text only on focus"
+                ></v-text-field>
               </v-col>
               <v-col cols="12" sm="6" md="4">
                 <v-text-field
@@ -29,7 +48,11 @@
                 <v-text-field label="Email*" required></v-text-field>
               </v-col>
               <v-col cols="12">
-                <v-text-field label="Password*" type="password" required></v-text-field>
+                <v-text-field
+                  label="Password*"
+                  type="password"
+                  required
+                ></v-text-field>
               </v-col>
               <v-col cols="12" sm="6">
                 <v-select
@@ -38,31 +61,25 @@
                   required
                 ></v-select>
               </v-col>
-              <v-col cols="12" sm="6">
-                <v-autocomplete
-                  :items="['Skiing', 'Ice hockey', 'Soccer', 'Basketball', 'Hockey', 'Reading', 'Writing', 'Coding', 'Basejump']"
-                  label="Interests"
-                  multiple
-                ></v-autocomplete>
-              </v-col>
             </v-row>
           </v-container>
           <small>*indicates required field</small>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
+          <v-btn color="blue darken-1" text @click="dialog = false"
+            >Close</v-btn
+          >
           <v-btn color="blue darken-1" text @click="dialog = false">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
   </v-row>
 </template>
-
 <script>
-  export default {
-    data: () => ({
-      dialog: false,
-    }),
-  }
+export default {
+  data: () => ({
+    dialog: false,
+  }),
+};
 </script>
