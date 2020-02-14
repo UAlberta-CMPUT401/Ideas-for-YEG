@@ -18,8 +18,8 @@
       "type": "text",
       "required": true
     },
-    "image": {
-      "model": "file",
+    "images": {
+      "collection": "file",
       "via": "related",
       "plugin": "upload",
       "required": false
@@ -68,6 +68,16 @@
       "type": "component",
       "repeatable": true,
       "component": "categories.category"
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": [
+        "SeekingHelp",
+        "Ongoing",
+        "Completed"
+      ],
+      "default": "SeekingHelp",
+      "required": true
     }
   }
 }
