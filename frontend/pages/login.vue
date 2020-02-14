@@ -76,10 +76,13 @@ export default {
       if (data) {
         // const user = data.user;
         const jwt = data.jwt;
-        // Access token like so: console.log(document.cookie.replace(/(?:(?:^|.*;\s*)accessToken\s*=\s*([^;]*).*$)|^.*$/, "$1"));
-        document.cookie = 'accessToken=' + jwt;
-        window.localStorage.setItem(LS_USER_DATA, JSON.stringify(data));
-        await this.$router.push('/');
+        // ensure that data is being saved to the client, not the sever
+        if (process.browser) {
+          // Access token like so: console.log(document.cookie.replace(/(?:(?:^|.*;\s*)accessToken\s*=\s*([^;]*).*$)|^.*$/, "$1"));
+          document.cookie = 'accessToken=' + jwt;
+          window.localStorage.setItem(LS_USER_DATA, JSON.stringify(data));
+          await this.$router.push('/');
+        }
       }
     },
   },
