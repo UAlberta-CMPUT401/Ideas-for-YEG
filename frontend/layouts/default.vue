@@ -39,8 +39,8 @@
         <v-btn v-if="!isAuthenticated" :to="'/login'" router exact>Login</v-btn>
         <v-menu v-else :offset-y="true">
           <template v-slot:activator="{ on }">
-            <v-btn v-on="on" color="primary" dark>
-              Dropdown
+            <v-btn v-on="on" color="primary" dark fab="true">
+              {{ username }}
             </v-btn>
           </template>
           <v-list>
@@ -104,8 +104,14 @@ export default {
   },
   computed: {
     isAuthenticated() {
-      // double exclamation mark translate existence into boolean
+      // double exclamation mark translate object into boolean
       return !!this.$store.state.userData.userData;
+    },
+    username() {
+      if (this.$store.state.userData.userData) {
+        return this.$store.state.userData.userData.user.username;
+      }
+      return 'No Name';
     },
   },
   beforeMount() {
