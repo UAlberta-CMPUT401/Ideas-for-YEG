@@ -61,7 +61,6 @@ export default {
      * coolidea photo: Photo by Ameen Fahmy on Unsplash https://unsplash.com/photos/_gEKtyIbRSM
      */
     if (response) {
-      console.log(response);
       if (response.data.locations[0].ideas.length > 0) {
         this.ideas = response.data.locations[0].ideas.map((idea) => {
           return {
