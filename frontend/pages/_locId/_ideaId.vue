@@ -19,7 +19,7 @@
     <v-list-item class="d-flex justify-center">
       <v-tooltip bottom>
         <template v-slot:activator="{ on }">
-          <v-btn text class="pa-0 btnSpacing" v-on="on">
+          <v-btn text class="pa-0" v-on="on">
             <v-icon>mdi-thumb-up</v-icon>
             <span class="subheading mr-2">{{ upvotes }}</span>
           </v-btn>
@@ -29,7 +29,7 @@
 
       <v-tooltip bottom>
         <template v-slot:activator="{ on }">
-          <v-btn text class="pa-0 btnSpacing" v-on="on">
+          <v-btn text class="pa-0" v-on="on">
             <v-icon>mdi-thumb-down</v-icon>
             <span class="subheading mr-2">{{ downvotes }}</span>
           </v-btn>
@@ -140,13 +140,13 @@
 </template>
 
 <script>
-import DonateDialog from '../components/DonateDialog';
-import DonateToIdea from '../components/DonateToIdea';
-import SubscribeToDigest from '../components/SubscribeToDigest';
-import VolunteerForIdea from '../components/VolunteerForIdea';
-import FollowersListDialog from '../components/FollowersListDialog';
-import ProjectUpdatesDialog from '../components/ProjectUpdatesDialog';
-import VolunteerListDialog from '../components/VolunteerListDialog';
+import DonateDialog from '../../components/DonateDialog';
+import DonateToIdea from '../../components/DonateToIdea';
+import SubscribeToDigest from '../../components/SubscribeToDigest';
+import VolunteerForIdea from '../../components/VolunteerForIdea';
+import FollowersListDialog from '../../components/FollowersListDialog';
+import ProjectUpdatesDialog from '../../components/ProjectUpdatesDialog';
+import VolunteerListDialog from '../../components/VolunteerListDialog';
 
 export default {
   components: {
@@ -158,14 +158,14 @@ export default {
     ProjectUpdatesDialog,
     VolunteerListDialog,
   },
+
   props: {
-    ideas: {
-      type: Array,
-      default: () => {
-        return [];
-      },
+    id: {
+      type: String,
+      required: true,
     },
   },
+
   data() {
     return {
       dialog: false,
@@ -227,6 +227,20 @@ export default {
         },
       ],
     };
+  },
+
+  async mounted() {
+    const response = await this.$axios
+      .$get(`/ideas/${this.$route.params.ideaId}`)
+      .catch((err) => {
+        console.log(err);
+        return false;
+      });
+
+    if (response) {
+      // do whatever you want with the API call response to set the state
+      console.log(response);
+    }
   },
 };
 </script>
