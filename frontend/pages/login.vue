@@ -37,6 +37,8 @@
 </template>
 
 <script>
+import { LS_USER_DATA } from '../constants';
+
 export default {
   components: {},
 
@@ -76,6 +78,7 @@ export default {
         const jwt = data.jwt;
         // Access token like so: console.log(document.cookie.replace(/(?:(?:^|.*;\s*)accessToken\s*=\s*([^;]*).*$)|^.*$/, "$1"));
         document.cookie = 'accessToken=' + jwt;
+        window.localStorage.setItem(LS_USER_DATA, JSON.stringify(data));
         await this.$router.push('/');
       }
     },

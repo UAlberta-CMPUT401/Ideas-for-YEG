@@ -35,7 +35,25 @@
       <v-toolbar-title v-text="title" />
       <v-spacer />
       <!--TODO: Need to have logic to check if a user is logged in-->
-      <v-btn :to="'/login'" router exact>Login</v-btn>
+      <client-only>
+        <v-btn v-if="!isAuthenticated" :to="'/login'" router exact>Login</v-btn>
+        <v-menu v-else :offset-y="true">
+          <template v-slot:activator="{ on }">
+            <v-btn color="primary" dark v-on="on">
+              Dropdown
+            </v-btn>
+          </template>
+          <v-list>
+            <v-list-item
+              v-for="(item, index) in authItems"
+              :key="index"
+              @click="item.onClick"
+            >
+              <v-list-item-title>{{ item.title }}</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </client-only>
     </v-app-bar>
     <v-content>
       <v-container>
@@ -50,9 +68,23 @@
 
 <script>
 import store from '../store/index';
+import { LS_USER_DATA } from '../constants';
 
 export default {
   store,
+  beforeMount() {
+    // Check if user is signed in
+    const userJSON = window.localStorage.getItem(LS_USER_DATA);
+    if (userJSON !== null) {
+      const userData = JSON.parse(userJSON);
+      this.userData = userData;
+    }
+  },
+  computed: {
+    isAuthenticated() {
+      return this.userData !== null;
+    },
+  },
   data() {
     return {
       clipped: false,
@@ -69,7 +101,33 @@ export default {
       right: true,
       rightDrawer: false,
       title: 'Ideas 4 YEG',
+      authenticated: false,
+      authItems: [
+        {
+          title: 'Settings',
+          onClick: this.redirect('/settings'),
+        },
+        {
+          title: 'Admin',
+          onClick: this.redirect('/admin'),
+        },
+        {
+          title: 'Logout',
+          onClick: this.logOut,
+        },
+      ],
+      userData: null,
     };
+  },
+  methods: {
+    logOut() {
+      window.localStorage.removeItem(LS_USER_DATA);
+      this.$router.push('/');
+      this.userData = null;
+    },
+    redirect(path) {
+      this.$router.push(path);
+    },
   },
 };
 </script>
