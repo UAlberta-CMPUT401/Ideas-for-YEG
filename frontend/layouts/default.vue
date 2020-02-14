@@ -35,25 +35,23 @@
       <v-toolbar-title v-text="title" />
       <v-spacer />
       <!--TODO: Need to have logic to check if a user is logged in-->
-      <client-only>
-        <v-btn v-if="!isAuthenticated" :to="'/login'" router exact>Login</v-btn>
-        <v-menu v-else :offset-y="true">
-          <template v-slot:activator="{ on }">
-            <v-btn color="primary" dark v-on="on">
-              Dropdown
-            </v-btn>
-          </template>
-          <v-list>
-            <v-list-item
-              v-for="(item, index) in authItems"
-              :key="index"
-              @click="item.onClick"
-            >
-              <v-list-item-title>{{ item.title }}</v-list-item-title>
-            </v-list-item>
-          </v-list>
-        </v-menu>
-      </client-only>
+      <v-btn v-if="!isAuthenticated" :to="'/login'" router exact>Login</v-btn>
+      <v-menu v-else :offset-y="true">
+        <template v-slot:activator="{ on }">
+          <v-btn color="primary" dark v-on="on">
+            Dropdown
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-item
+            v-for="(item, index) in authItems"
+            :key="index"
+            @click="item.onClick"
+          >
+            <v-list-item-title>{{ item.title }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
     </v-app-bar>
     <v-content>
       <v-container>
@@ -74,10 +72,12 @@ export default {
   store,
   beforeMount() {
     // Check if user is signed in
-    const userJSON = window.localStorage.getItem(LS_USER_DATA);
-    if (userJSON !== null) {
-      const userData = JSON.parse(userJSON);
-      this.userData = userData;
+    if (process.browser) {
+      const userJSON = window.localStorage.getItem(LS_USER_DATA);
+      if (userJSON !== null) {
+        const userData = JSON.parse(userJSON);
+        this.userData = userData;
+      }
     }
   },
   computed: {
@@ -105,11 +105,11 @@ export default {
       authItems: [
         {
           title: 'Settings',
-          onClick: this.redirect('/settings'),
+          onClick: this.redirect.bind('/settings'),
         },
         {
           title: 'Admin',
-          onClick: this.redirect('/admin'),
+          onClick: this.redirect.bind('/admin'),
         },
         {
           title: 'Logout',
