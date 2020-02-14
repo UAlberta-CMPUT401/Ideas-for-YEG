@@ -2,7 +2,13 @@
   <v-container fluid>
     <v-row justify="center">
       <v-col v-for="idea in ideas" :key="idea.title" justify="center">
-        <v-card d-flex justify-center class="mx-auto" max-width="700">
+        <v-card
+          d-flex
+          justify-center
+          class="mx-auto"
+          max-width="700"
+          v-on:click="onClick(idea.id)"
+        >
           <v-list-item>
             <v-list-item-content>
               <v-list-item-title class="headline">{{
@@ -58,14 +64,11 @@
                 }}</span>
               </div>
 
-              <v-btn
-                text
-                class="pa-0 btnSpacing"
-                v-on:click="info"
-                nuxt
-                href="/idea-details"
-              >
-                <v-icon color="black">mdi-alert-circle-outline</v-icon>
+              <v-btn text class="pa-0 btnSpacing">
+                <v-icon color="black">mdi-account-multiple-plus</v-icon>
+                <span class="subheading mr-2" color="black">{{
+                  idea.followers
+                }}</span>
               </v-btn>
             </v-list-item>
           </v-card-actions>
@@ -88,6 +91,14 @@ export default {
       default: () => {
         return [];
       },
+    },
+  },
+
+  methods: {
+    onClick(id) {
+      this.$router.push({
+        path: `/${this.$route.params.locId}/${id}`,
+      });
     },
   },
 };
