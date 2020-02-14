@@ -159,13 +159,6 @@ export default {
     VolunteerListDialog,
   },
 
-  props: {
-    id: {
-      type: String,
-      required: true,
-    },
-  },
-
   data() {
     return {
       dialog: false,
