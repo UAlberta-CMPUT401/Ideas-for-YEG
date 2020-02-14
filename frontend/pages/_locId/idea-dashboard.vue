@@ -32,7 +32,7 @@ export default {
                 volunteers {
                   username
                 }
-                image {
+                images {
                   url
                 }
                 user_creator {
@@ -61,6 +61,7 @@ export default {
      * coolidea photo: Photo by Ameen Fahmy on Unsplash https://unsplash.com/photos/_gEKtyIbRSM
      */
     if (response) {
+      console.log(response);
       if (response.data.locations[0].ideas.length > 0) {
         this.ideas = response.data.locations[0].ideas.map((idea) => {
           return {
@@ -70,9 +71,9 @@ export default {
             upvotes: idea.user_upvoters.length,
             ideaCreator: idea.user_creator.username,
             // temporarily use this now as localhost photos are hit/miss
-            src:
-              'https://images.unsplash.com/photo-1567177662154-dfeb4c93b6ae?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=80',
-            // `http://localhost:1337${idea.image.url}`,
+            src: idea.images.length
+              ? `http://localhost:1337${idea.images[0].url}`
+              : 'https://images.unsplash.com/photo-1567177662154-dfeb4c93b6ae?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=80',
             volunteers: idea.volunteers.length,
             // TODO fix API to return donated amount
             amountReceived: 100,
