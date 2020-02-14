@@ -66,6 +66,8 @@
 </template>
 
 <script>
+import { LS_USER_DATA } from '../constants/constants';
+
 const EMAIL_VALIDATION_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 const PASSWORD_MIN_LENGTH = 6;
 const PASSWORD_MAX_LENGTH = 32;
@@ -161,9 +163,13 @@ export default {
         if (data) {
           // const user = data.user;
           const jwt = data.jwt;
-          // Access token like so: console.log(document.cookie.replace(/(?:(?:^|.*;\s*)accessToken\s*=\s*([^;]*).*$)|^.*$/, "$1"));
-          document.cookie = 'accessToken=' + jwt;
-          await this.$router.push('/');
+          if (process.browser) {
+            // Access token like so: console.log(document.cookie.replace(/(?:(?:^|.*;\s*)accessToken\s*=\s*([^;]*).*$)|^.*$/, "$1"));
+            document.cookie = 'accessToken=' + jwt;
+            window.localStorage.setItem(LS_USER_DATA, JSON.stringify(data));
+            this.$store.commit('userData/update', data);
+            await this.$router.push('/');
+          }
         }
       }
     },
