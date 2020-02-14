@@ -39,7 +39,7 @@
         <v-btn v-if="!isAuthenticated" :to="'/login'" router exact>Login</v-btn>
         <v-menu v-else :offset-y="true">
           <template v-slot:activator="{ on }">
-            <v-btn color="primary" dark v-on="on">
+            <v-btn v-on="on" color="primary" dark>
               Dropdown
             </v-btn>
           </template>
@@ -69,26 +69,6 @@
 <script>
 import { LS_USER_DATA } from '../constants';
 export default {
-  beforeMount() {
-    // Check if user is signed in
-    if (process.browser) {
-      const userJSON = window.localStorage.getItem(LS_USER_DATA);
-      console.log(`userJSON: ${userJSON}`);
-      if (userJSON !== null) {
-        const userData = JSON.parse(userJSON);
-        this.$store.commit('userData/update', userData);
-      }
-    }
-  },
-  computed: {
-    isAuthenticated() {
-      console.log(`recomputed: ${this.$store.state.userData.userData}`);
-      if (this.$store.state.userData.userData) {
-        return true;
-      }
-      return false;
-    },
-  },
   data() {
     return {
       clipped: false,
@@ -121,6 +101,22 @@ export default {
         },
       ],
     };
+  },
+  computed: {
+    isAuthenticated() {
+      // double exclamation mark translate existence into boolean
+      return !!this.$store.state.userData.userData;
+    },
+  },
+  beforeMount() {
+    // Check if user is signed in
+    if (process.browser) {
+      const userJSON = window.localStorage.getItem(LS_USER_DATA);
+      if (userJSON !== null) {
+        const userData = JSON.parse(userJSON);
+        this.$store.commit('userData/update', userData);
+      }
+    }
   },
   methods: {
     logOut() {

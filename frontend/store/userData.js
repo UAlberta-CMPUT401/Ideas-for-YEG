@@ -6,13 +6,10 @@ export const state = () => ({
 
 export const mutations = {
   update(state, newData) {
-    console.log('set');
+    // Update state via Vue.set so that it can allow for re-computation.
     Vue.set(state, 'userData', newData);
-    // state.userData = newData;
   },
   clear(state) {
-    console.log('clear');
     Vue.set(state, 'userData', null);
-    // state.userData = null;
   },
 };
