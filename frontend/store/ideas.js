@@ -1,8 +1,4 @@
-import getters from './getters';
-import actions from './actions';
-import mutations from './mutations';
-
-const state = {
+export const state = {
   ideas: [
     {
       id: 123,
@@ -20,10 +16,14 @@ const state = {
   ],
 };
 
-export default {
-  namespaced: true,
-  state,
-  getters,
-  actions,
-  mutations,
+export const getters = {
+  getIdeas: (state) => {
+    return state.ideas;
+  },
 };
+
+export const actions = {};
+
+export const GET_IDEA = 'GET_IDEA';
+
+export const mutations = {};

@@ -35,7 +35,25 @@
       <v-toolbar-title v-text="title" />
       <v-spacer />
       <!--TODO: Need to have logic to check if a user is logged in-->
-      <v-btn :to="'/login'" router exact>Login</v-btn>
+      <client-only>
+        <v-btn v-if="!isAuthenticated" :to="'/login'" router exact>Login</v-btn>
+        <v-menu v-else :offset-y="true">
+          <template v-slot:activator="{ on }">
+            <v-btn v-on="on" color="primary" dark fab="true">
+              {{ username }}
+            </v-btn>
+          </template>
+          <v-list>
+            <v-list-item
+              v-for="(item, index) in authItems"
+              :key="index"
+              @click="item.onClick"
+            >
+              <v-list-item-title>{{ item.title }}</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </client-only>
     </v-app-bar>
     <v-content>
       <v-container>
@@ -49,10 +67,8 @@
 </template>
 
 <script>
-import store from '../store/index';
-
+import { LS_USER_DATA } from '../constants/constants';
 export default {
-  store,
   data() {
     return {
       clipped: false,
@@ -69,7 +85,54 @@ export default {
       right: true,
       rightDrawer: false,
       title: 'Ideas 4 YEG',
+      authenticated: false,
+      authItems: [
+        {
+          title: 'Settings',
+          onClick: this.redirect.bind('/settings'),
+        },
+        {
+          title: 'Admin',
+          onClick: this.redirect.bind('/admin'),
+        },
+        {
+          title: 'Logout',
+          onClick: this.logOut,
+        },
+      ],
     };
+  },
+  computed: {
+    isAuthenticated() {
+      // double exclamation mark translate object into boolean
+      return !!this.$store.state.userData.userData;
+    },
+    username() {
+      if (this.$store.state.userData.userData) {
+        return this.$store.state.userData.userData.user.username;
+      }
+      return 'No Name';
+    },
+  },
+  beforeMount() {
+    // Check if user is signed in
+    if (process.browser) {
+      const userJSON = window.localStorage.getItem(LS_USER_DATA);
+      if (userJSON !== null) {
+        const userData = JSON.parse(userJSON);
+        this.$store.commit('userData/update', userData);
+      }
+    }
+  },
+  methods: {
+    logOut() {
+      window.localStorage.removeItem(LS_USER_DATA);
+      this.$store.commit('userData/clear');
+      this.$router.push('/');
+    },
+    redirect(path) {
+      this.$router.push(path);
+    },
   },
 };
 </script>
