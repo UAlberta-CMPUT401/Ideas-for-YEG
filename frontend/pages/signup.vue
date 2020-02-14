@@ -167,6 +167,7 @@ export default {
             // Access token like so: console.log(document.cookie.replace(/(?:(?:^|.*;\s*)accessToken\s*=\s*([^;]*).*$)|^.*$/, "$1"));
             document.cookie = 'accessToken=' + jwt;
             window.localStorage.setItem(LS_USER_DATA, JSON.stringify(data));
+            this.$store.commit('userData/update', data);
             await this.$router.push('/');
           }
         }

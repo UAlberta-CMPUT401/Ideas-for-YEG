@@ -1,13 +1,18 @@
+import Vue from 'vue';
+
 export const state = () => ({
   userData: null,
 });
 
 export const mutations = {
   update(state, newData) {
-    state.userData = newData;
+    console.log('set');
+    Vue.set(state, 'userData', newData);
+    // state.userData = newData;
   },
   clear(state) {
     console.log('clear');
-    state.userData = null;
+    Vue.set(state, 'userData', null);
+    // state.userData = null;
   },
 };
