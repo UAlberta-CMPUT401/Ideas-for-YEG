@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import { LS_USER_DATA } from '../constants';
+import { LS_USER_DATA } from '../constants/constants';
 
 export default {
   components: {},
