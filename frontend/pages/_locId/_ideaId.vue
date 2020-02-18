@@ -1,13 +1,16 @@
 <template>
   <v-card class="mx-auto" max-width="700" justify="center">
-    <v-toolbar color="black" dark>
-      <v-spacer />
-      <v-toolbar-title>
-        {{ title }}
-        <!-- comment -->
-      </v-toolbar-title>
-      <v-spacer />
-    </v-toolbar>
+    <v-list-item class="d-flex justify-centre">
+      <v-list-item-content>
+        <v-list-item-title class="headline">{{ title }}</v-list-item-title>
+        <v-list-item-subtitle>Posted by {{ ideaCreator }}</v-list-item-subtitle>
+      </v-list-item-content>
+      <v-spacer></v-spacer>
+
+      <template>
+        <ContactIdeaCreatorDialog />
+      </template>
+    </v-list-item>
 
     <v-img
       src="https://iso.500px.com/wp-content/uploads/2015/10/500px-wallpaper-desktop1-3000x2000.jpg"
@@ -135,10 +138,6 @@
         </v-expansion-panel-content>
       </v-expansion-panel>
     </v-expansion-panels>
-
-    <v-divider></v-divider>
-
-    <p class="text-center">Posted by {{ ideaCreator }}</p>
   </v-card>
 </template>
 
@@ -150,6 +149,7 @@ import VolunteerForIdea from '../../components/VolunteerForIdea';
 import FollowersListDialog from '../../components/FollowersListDialog';
 import ProjectUpdatesDialog from '../../components/ProjectUpdatesDialog';
 import VolunteerListDialog from '../../components/VolunteerListDialog';
+import ContactIdeaCreatorDialog from '../../components/ContactIdeaCreatorDialog';
 
 export default {
   components: {
@@ -160,6 +160,7 @@ export default {
     FollowersListDialog,
     ProjectUpdatesDialog,
     VolunteerListDialog,
+    ContactIdeaCreatorDialog,
   },
 
   data() {
