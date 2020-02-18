@@ -16,7 +16,7 @@
 
     <v-card>
       <v-card-title class="headline grey lighten-2" primary-title>
-        {{ DialogTitle }} {{ title }}
+        {{ DialogTitle }}
       </v-card-title>
 
       <v-card-text>
@@ -62,7 +62,7 @@ export default {
   data() {
     return {
       dialog: false,
-      DialogTitle: 'Previous Donations to',
+      DialogTitle: 'Previous Donations',
       title: 'My title',
       totaldonations: 100,
       donations: [

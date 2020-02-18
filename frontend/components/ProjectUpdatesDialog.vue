@@ -13,7 +13,7 @@
 
     <v-card>
       <v-card-title class="headline grey lighten-2" primary-title>
-        {{ DialogTitle }} {{ title }}
+        {{ DialogTitle }}
       </v-card-title>
 
       <v-timeline>
@@ -61,7 +61,7 @@ export default {
   data() {
     return {
       dialog: false,
-      DialogTitle: 'Update history for',
+      DialogTitle: 'Update History',
       title: 'My title',
       ProjectUpdates: [
         {

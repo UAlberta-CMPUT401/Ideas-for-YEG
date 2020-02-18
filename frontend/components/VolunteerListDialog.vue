@@ -14,7 +14,7 @@
 
     <v-card>
       <v-card-title class="headline grey lighten-2" primary-title>
-        {{ DialogTitle }} {{ title }}
+        {{ DialogTitle }}
       </v-card-title>
 
       <v-card-text>
@@ -62,7 +62,7 @@ export default {
   data() {
     return {
       dialog: false,
-      DialogTitle: 'Our volunteers for ',
+      DialogTitle: 'Volunteers ',
       title: 'My title',
       NumberVolunteers: '5',
       Volunteers: [
