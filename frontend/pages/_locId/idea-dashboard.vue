@@ -4,7 +4,9 @@
       <v-form ref="form" class="my-3">
         <v-text-field
           @click:append="search"
+          v-on:keydown.enter.prevent="search"
           v-model="searchTerm"
+          :loading="isLoading"
           append-icon="mdi-magnify"
           name="searchTerm"
           label="Search"
@@ -26,15 +28,19 @@ export default {
   data() {
     return {
       searchTerm: '',
+      isLoading: false,
       ideas: this.$store.getters['ideas/getIdeas'],
     };
   },
-
+  // computed: {
+  //   return this.searchTerm
+  // },
   async mounted() {
     await this.search();
   },
   methods: {
     async search() {
+      this.isLoading = true;
       // If the search field is filled, add a search condition to search on a term
       let descSearchCond = '';
       if (this.searchTerm.length > 0) {
@@ -74,11 +80,12 @@ export default {
         .catch((err) => {
           console.log(err);
         });
-
       /**
        * default user avatar photo: https://www.everypixel.com/image-638397625280524203
        * coolidea photo: Photo by Ameen Fahmy on Unsplash https://unsplash.com/photos/_gEKtyIbRSM
        */
+      // Clear previous ideas
+      this.ideas = [];
       if (response) {
         if (response.data.locations[0].ideas.length > 0) {
           this.ideas = response.data.locations[0].ideas.map((idea) => {
@@ -102,12 +109,9 @@ export default {
                 : 'https://www.everypixel.com/image-638397625280524203.jpg',
             };
           });
-        } else {
-          return {
-            ideas: this.$store.getters['ideas/getIdeas'],
-          };
         }
       }
+      this.isLoading = false;
     },
   },
 };
