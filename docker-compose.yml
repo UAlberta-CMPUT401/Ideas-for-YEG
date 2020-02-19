@@ -1,0 +1,38 @@
+version: '3'
+
+services:
+  nuxtjs:
+    container_name: nuxtjs
+    build: ./frontend/
+    environment:
+        - NODE_ENV=production
+    ports:
+        - 3000:3000
+    command: 'npm run start'
+  mongodb:
+    container_name: mongo
+    image: mongo
+    environment:
+        - MONGO_INITDB_DATABASE=strapi
+    ports:
+        - 27017:27017
+    volumes:
+        - ./backend/db:/data/db
+    restart: always
+  strapi:
+    container_name: strapi
+    build: ./backend/
+    environment:
+        - NODE_ENV=production
+        - DATABASE_CLIENT=mongo
+        - DATABASE_HOST=mongodb
+        - DATABASE_PORT=27017
+        - DATABASE_NAME=strapi
+        - DATABASE_USERNAME=
+        - DATABASE_PASSWORD=
+        - DATABASE_AUTHENTICATION_DATABASE=strapi
+    ports:
+        - 1337:1337
+    depends_on:
+        - mongodb
+    command: 'npm run strapi dev'
