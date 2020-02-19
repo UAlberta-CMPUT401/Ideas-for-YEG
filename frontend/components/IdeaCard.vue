@@ -9,6 +9,13 @@
                 idea.title
               }}</v-list-item-title>
             </v-list-item-content>
+            <v-spacer></v-spacer>
+
+            <div v-if="isEditable">
+              <v-btn href="/edit-my-idea" text class="pa-0 btnSpacing">
+                <v-icon>mdi-dots-vertical</v-icon>
+              </v-btn>
+            </div>
           </v-list-item>
           <v-img
             :src="idea.src"
@@ -80,6 +87,7 @@
  */
 export default {
   props: {
+    isEditable: Boolean,
     ideas: {
       type: Array,
       default: () => {
