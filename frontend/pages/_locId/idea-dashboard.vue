@@ -64,7 +64,7 @@ export default {
       if (response.data.locations[0].ideas.length > 0) {
         this.ideas = response.data.locations[0].ideas.map((idea) => {
           return {
-            id: idea.id,
+            id: idea.id.toString(),
             title: idea.title,
             description: idea.description,
             upvotes: idea.user_upvoters.length,
