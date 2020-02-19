@@ -61,7 +61,7 @@
         </v-row>
       </v-container>
       <v-card-actions>
-        <v-btn text @click="resetForm">Cancel</v-btn>
+        <v-btn href="/my-ideas" text @click="resetForm">Cancel</v-btn>
         <v-spacer></v-spacer>
         <v-btn :disabled="!formIsValid" text color="primary" type="submit"
           >Save</v-btn
