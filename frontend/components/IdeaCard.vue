@@ -2,7 +2,13 @@
   <v-container fluid>
     <v-row justify="center">
       <v-col v-for="idea in ideas" :key="idea.title" justify="center">
-        <v-card d-flex justify-center class="mx-auto" max-width="700">
+        <v-card
+          d-flex
+          justify-center
+          class="mx-auto"
+          max-width="700"
+          v-on:click="onClick(idea.id)"
+        >
           <v-list-item>
             <v-list-item-content>
               <v-list-item-title class="headline">{{
@@ -85,6 +91,14 @@ export default {
       default: () => {
         return [];
       },
+    },
+  },
+
+  methods: {
+    onClick(id) {
+      this.$router.push({
+        path: `/${this.$route.params.locId}/${id}`,
+      });
     },
   },
 };
