@@ -96,6 +96,14 @@
 </template>
 <script>
 export default {
+  props: {
+    ideas: {
+      type: Array,
+      default: () => {
+        return [];
+      },
+    },
+  },
   data() {
     const defaultForm = Object.freeze({
       title: '',
