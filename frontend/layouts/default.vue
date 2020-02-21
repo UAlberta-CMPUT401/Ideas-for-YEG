@@ -39,11 +39,12 @@
         <v-btn v-if="!isAuthenticated" :to="'/login'" router exact>Login</v-btn>
         <v-menu v-else :offset-y="true">
           <template v-slot:activator="{ on }">
-            <v-btn v-on="on" color="primary" dark fab="true">
-              {{ username }}
+            <v-btn v-on="on" color="primary" v-bind:fab="true" dark>
+              <v-icon>mdi-account-circle</v-icon>
             </v-btn>
           </template>
           <v-list>
+            <v-subheader>{{ username }}</v-subheader>
             <v-list-item
               v-for="(item, index) in authItems"
               :key="index"

@@ -1,6 +1,9 @@
 <template>
   <v-container fluid>
     <v-row justify="center">
+      <v-col v-if="ideas.length === 0">
+        <h2>No ideas have been found</h2>
+      </v-col>
       <v-col v-for="idea in ideas" :key="idea.title" justify="center">
         <v-card
           d-flex
