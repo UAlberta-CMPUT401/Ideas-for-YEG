@@ -8,22 +8,22 @@
         :key="category.name"
         justify="center"
       >
-        <v-card class="ma-2" min-width="300" max-height="50" color="#bdbdbd">
+        <v-card class="ma-2" width="200" max-height="50" color="#bdbdbd">
           <v-list-item align="center" justify="center" class="ma-1 pa-0">
-            <v-list-item-content>
-              <v-list-item-title class="headline">{{
+            <v-list-item-content width="100" class="ma-1 pa-1">
+              <v-list-item-title class="nameSpacing">{{
                 category.name
               }}</v-list-item-title>
             </v-list-item-content>
-            <v-spacer></v-spacer>
-            <v-list-item-content class="ma-0 pa-0" width="32">
+            <div class="ma-0 pa-0" width="32">
               <v-list-item
                 v-on:click="deleteCategory(categories, category)"
                 width="32"
+                align="center"
               >
-                <v-icon color="black">mdi-close</v-icon>
+                <v-icon color="black" width="32">mdi-close</v-icon>
               </v-list-item>
-            </v-list-item-content>
+            </div>
           </v-list-item>
 
           <v-list-item class="grow btnSpacing">
@@ -128,5 +128,9 @@ export default {
 <style scoped>
 .btnSpacing {
   padding: 0 8px;
+}
+
+.nameSpacing {
+  font-size: large;
 }
 </style>

@@ -3,27 +3,16 @@
     <v-row justify="center">
       <v-col v-for="idea in ideas" :key="idea.title" justify="center">
         <v-card d-flex justify-center class="mx-auto" max-width="700">
-          <v-row justify="center">
-            <v-col>
-              <v-list-item class="shrink btnSpacing">
-                <v-list-item-content>
-                  <v-list-item-title class="headline">{{
-                    idea.title
-                  }}</v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-            </v-col>
-            <v-spacer></v-spacer>
-            <v-col>
-              <v-btn
-                text
-                class="pa-0 btnSpacing"
-                v-on:click="onClick(ideas, idea)"
-              >
-                <v-icon color="black">mdi-delete</v-icon>
-              </v-btn>
-            </v-col>
-          </v-row>
+          <v-btn text class="pa-0 btnSpacing" v-on:click="onClick(ideas, idea)">
+            <v-icon color="black">mdi-delete</v-icon>
+          </v-btn>
+          <v-list-item>
+            <v-list-item-content>
+              <v-list-item-title class="headline">{{
+                idea.title
+              }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
           <v-img
             :src="idea.src"
             gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"

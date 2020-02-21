@@ -15,7 +15,6 @@
       Category Management
     </v-card-title>
     <v-flex xs12 sm8 md6 color="#bdbdbd">
-      <v-card-title align-center v-text="categories.name"> </v-card-title>
       <CategoryCard v-bind:categories="categories" />
       <form>
         <v-text-field
