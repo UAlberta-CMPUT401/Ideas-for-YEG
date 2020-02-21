@@ -62,6 +62,7 @@ export default {
      */
     if (response) {
       if (response.data.locations[0].ideas.length > 0) {
+        console.log(response);
         this.ideas = response.data.locations[0].ideas.map((idea) => {
           return {
             id: idea.id.toString(),
@@ -83,6 +84,7 @@ export default {
               : 'https://www.everypixel.com/image-638397625280524203.jpg',
           };
         });
+        console.log(this.ideas);
       } else {
         return {
           ideas: this.$store.getters['ideas/getIdeas'],

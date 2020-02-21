@@ -11,7 +11,6 @@
     </v-flex>
   </v-layout>
 </template>
-
 <script>
 import IdeaCard from '../components/IdeaCard';
 
@@ -23,6 +22,7 @@ export default {
   data() {
     return {
       ideas: this.$store.getters['ideas/getIdeas'],
+      currentUser: this.$store.getters['users/getUser'],
     };
   },
 
@@ -30,7 +30,7 @@ export default {
     const response = await this.$axios
       .$post('/graphql', {
         query: `query {
-            locations(where: { route: "${this.$route.params.locId}" }) {
+            locations(where: { route: "yeg" }) {
               ideas {
                 id
                 title

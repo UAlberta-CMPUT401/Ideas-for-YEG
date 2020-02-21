@@ -96,7 +96,7 @@
 
     <v-divider></v-divider>
 
-    <v-expansion-panels v-model="panel" :disabled="disabled" multiple>
+    <v-expansion-panels multiple>
       <v-expansion-panel>
         <v-expansion-panel-header>Tags</v-expansion-panel-header>
         <v-expansion-panel-content>
@@ -115,7 +115,7 @@
 
     <v-divider></v-divider>
 
-    <v-expansion-panels v-model="panel" :disabled="disabled" multiple>
+    <v-expansion-panels multiple>
       <v-expansion-panel>
         <v-expansion-panel-header>Honorarium</v-expansion-panel-header>
         <v-expansion-panel-content>
@@ -165,11 +165,11 @@ export default {
 
   data() {
     return {
+      ideas: this.$store.getters['ideas/getIdeas'],
       dialog: false,
       DialogTitle: 'Previous Donations',
       title: 'My title',
-      description:
-        'To indicate short quotations (four typed lines or fewer of prose or three lines of verse) in your text, enclose the quotation within double quotation marks. Provide the author and specific page number (in the case of verse, provide line numbers) in the in-text citation, and include a complete reference on the Works Cited page. Punctuation marks such as periods, commas, and semicolons should appear after the parenthetical citation.To indicate short quotations (four typed lines or fewer of prose or three lines of verse) in your text, enclose the quotation within double quotation marks. Provide the author and specific page number (in the case of verse, provide line numbers) in the in-text citation, and include a complete reference on the Works Cited page. Punctuation marks such as periods, commas, and semicolons should appear after the parenthetical citation.',
+      description: 'description here.',
       upvotes: 100,
       downvotes: 5,
       ideaCreator: 'Rehab',
@@ -181,46 +181,10 @@ export default {
           name: 'Item 1',
           amount: 159,
         },
-        {
-          name: 'Item 2',
-          amount: 59,
-        },
-        {
-          name: 'Item 3',
-          amount: 15,
-        },
-        {
-          name: 'Item 4',
-          amount: 19,
-        },
       ],
       tags: [
         {
           tag: 'animals',
-        },
-        {
-          tag: 'food',
-        },
-        {
-          tag: 'drinks',
-        },
-        {
-          tag: 'dolphin',
-        },
-        {
-          tag: 'yoga',
-        },
-        {
-          tag: 'sports',
-        },
-        {
-          tag: 'happy',
-        },
-        {
-          tag: 'fundraiser',
-        },
-        {
-          tag: 'taggidytagtag',
         },
       ],
     };
@@ -228,7 +192,19 @@ export default {
 
   async mounted() {
     const response = await this.$axios
-      .$get(`/ideas/${this.$route.params.ideaId}`)
+      .$post('/graphql', {
+        query: `query {
+            ideas(where: {id: "${this.$route.params.ideaId}"}){
+    title
+    description
+    status
+    followers{
+      username
+    }
+  }
+          }
+          `,
+      })
       .catch((err) => {
         console.log(err);
         return false;
@@ -237,6 +213,14 @@ export default {
     if (response) {
       // do whatever you want with the API call response to set the state
       console.log(response);
+
+      this.idea = response.data.ideas.map((idea) => {
+        return {
+          title: idea.title,
+          description: idea.description,
+        };
+      });
+      console.log(this.idea);
     }
   },
 };
