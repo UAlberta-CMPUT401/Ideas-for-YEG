@@ -36,7 +36,7 @@
       Idea Management
     </v-card-title>
     <v-flex xs12 sm8 md6>
-      <IdeaCard v-bind:ideas="ideas" />
+      <DeleteableIdeaCard v-bind:ideas="ideas" v-bind:location="location" />
     </v-flex>
   </v-layout>
 </template>
@@ -44,7 +44,7 @@
 <script>
 import { validationMixin } from 'vuelidate';
 import { required, maxLength } from 'vuelidate/lib/validators';
-import IdeaCard from '../../components/IdeaCard';
+import DeleteableIdeaCard from '../../components/DeleteableIdeaCard';
 import CategoryCard from '../../components/CategoryCard';
 import { LS_USER_DATA } from '../../constants/constants';
 
@@ -55,7 +55,7 @@ export default {
     name: { required, maxLength: maxLength(10) },
   },
   components: {
-    IdeaCard,
+    DeleteableIdeaCard,
     CategoryCard,
   },
   data() {
@@ -75,6 +75,7 @@ export default {
         },
       },
       location: {
+        id: '',
         name: 'testName',
         route: 'TN',
         imgSrc:
@@ -214,6 +215,7 @@ export default {
       .$post('/graphql', {
         query: `query {
             locations(where: { route: "${this.$route.params.locId}" }) {
+              id
               name
               route
               image {
@@ -268,6 +270,7 @@ export default {
      */
     if (response) {
       this.location = {
+        id: response.data.locations[0].id,
         name: response.data.locations[0].name,
         route: response.data.locations[0].route,
         imgSrc: response.data.locations[0].image.url
