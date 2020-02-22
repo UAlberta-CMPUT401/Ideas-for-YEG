@@ -80,8 +80,11 @@
       "required": true
     },
     "location": {
-      "via": "ideas",
-      "model": "location"
+      "model": "location",
+      "via": "ideas"
+    },
+    "slug": {
+      "type": "string"
     }
   }
 }

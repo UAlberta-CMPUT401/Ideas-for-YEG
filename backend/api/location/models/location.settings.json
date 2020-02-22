@@ -27,8 +27,8 @@
       "required": true
     },
     "ideas": {
-      "collection": "idea",
-      "via": "location"
+      "via": "location",
+      "collection": "idea"
     },
     "admins": {
       "plugin": "users-permissions",
