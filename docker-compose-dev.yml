@@ -5,7 +5,7 @@ services:
     container_name: nuxtjs
     build: ./frontend/
     environment:
-        - NODE_ENV=production
+        - NODE_ENV=development
     ports:
         - 3000:3000
     command: 'npm run start'
@@ -23,7 +23,7 @@ services:
     container_name: strapi
     build: ./backend/
     environment:
-        - NODE_ENV=production
+        - NODE_ENV=development
         - DATABASE_CLIENT=mongo
         - DATABASE_HOST=mongodb
         - DATABASE_PORT=27017
