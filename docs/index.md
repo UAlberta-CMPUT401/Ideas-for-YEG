@@ -274,7 +274,7 @@ Acceptance Tests
 US 2.05 - Contact Idea Creator
 As a logged in user
 
-I want to contact the creator and/or leads of the project
+I want to contact the idea creator and/or leads of the project
 
 So that I can ask questions or help support it in some other way
 
@@ -298,6 +298,7 @@ Acceptance Tests
 
 * User clicks on a "Create Idea" button
 * User fills out info such as title, description, and status of the project
+* User has the option of adding tags to their idea 
 * User sees a message saying that the idea has been successfully created given the information input in the previous step
 * Idea starts off with 0 upvotes, backers, volunteers, honorarium notes, updates
 * Idea listings page gets updated to show the idea for the given location
@@ -314,9 +315,8 @@ So that I don't get spammed with many separate emails
 
 Acceptance Tests
 
-* User follows 2 or more projects
-* User receives one email containing updates for those projects
-* If user just follows 1 project, they will still get one email
+* User follows 1 or more projects
+* User receives one email containing updates for all those projects which they follow
 ```
 
 <a name="honorarium-note"></a>
@@ -348,7 +348,9 @@ Acceptance Tests
 
 * Idea Creator clicks on "add new project message" button on their idea page if there is at least one or more followers and volunteers otherwise the button is disabled
 * Idea Creator enters text input for their message
-* Followers and volunteers get a new notification on the website regarding the new message to check out
+* Followers and volunteers get a new notification on the website regarding the new message to check out 
+* Followers will also recieve this information as part of the email digest if they have signed up for it 
+* Any person who views the details of an idea can click "updat history" to see the timeline of updates for the project 
 ```
 
 <a name="email-updates"></a>
@@ -382,9 +384,25 @@ So that everyone can see updated details about the project
 
 Acceptance Tests
 
-* Idea Creator clicks on "update idea" button on their project page
+* Idea Creator clicks on "update idea" button on their My Ideas page
 * Idea Creator enters input to change all or some of the fields such as title, description, status
 * Idea page gets updated with the changed info
+* If user decides to cancel updating the idea, the resulting idea page will reflect no changes
+```
+
+<a name="update-log-project"></a>
+```
+US 3.05 - Log of Updates for a Project
+As an idea creator
+
+I want to have a log of all changes/updates to the project
+
+So that I can track the progression of my project
+
+Acceptance Tests
+
+* Idea Creator clicks on "update idea" button on their My Ideas page and updates their idea 
+* There is a log that tracks this update with the changes made
 * If user decides to cancel updating the idea, the resulting idea page will reflect no changes
 ```
 
@@ -434,8 +452,7 @@ So that I can add or remove ideas, and update content on a specific location pag
 Acceptance Tests
 
 * Location admin navigates to a location settings page
-* Location admin changes the content of the location page
-by either adding new ideas, removing ideas if ideas exist, and/or updating general content of the page
+* Location admin changes the content of the location page by either adding new ideas, removing ideas if ideas exist
 * Resulting pages are updated successfully
 * If the operation is cancelled, no changes are reflected
 ```
