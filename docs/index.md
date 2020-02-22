@@ -100,7 +100,7 @@ an existing account or can direct me to create a new account
 US 1.02 - Sort Ideas
 As a Visitor
 
-I want to sort the projects by the number of upvotes or date
+I want to sort the projects by the number of upvotes or date within a specific location 
 
 So that I can see what new or popular projects exist
 
@@ -112,7 +112,7 @@ Acceptance Tests
 * If no ideas match the filter, a message is shown to the user to try a different filter 
 * If the idea list was empty to begin with before filtering occurred, the view
 shows a message stating "No Ideas Have Been Created" and will
-suggest that I can create theo first idea on the page if I have
+suggest that I can create the first idea on the page if I have
 an existing account or can direct me to create a new account
 
 ```
@@ -122,7 +122,7 @@ an existing account or can direct me to create a new account
 US 1.03 - Search Ideas
 As a Visitor
 
-I want to fill in a search bar with an idea/project in mind
+I want to fill in a search bar with an idea/project in mind or a specific tag/category
 
 So that I can find a specific idea/project or see if one already exists
 
@@ -133,6 +133,7 @@ Acceptance Tests
 search term is found within the title or description
 * If listing page is empty, I see a warning message saying that there are no ideas
 of that search term found and to try a different search instead
+* search by an existing tag/category
 
 ```
 
@@ -158,7 +159,7 @@ as the title, description,status, name of the Idea Creator, date of creation/upd
 US 1.05 - Create an account and log in
 As a Visitor
 
-I want to create an account and log in
+I want to create an account, verify my account through email, and log in
 
 So that I can do more, like upvote, back, or follow a project
 
@@ -189,6 +190,7 @@ Acceptance Tests
 * Visitor can view the page on desktop
 * Visitor can view the page on a mobile screen size
 * Visitor can view the page on a tablet screen size
+* Check that content is the same on any screen-size, only the size of the components and how much information is on one line should change. 
 
 ```
 
@@ -206,6 +208,7 @@ Acceptance Tests
 * Click on an upvote button beside the project idea
 * Upvote count gets incremented by one for the respective idea
 * The user is no longer able to upvote the idea as it can only happen once per unique idea
+* Check that user can only upvote once 
 
 ```
 
@@ -262,6 +265,7 @@ Acceptance Tests
 * Project's backer count metric gets updated
 * Project's number of money donated metric gets updated
 * Idea Creator gets notification that someone has donated money to specified idea
+* Idea creator recieves money
 
 ```
 
@@ -470,6 +474,22 @@ Acceptance Tests
 * Location admins can now edit the content of their location page but not the site
 * If there are no other users, Site admin will be shown with an empty menu stating that there is no one to select from and can try again when there are more registered users
 ```
+<a name="welcoming-guide"></a>
+```
+US 4.05 - Welcoming Guide for using website
+As a user
+
+I want to go through a guide or tutorial to show me how the site works when I create an account
+
+So that I can know how the site works and all the features available to me 
+
+Acceptance Tests
+
+* If a user creates a new account and logs in for the first time they are prompted to take the guide
+* The guide can go through all the pages of the site 
+* The guide can go explain how to create/edit/view/delete idea 
+```
+
 
 <a name="must-have"></a>
 ## Must Have
@@ -504,6 +524,7 @@ Acceptance Tests
 <a name="could-have"></a>
 ## Could Have
 * US 2.07 - Email Digest
+* US 4.05 - Welcoming Guide for using website
 
 # Technical Resources
 ## Backend
