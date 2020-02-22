@@ -17,7 +17,18 @@
       </v-card-title>
 
       <v-card-text>
-        <h2>{{ ideaCreator.email }}</h2>
+        <v-container>
+          <v-row>
+            <v-col>
+              <v-text-field label="Subject" required></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col>
+              <v-textarea label="Body" auto-grow required></v-textarea>
+            </v-col>
+          </v-row>
+        </v-container>
       </v-card-text>
 
       <v-divider></v-divider>
@@ -27,6 +38,8 @@
         <v-btn color="primary" text @click="dialog = false">
           CLOSE
         </v-btn>
+
+        <v-btn color="green darken-1" text @click="dialog = false">SEND</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -34,6 +47,7 @@
 
 <script>
 export default {
+  // TODO access ideaCreator.email (this.$props.ideaCreator.email) to a send button onClick callback
   props: {
     ideaCreator: Object,
   },
@@ -41,7 +55,7 @@ export default {
   data() {
     return {
       dialog: false,
-      dialogTitle: 'Contact Information',
+      dialogTitle: 'Contact Idea Creator',
     };
   },
 };
