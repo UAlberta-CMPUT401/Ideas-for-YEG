@@ -3,19 +3,34 @@
     <v-list-item class="d-flex justify-centre">
       <v-list-item-content>
         <v-list-item-title class="headline">{{ title }}</v-list-item-title>
-        <v-list-item-subtitle>Posted by {{ ideaCreator }}</v-list-item-subtitle>
+        <v-list-item-subtitle
+          >Posted by {{ ideaCreator.username }}</v-list-item-subtitle
+        >
       </v-list-item-content>
       <v-spacer></v-spacer>
 
       <template>
-        <ContactIdeaCreatorDialog />
+        <ContactIdeaCreatorDialog :ideaCreator="ideaCreator" />
       </template>
     </v-list-item>
 
-    <v-img
-      src="https://iso.500px.com/wp-content/uploads/2015/10/500px-wallpaper-desktop1-3000x2000.jpg"
-      gradient="to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)"
-    ></v-img>
+    <v-carousel
+      cycle
+      height="400"
+      hide-delimiter-background
+      show-arrows-on-hover
+    >
+      <v-carousel-item v-for="(image, i) in images" :key="i">
+        <v-sheet height="100%">
+          <v-row class="fill-height" align="center" justify="center">
+            <v-img
+              :src="`http://localhost:1337/${image.url}`"
+              gradient="to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)"
+            ></v-img>
+          </v-row>
+        </v-sheet>
+      </v-carousel-item>
+    </v-carousel>
 
     <v-divider></v-divider>
 
@@ -31,17 +46,16 @@
       </v-tooltip>
 
       <template>
-        <DonateDialog />
+        <DonateDialog :donations="donations" />
       </template>
       <template>
-        <FollowersListDialog />
+        <FollowersListDialog :followers="followers" />
       </template>
       <template>
-        <ProjectUpdatesDialog />
+        <ProjectUpdatesDialog :updates="updates" />
       </template>
-
       <template>
-        <VolunteerListDialog />
+        <VolunteerListDialog :volunteers="volunteers" />
       </template>
     </v-list-item>
 
@@ -68,8 +82,24 @@
       <v-list-item>
         <v-list-item-content>
           <v-list-item-title>Status</v-list-item-title>
-          <v-col sm="6" md="4" lg="3">
-            <v-chip class="ma-2" color="red" text-color="white">
+          <v-col sm="3" md="4" lg="8">
+            <v-chip
+              v-if="status === 'Completed'"
+              color="green"
+              text-color="white"
+            >
+              {{ status }}
+              <v-icon right>mdi-star</v-icon>
+            </v-chip>
+            <v-chip
+              v-else-if="status === 'Ongoing'"
+              color="orange"
+              text-color="white"
+            >
+              {{ status }}
+              <v-icon right>mdi-star</v-icon>
+            </v-chip>
+            <v-chip v-else color="red" text-color="white">
               {{ status }}
               <v-icon right>mdi-star</v-icon>
             </v-chip>
@@ -100,11 +130,11 @@
       <v-expansion-panel>
         <v-expansion-panel-header>Tags</v-expansion-panel-header>
         <v-expansion-panel-content>
-          <v-row justify="space-around">
+          <v-row justify="left">
             <v-col sm="3" md="4" lg="8">
               <v-chip-group column active-class="primary--text">
-                <v-chip v-for="item in tags" :key="item.tag">
-                  {{ item.tag }}
+                <v-chip v-for="tag in tags" :key="tag.name">
+                  {{ tag.name }}
                 </v-chip>
               </v-chip-group>
             </v-col>
@@ -129,7 +159,7 @@
               </thead>
               <tbody>
                 <tr v-for="item in honorarium" :key="item.name">
-                  <td>{{ item.name }}</td>
+                  <td>{{ item.note }}</td>
                   <td>{{ item.amount }}</td>
                 </tr>
               </tbody>
@@ -142,6 +172,7 @@
 </template>
 
 <script>
+import moment from 'moment';
 import DonateDialog from '../../components/DonateDialog';
 import DonateToIdea from '../../components/DonateToIdea';
 import SubscribeToDigest from '../../components/SubscribeToDigest';
@@ -165,62 +196,50 @@ export default {
 
   data() {
     return {
-      dialog: false,
-      DialogTitle: 'Previous Donations',
       title: 'My title',
       description:
         'To indicate short quotations (four typed lines or fewer of prose or three lines of verse) in your text, enclose the quotation within double quotation marks. Provide the author and specific page number (in the case of verse, provide line numbers) in the in-text citation, and include a complete reference on the Works Cited page. Punctuation marks such as periods, commas, and semicolons should appear after the parenthetical citation.To indicate short quotations (four typed lines or fewer of prose or three lines of verse) in your text, enclose the quotation within double quotation marks. Provide the author and specific page number (in the case of verse, provide line numbers) in the in-text citation, and include a complete reference on the Works Cited page. Punctuation marks such as periods, commas, and semicolons should appear after the parenthetical citation.',
       upvotes: 100,
-      downvotes: 5,
       ideaCreator: 'Rehab',
-      volunteers: 3,
+      volunteers: [
+        {
+          username: 'Test',
+        },
+      ],
       amountReceived: 100,
       status: 'Ongoing',
+      images: [
+        {
+          src:
+            'https://iso.500px.com/wp-content/uploads/2015/10/500px-wallpaper-desktop1-3000x2000.jpg',
+        },
+      ],
       honorarium: [
         {
-          name: 'Item 1',
+          note: 'Item 1',
           amount: 159,
-        },
-        {
-          name: 'Item 2',
-          amount: 59,
-        },
-        {
-          name: 'Item 3',
-          amount: 15,
-        },
-        {
-          name: 'Item 4',
-          amount: 19,
         },
       ],
       tags: [
         {
           tag: 'animals',
         },
+      ],
+      followers: [
         {
-          tag: 'food',
+          username: 'Test',
         },
+      ],
+      donations: [
         {
-          tag: 'drinks',
+          user: { username: 'Test' },
+          amount: 100,
         },
+      ],
+      updates: [
         {
-          tag: 'dolphin',
-        },
-        {
-          tag: 'yoga',
-        },
-        {
-          tag: 'sports',
-        },
-        {
-          tag: 'happy',
-        },
-        {
-          tag: 'fundraiser',
-        },
-        {
-          tag: 'taggidytagtag',
+          createdAt: '2020-02-14',
+          description: 'Updates',
         },
       ],
     };
@@ -235,8 +254,24 @@ export default {
       });
 
     if (response) {
-      // do whatever you want with the API call response to set the state
-      console.log(response);
+      this.title = response.title;
+      this.description = response.description;
+      this.ideaCreator = response.user_creator;
+      this.status = response.status;
+      this.honorarium = response.honorarium;
+      this.upvotes = response.user_upvoters.length;
+      this.followers = response.followers;
+      this.volunteers = response.volunteers;
+      this.updates = response.update.reverse().map((update) => {
+        return {
+          description: update.description,
+          createdAt: moment(update.createdAt).format('MMM DD YYYY'),
+        };
+      });
+      this.tags = response.categories;
+      this.images = response.images;
+      this.donations = response.donation;
+      this.upvotes = response.user_upvoters.length;
     }
   },
 };

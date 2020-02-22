@@ -4,8 +4,10 @@
       <v-tooltip bottom>
         <template #activator="{ on: tooltip }">
           <v-btn v-on="{ ...tooltip, ...dialog }" text class="pa-0 btnSpacing">
-            <v-icon color="black">mdi-account-group</v-icon>
-            <span class="subheading mr-2">{{ NumberVolunteers }}</span>
+            <v-icon color="black">mdi-hand-heart</v-icon>
+            <span class="subheading mr-2">{{
+              volunteers ? volunteers.length : 0
+            }}</span>
           </v-btn>
         </template>
         <span>Volunteers</span>
@@ -14,7 +16,7 @@
 
     <v-card>
       <v-card-title class="headline grey lighten-2" primary-title>
-        {{ DialogTitle }}
+        {{ dialogTitle }}
       </v-card-title>
 
       <v-card-text>
@@ -22,16 +24,12 @@
           <template v-slot:default>
             <thead>
               <tr>
-                <th class="text-left">Name</th>
-                <th class="text-left">Date</th>
-                <th class="text-left">Hours</th>
+                <th class="text-left">Username</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="item in Volunteers" :key="item.name">
-                <td>{{ item.name }}</td>
-                <td>{{ item.date }}</td>
-                <td>{{ item.hours }}</td>
+              <tr v-for="volunteer in volunteers" :key="volunteer.username">
+                <td>{{ volunteer.username }}</td>
               </tr>
             </tbody>
           </template>
@@ -49,39 +47,17 @@
     </v-card>
   </v-dialog>
 </template>
+
 <script>
 export default {
   props: {
-    ideas: {
-      type: Array,
-      default: () => {
-        return [];
-      },
-    },
+    volunteers: Array,
   },
+
   data() {
     return {
       dialog: false,
-      DialogTitle: 'Volunteers ',
-      title: 'My title',
-      NumberVolunteers: '5',
-      Volunteers: [
-        {
-          name: 'Name',
-          date: 'Jan 5 2020',
-          hours: 10,
-        },
-        {
-          name: 'Nome',
-          date: 'Jan 5 2020',
-          hours: 1,
-        },
-        {
-          name: 'Nime',
-          date: 'Jan 5 2020',
-          hours: 16,
-        },
-      ],
+      dialogTitle: 'Volunteers',
     };
   },
 };

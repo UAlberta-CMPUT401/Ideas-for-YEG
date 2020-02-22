@@ -3,10 +3,10 @@
     <template #activator="{ on: dialog }">
       <v-tooltip bottom>
         <template #activator="{ on: tooltip }">
-          <v-btn v-on="{ ...tooltip, ...dialog }" text class="pa-0 btnSpacing">
+          <v-btn v-on="{ ...tooltip, ...dialog }" text class="pa-0">
             <v-icon>mdi-cash-usd-outline</v-icon>
             <span class="subheading mr-2" color="black">{{
-              totaldonations
+              donations.length
             }}</span>
           </v-btn>
         </template>
@@ -16,7 +16,7 @@
 
     <v-card>
       <v-card-title class="headline grey lighten-2" primary-title>
-        {{ DialogTitle }}
+        {{ dialogTitle }}
       </v-card-title>
 
       <v-card-text>
@@ -29,9 +29,9 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="item in donations" :key="item.donor">
-                <td>{{ item.donor }}</td>
-                <td>${{ item.amount }}</td>
+              <tr v-for="donation in donations" :key="donation.id">
+                <td>{{ donation.user.username }}</td>
+                <td>${{ donation.amount }}</td>
               </tr>
             </tbody>
           </template>
@@ -49,40 +49,17 @@
     </v-card>
   </v-dialog>
 </template>
+
 <script>
 export default {
   props: {
-    ideas: {
-      type: Array,
-      default: () => {
-        return [];
-      },
-    },
+    donations: Array,
   },
+
   data() {
     return {
       dialog: false,
-      DialogTitle: 'Previous Donations',
-      title: 'My title',
-      totaldonations: 100,
-      donations: [
-        {
-          donor: 'donor 1',
-          amount: 159,
-        },
-        {
-          donor: 'donor 2',
-          amount: 19,
-        },
-        {
-          donor: 'donor 3',
-          amount: 1,
-        },
-        {
-          donor: 'donor 4',
-          amount: 1509,
-        },
-      ],
+      dialogTitle: 'Previous Donations',
     };
   },
 };

@@ -3,7 +3,7 @@
     <template #activator="{ on: dialog }">
       <v-tooltip bottom>
         <template #activator="{ on: tooltip }">
-          <v-btn v-on="{ ...tooltip, ...dialog }" text class="pa-0 btnSpacing">
+          <v-btn v-on="{ ...tooltip, ...dialog }" text class="pa-0">
             <v-icon>mdi-chat</v-icon>
           </v-btn>
         </template>
@@ -13,11 +13,11 @@
 
     <v-card>
       <v-card-title primary-title>
-        {{ DialogTitle }}
+        {{ dialogTitle }}
       </v-card-title>
 
       <v-card-text>
-        <h2>{{ IdeaCreatorEmail }}</h2>
+        <h2>{{ ideaCreator.email }}</h2>
       </v-card-text>
 
       <v-divider></v-divider>
@@ -31,21 +31,17 @@
     </v-card>
   </v-dialog>
 </template>
+
 <script>
 export default {
   props: {
-    ideas: {
-      type: Array,
-      default: () => {
-        return [];
-      },
-    },
+    ideaCreator: Object,
   },
+
   data() {
     return {
       dialog: false,
-      IdeaCreatorEmail: 'email@email.com',
-      DialogTitle: 'Contact Information',
+      dialogTitle: 'Contact Information',
     };
   },
 };

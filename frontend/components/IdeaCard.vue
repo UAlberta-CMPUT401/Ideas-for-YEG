@@ -54,7 +54,7 @@
               </v-btn>
 
               <div class="btnSpacing">
-                <v-icon color="black">mdi-currency-usd</v-icon>
+                <v-icon color="black">mdi-cash-usd-outline</v-icon>
                 <span class="subheading mr-2" color="black"
                   >{{ idea.amountReceived }} raised</span
                 >
