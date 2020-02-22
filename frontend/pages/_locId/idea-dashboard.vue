@@ -72,6 +72,7 @@ export default {
                 followers {
                   username
                 }
+                slug
               }
             }
           }
@@ -107,6 +108,7 @@ export default {
               user_avatar: idea.user_creator.avatar
                 ? `http://localhost:1337${idea.user_creator.avatar.url}`
                 : 'https://www.everypixel.com/image-638397625280524203.jpg',
+              slug: idea.slug,
             };
           });
         }

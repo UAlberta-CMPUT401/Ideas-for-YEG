@@ -54,10 +54,6 @@ export default {
     updates: Array,
   },
 
-  mounted() {
-    console.log(this.$props.updates);
-  },
-
   data() {
     return {
       dialog: false,

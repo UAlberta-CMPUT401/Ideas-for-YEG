@@ -10,7 +10,7 @@
           justify-center
           class="mx-auto"
           max-width="700"
-          v-on:click="onClick(idea.id)"
+          v-on:click="onClick(idea.id, idea.slug)"
         >
           <v-list-item>
             <v-list-item-content>

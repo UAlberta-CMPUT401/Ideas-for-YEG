@@ -194,6 +194,10 @@ export default {
     ContactIdeaCreatorDialog,
   },
 
+  props: {
+    slug: String,
+  },
+
   data() {
     return {
       title: 'My title',
