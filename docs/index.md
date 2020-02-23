@@ -78,7 +78,7 @@ The user stories were chosen to meet the requirements because our client has out
 24. [ Edit Website Content ](#edit-website)
 25. [ Add Location Admins ](#add-location-admin)
 26. [ Welcoming Guide ](#welcoming-guide)
-27. [ Cuztimizable Styling ](#cuztimizable-styling)
+27. [ Customizable Styling ](#customizable-styling)
 
 <a name="view-ideas"></a>
 ```
@@ -112,7 +112,7 @@ So that I can see what new or popular projects exist
 Acceptance Tests
 
 * Navigate to the idea listings page based on a selected location
-* Click a button to sort by date or popularity 
+* Click a button to sort by date or popularity or tags/categories
 * Resulting idea listing page has been sorted by specified metric if there are ideas that match the filter
 * If no ideas match the filter, a message is shown to the user to try a different filter 
 * If the idea list was empty to begin with before filtering occurred, the view
@@ -138,7 +138,7 @@ Acceptance Tests
 search term is found within the title or description
 * If listing page is empty, I see a warning message saying that there are no ideas
 of that search term found and to try a different search instead
-* search by an existing tag/category
+* searches done by the search bar also search by existing tag/categories which contain the same words
 
 ```
 
@@ -356,7 +356,7 @@ Acceptance Tests
 * Idea Creator enters text input for their message
 * Followers and volunteers get a new notification on the website regarding the new message to check out 
 * Followers will also recieve this information as part of the email digest if they have signed up for it 
-* Any person who views the details of an idea can click "updat history" to see the timeline of updates for the project 
+* Any person who views the details of an idea can click "idea history" to see the timeline of updates for the project 
 ```
 
 <a name="email-updates"></a>
@@ -407,9 +407,10 @@ So that I can track the progression of my project
 
 Acceptance Tests
 
-* Idea Creator clicks on "update idea" button on their My Ideas page and updates their idea 
-* There is a log that tracks this update with the changes made
-* If user decides to cancel updating the idea, the resulting idea page will reflect no changes
+* After an Idea Creator has edited an idea, the action will be logges in our database 
+* This log list tracks all updates with the changes made
+* Users can click an "idea history" button which will show a timeline-styled list of project updates 
+* If there are no updates to be shown, a message will be shown instead indicating that there are "No updates for this idea yet"
 ```
 
 <a name="add-idea-admin"></a>
@@ -437,7 +438,7 @@ As a site admin
 
 I want the site to be reusable and reproducible for admins/developers
 
-So that I can recreate the app in different environments outsite if just geographical locations
+So that I can recreate the app in different environments outside if just geographical locations
 
 Acceptance Tests
 
@@ -545,11 +546,11 @@ Acceptance Tests
 
 * If a user creates a new account and logs in for the first time they are prompted to take the guide
 * The guide can go through all the pages of the site 
-* The guide can go explain how to create/edit/view/delete idea 
+* The guide can go explain how to create/edit/view/delete an idea
 ```
-<a name="cuztimizable-styling"></a>
+<a name="customizable-styling"></a>
 ```
-US 4.06 - Cuztimizable Styling of different pages 
+US 4.06 - Customizable Styling of different pages 
 As a user
 
 I want to be able to have some say into the styling of my pages 
@@ -558,7 +559,8 @@ So that I can customize my #ideas4 website the way I like
 
 Acceptance Tests
 
-* Implement changes in idea details page based on status (different colors for seeking help, ongoing, or completed)
+* Background color for the idea details page card component will change based on status (different colors for seeking help, ongoing, or completed)
+* Background color for the small idea card component on the general feed pages will change based on status based on status (different colors for seeking help, ongoing, or completed)
 
 ```
 
