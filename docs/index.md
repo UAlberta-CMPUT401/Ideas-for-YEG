@@ -45,7 +45,7 @@ We created a GANTT chart outlining the tasks for each sprint and assignees. The 
 GANTT chart:
 
 * [Sprint 1](https://ualberta-cmput401.github.io/Ideas-for-YEG/Gantt_Chart_Sprint1.pdf)
-* [Sprint 2](https://ualberta-cmput401.github.io/Ideas-for-YEG/Gantt_Chart_Sprint2.pdf)
+* [Sprint 2](https://github.com/UAlberta-CMPUT401/Ideas-for-YEG/blob/relhajj_updatingDocs/docs/Gantt_Chart_Sprint2.pdf)
 
 # Use Cases or User Stories
 [With Reference to Eugene Chen’s 401 ideas4.co Dev Details Document](https://docs.google.com/spreadsheets/d/1d1UYda6Yri3o0E0bkZSC-bgtwTXizyNDOPyZJkbL7w4/edit?usp=sharing), user story
