@@ -3,7 +3,7 @@
     <template #activator="{ on: dialog }">
       <v-tooltip bottom>
         <template #activator="{ on: tooltip }">
-          <v-btn v-on="{ ...tooltip, ...dialog }" text class="pa-0 btnSpacing">
+          <v-btn v-on="{ ...tooltip, ...dialog }" text class="pa-0">
             <v-icon>mdi-chat</v-icon>
           </v-btn>
         </template>
@@ -13,11 +13,22 @@
 
     <v-card>
       <v-card-title primary-title>
-        {{ DialogTitle }}
+        {{ dialogTitle }}
       </v-card-title>
 
       <v-card-text>
-        <h2>{{ IdeaCreatorEmail }}</h2>
+        <v-container>
+          <v-row>
+            <v-col>
+              <v-text-field label="Subject" required></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col>
+              <v-textarea label="Body" auto-grow required></v-textarea>
+            </v-col>
+          </v-row>
+        </v-container>
       </v-card-text>
 
       <v-divider></v-divider>
@@ -27,25 +38,24 @@
         <v-btn color="primary" text @click="dialog = false">
           CLOSE
         </v-btn>
+
+        <v-btn color="green darken-1" text @click="dialog = false">SEND</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
+
 <script>
 export default {
+  // TODO access ideaCreator.email (this.$props.ideaCreator.email) to a send button onClick callback
   props: {
-    ideas: {
-      type: Array,
-      default: () => {
-        return [];
-      },
-    },
+    ideaCreator: Object,
   },
+
   data() {
     return {
       dialog: false,
-      IdeaCreatorEmail: 'email@email.com',
-      DialogTitle: 'Contact Information',
+      dialogTitle: 'Contact Idea Creator',
     };
   },
 };
