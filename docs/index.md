@@ -42,6 +42,9 @@ The team is split half way, with half of our team focusing primarily on back-end
 
 We created a GANTT chart outlining the tasks for each sprint and assignees. The blue tasks are back-end tasks, the red tasks are front-end tasks, and grey tasks are either documentation (most of sprint 1) or un-assigned tasks (sprint 3 and 4). 
 
+
+Our MVP will include all of the user stories in the "must have" and "should have" sections below. 
+
 GANTT chart:
 
 * [Sprint 1](https://ualberta-cmput401.github.io/Ideas-for-YEG/Gantt_Chart_Sprint1.pdf)
