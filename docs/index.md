@@ -69,16 +69,16 @@ The user stories were chosen to meet the requirements because our client has out
 15. [ Project Message ](#project-message)
 16. [ Email Updates ](#email-updates)
 17. [ Update Project Details ](#update-project)
-18. [ Log List of Project Updates ] (#update-log-project)
+18. [ Log List of Project Updates ](#update-log-project)
 19. [ Add Idea Admins ](#add-idea-admin)
 20. [ Reproducability ](#reproduce-app)
-21. [ Third party authorization ] (#signup-thirdparty)
+21. [ Third party authorization ](#signup-thirdparty)
 22. [ New Website Route for a New Location ](#new-location)
 23. [ Edit Location Page Content ](#edit-location)
 24. [ Edit Website Content ](#edit-website)
 25. [ Add Location Admins ](#add-location-admin)
-26. [ Welcoming Guide ] (#welcoming-guide)
-27. [ Cuztimizable Styling] (#cuztimizable-styling)
+26. [ Welcoming Guide ](#welcoming-guide)
+27. [ Cuztimizable Styling ](#cuztimizable-styling)
 
 <a name="view-ideas"></a>
 ```
