@@ -88,3 +88,6 @@ sw.*
 
 # Vim swap files
 *.swp
+
+# Nightwatch E2E test output
+tests_output/
