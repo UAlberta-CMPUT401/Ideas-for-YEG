@@ -1,20 +1,22 @@
 <template>
-  <v-layout column justify-center align-center>
-    <v-flex xs12 sm8 md6>
-      <v-form ref="form" class="my-3">
-        <v-text-field
-          @click:append="search"
-          v-on:keydown.enter.prevent="search"
-          v-model="searchTerm"
-          :loading="isLoading"
-          append-icon="mdi-magnify"
-          name="searchTerm"
-          label="Search"
-        ></v-text-field>
-      </v-form>
-      <IdeaCard v-bind:ideas="ideas" />
-    </v-flex>
-  </v-layout>
+  <v-container align="center" justify="center">
+    <v-row align="center" justify="center">
+      <v-col justify="center" cols="12" sm="9" md="9" lg="8" xl="6">
+        <v-form ref="form" class="my-3">
+          <v-text-field
+            @click:append="search"
+            v-on:keydown.enter.prevent="search"
+            v-model="searchTerm"
+            :loading="isLoading"
+            append-icon="mdi-magnify"
+            name="searchTerm"
+            label="Search"
+          ></v-text-field>
+        </v-form>
+        <IdeaCard v-bind:ideas="ideas" />
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
