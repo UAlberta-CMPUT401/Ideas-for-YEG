@@ -61,19 +61,24 @@ The user stories were chosen to meet the requirements because our client has out
 7. [ Upvote Idea ](#upvote-idea)
 8. [ Follow an Idea ](#follow-idea) 
 9. [ Volunteer for a Project ](#volunteer) 
-10. [ Donate to a Project ](#donation)
+10. [ Donate to a Project ](#donate)
 11. [ Contact Idea Creators ](#contact-idea-creator)
-12. [ Email Digest ](#email-digest)
-13. [ Create New Idea ](#create-idea)
-14. [ Honorarium Note ](#honorariam-note)
+12. [ Create New Idea ](#create-idea)
+13. [ Email Digest ](#email-digest)
+14. [ Honorarium Note ](#honorarium-note)
 15. [ Project Message ](#project-message)
 16. [ Email Updates ](#email-updates)
 17. [ Update Project Details ](#update-project)
-18. [ Add Idea Admins ](#add-idea-admin)
-19. [ New Website Route for a New Location ](#new-location)
-20. [ Edit Location Page Content ](#edit-location)
-21. [ Edit Website Content ](#edit-website)
-22. [ Add Location Admins ](#add-location-admin)
+18. [ Log List of Project Updates ] (#update-log-project)
+19. [ Add Idea Admins ](#add-idea-admin)
+20. [ Reproducability ](#reproduce-app)
+21. [ Third party authorization ] (#signup-thirdparty)
+22. [ New Website Route for a New Location ](#new-location)
+23. [ Edit Location Page Content ](#edit-location)
+24. [ Edit Website Content ](#edit-website)
+25. [ Add Location Admins ](#add-location-admin)
+26. [ Welcoming Guide ] (#welcoming-guide)
+27. [ Cuztimizable Styling] (#cuztimizable-styling)
 
 <a name="view-ideas"></a>
 ```
@@ -151,6 +156,7 @@ Acceptance Tests
 * Click on a project
 * Navigate to a new page that shows more details about a project such 
 as the title, description,status, name of the Idea Creator, date of creation/updated, number of followers, backers, volunteers, and upvotes, and how much of honorarium is provided
+* Only one idea details page can be viewed at a time 
 
 ```
 
@@ -280,9 +286,9 @@ So that I can ask questions or help support it in some other way
 
 Acceptance Tests
 
-* User views the idea creator's email on the project details page
-* User can send an email with the idea creator's email
-* Idea Creator and/or Idea Admin receives an email from the user and can reply back to it
+* User clicks on a button to contact the idea creator from an idea details page
+* User can send a message and a subject line to the idea creator
+* Idea Creator and/or Idea Admin receives a notification from the user and can reply back to it
 ```
 
 <a name="create-idea"></a>
@@ -298,7 +304,7 @@ Acceptance Tests
 
 * User clicks on a "Create Idea" button
 * User fills out info such as title, description, and status of the project
-* User has the option of adding tags to their idea 
+* User has the option of adding tags to their idea by clicking on a button to adding tags through text forms
 * User sees a message saying that the idea has been successfully created given the information input in the previous step
 * Idea starts off with 0 upvotes, backers, volunteers, honorarium notes, updates
 * Idea listings page gets updated to show the idea for the given location
@@ -408,7 +414,7 @@ Acceptance Tests
 
 <a name="add-idea-admin"></a>
 ```
-US 3.05 - Add Idea Admins
+US 3.06 - Add Idea Admins
 As an idea creator
 
 I want to invite others to be idea admins
@@ -422,6 +428,41 @@ Acceptance Tests
 * New Idea Admins are notified that they have been added as admins to specified idea
 * Idea Admins can do everything an Idea Creator can but not add new admins
 * If there are no other users, Idea Creator will be shown with an empty menu stating that there is no one to select from and can try again when there are more registered users
+```
+
+<a name="reproduce-app"></a>
+```
+US 3.07 - Reproduce the #ideas4 web app 
+As a site admin
+
+I want the site to be reusable and reproducible for admins/developers
+
+So that I can recreate the app in different environments outsite if just geographical locations
+
+Acceptance Tests
+
+* Site admin can reproduce website 
+* Site admin can choose the types of locations or "groups" to organuze the site by (yeg/yyc etc.) 
+* generalize the term "location" in case the site admin chooses to make the site used for work places or other non-geographical groups
+```
+
+<a name="signup-thirdparty"></a>
+```
+US 3.08 - Create account through 3rd party authorization
+As a user 
+
+I want to create an account through third party organizations such as google
+
+So that I do not have to create a new username/password independant from my other account 
+
+Acceptance Tests
+
+* User navigates to main page in website and clicks sign up to go to sign up page 
+* User can click a button to "sign up through google"
+* User can enter their google account information and then click a submission button 
+* If the account information is valid, they can confirm their account 
+* Once confirmed, user can log in using their google account
+
 ```
 
 <a name="new-location"></a>
@@ -506,6 +547,20 @@ Acceptance Tests
 * The guide can go through all the pages of the site 
 * The guide can go explain how to create/edit/view/delete idea 
 ```
+<a name="cuztimizable-styling"></a>
+```
+US 4.06 - Cuztimizable Styling of different pages 
+As a user
+
+I want to be able to have some say into the styling of my pages 
+
+So that I can customize my #ideas4 website the way I like 
+
+Acceptance Tests
+
+* Implement changes in idea details page based on status (different colors for seeking help, ongoing, or completed)
+
+```
 
 
 <a name="must-have"></a>
@@ -526,6 +581,8 @@ Acceptance Tests
 * US 1.03 - Search Ideas
 * US 2.05 - Contact Idea Creator
 * US 3.02 - Post New Message on Project
+* US 3.05 - Log of Updates for a Project
+* US 3.07 - Reproduce the #ideas4 web app 
 * US 4.01 - Add New Location Page on Website
 * US 4.02 - Edit Location Page Content
 * US 4.03 - Edit Website Content
@@ -536,12 +593,14 @@ Acceptance Tests
 * US 2.04 - Donate to a Project
 * US 3.01 - Add Honorarium
 * US 3.03 - Send Email Update to Followers and Volunteers
-* US 3.05 - Add Idea Admins
+* US 3.06 - Add Idea Admins
 
 <a name="could-have"></a>
 ## Could Have
 * US 2.07 - Email Digest
+* US 3.08 - Create account through 3rd party authorization
 * US 4.05 - Welcoming Guide for using website
+* US 4.06 - Cuztimizable Styling of different pages 
 
 # Technical Resources
 ## Backend
