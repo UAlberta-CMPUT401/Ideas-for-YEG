@@ -1,7 +1,8 @@
 <template>
   <v-layout column justify-center align-center>
     <v-flex xs12 sm8 md6>
-      <LocationCard v-bind:locations="locations" />
+      <LocationCard v-if="locations.length > 0" v-bind:locations="locations" />
+      <h2 v-else>No Locations Have Been Added Yet</h2>
     </v-flex>
   </v-layout>
 </template>
@@ -15,19 +16,8 @@ export default {
   },
 
   data() {
-    /**
-     * default location image from rentals blog
-     * https://rentals.ca/blog/wp-content/uploads/2018/08/42276507674_d792f146ca_z.jpg
-     */
     return {
-      locations: [
-        {
-          name: 'Edmonton',
-          src:
-            'https://rentals.ca/blog/wp-content/uploads/2018/08/42276507674_d792f146ca_z.jpg',
-          code: 'YEG',
-        },
-      ],
+      locations: [],
     };
   },
 
