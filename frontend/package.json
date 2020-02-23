@@ -29,6 +29,7 @@
     "@nuxtjs/pwa": "^3.0.0-0",
     "cross-env": "^5.2.0",
     "express": "^4.16.4",
+    "moment": "^2.24.0",
     "nuxt": "^2.0.0",
     "vuelidate": "^0.7.5"
   },
