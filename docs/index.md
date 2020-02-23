@@ -45,6 +45,7 @@ We created a GANTT chart outlining the tasks for each sprint and assignees. The 
 GANTT chart:
 
 * [Sprint 1](https://ualberta-cmput401.github.io/Ideas-for-YEG/Gantt_Chart_Sprint1.pdf)
+* [Sprint 2](https://github.com/UAlberta-CMPUT401/Ideas-for-YEG/blob/relhajj_updatingDocs/docs/Gantt_Chart_Sprint2.pdf)
 
 # Use Cases or User Stories
 [With Reference to Eugene Chen’s 401 ideas4.co Dev Details Document](https://docs.google.com/spreadsheets/d/1d1UYda6Yri3o0E0bkZSC-bgtwTXizyNDOPyZJkbL7w4/edit?usp=sharing), user story
@@ -61,19 +62,24 @@ The user stories were chosen to meet the requirements because our client has out
 7. [ Upvote Idea ](#upvote-idea)
 8. [ Follow an Idea ](#follow-idea) 
 9. [ Volunteer for a Project ](#volunteer) 
-10. [ Donate to a Project ](#donation)
+10. [ Donate to a Project ](#donate)
 11. [ Contact Idea Creators ](#contact-idea-creator)
-12. [ Email Digest ](#email-digest)
-13. [ Create New Idea ](#create-idea)
-14. [ Honorarium Note ](#honorariam-note)
+12. [ Create New Idea ](#create-idea)
+13. [ Email Digest ](#email-digest)
+14. [ Honorarium Note ](#honorarium-note)
 15. [ Project Message ](#project-message)
 16. [ Email Updates ](#email-updates)
 17. [ Update Project Details ](#update-project)
-18. [ Add Idea Admins ](#add-idea-admin)
-19. [ New Website Route for a New Location ](#new-location)
-20. [ Edit Location Page Content ](#edit-location)
-21. [ Edit Website Content ](#edit-website)
-22. [ Add Location Admins ](#add-location-admin)
+18. [ Log List of Project Updates ](#update-log-project)
+19. [ Add Idea Admins ](#add-idea-admin)
+20. [ Reproducability ](#reproduce-app)
+21. [ Third party authorization ](#signup-thirdparty)
+22. [ New Website Route for a New Location ](#new-location)
+23. [ Edit Location Page Content ](#edit-location)
+24. [ Edit Website Content ](#edit-website)
+25. [ Add Location Admins ](#add-location-admin)
+26. [ Welcoming Guide ](#welcoming-guide)
+27. [ Customizable Styling ](#customizable-styling)
 
 <a name="view-ideas"></a>
 ```
@@ -100,19 +106,19 @@ an existing account or can direct me to create a new account
 US 1.02 - Sort Ideas
 As a Visitor
 
-I want to sort the projects by the number of upvotes or date
+I want to sort the projects by the number of upvotes or date within a specific location 
 
 So that I can see what new or popular projects exist
 
 Acceptance Tests
 
 * Navigate to the idea listings page based on a selected location
-* Click a button to sort by date or popularity 
+* Click a button to sort by date or popularity or tags/categories
 * Resulting idea listing page has been sorted by specified metric if there are ideas that match the filter
 * If no ideas match the filter, a message is shown to the user to try a different filter 
 * If the idea list was empty to begin with before filtering occurred, the view
 shows a message stating "No Ideas Have Been Created" and will
-suggest that I can create theo first idea on the page if I have
+suggest that I can create the first idea on the page if I have
 an existing account or can direct me to create a new account
 
 ```
@@ -122,7 +128,7 @@ an existing account or can direct me to create a new account
 US 1.03 - Search Ideas
 As a Visitor
 
-I want to fill in a search bar with an idea/project in mind
+I want to fill in a search bar with an idea/project in mind or a specific tag/category
 
 So that I can find a specific idea/project or see if one already exists
 
@@ -133,6 +139,7 @@ Acceptance Tests
 search term is found within the title or description
 * If listing page is empty, I see a warning message saying that there are no ideas
 of that search term found and to try a different search instead
+* searches done by the search bar also search by existing tag/categories which contain the same words
 
 ```
 
@@ -150,6 +157,7 @@ Acceptance Tests
 * Click on a project
 * Navigate to a new page that shows more details about a project such 
 as the title, description,status, name of the Idea Creator, date of creation/updated, number of followers, backers, volunteers, and upvotes, and how much of honorarium is provided
+* Only one idea details page can be viewed at a time 
 
 ```
 
@@ -158,7 +166,7 @@ as the title, description,status, name of the Idea Creator, date of creation/upd
 US 1.05 - Create an account and log in
 As a Visitor
 
-I want to create an account and log in
+I want to create an account, verify my account through email, and log in
 
 So that I can do more, like upvote, back, or follow a project
 
@@ -189,6 +197,7 @@ Acceptance Tests
 * Visitor can view the page on desktop
 * Visitor can view the page on a mobile screen size
 * Visitor can view the page on a tablet screen size
+* Check that content is the same on any screen-size, only the size of the components and how much information is on one line should change. 
 
 ```
 
@@ -206,6 +215,7 @@ Acceptance Tests
 * Click on an upvote button beside the project idea
 * Upvote count gets incremented by one for the respective idea
 * The user is no longer able to upvote the idea as it can only happen once per unique idea
+* Check that user can only upvote once 
 
 ```
 
@@ -262,6 +272,7 @@ Acceptance Tests
 * Project's backer count metric gets updated
 * Project's number of money donated metric gets updated
 * Idea Creator gets notification that someone has donated money to specified idea
+* Idea creator recieves money
 
 ```
 
@@ -270,15 +281,15 @@ Acceptance Tests
 US 2.05 - Contact Idea Creator
 As a logged in user
 
-I want to contact the creator and/or leads of the project
+I want to contact the idea creator and/or leads of the project
 
 So that I can ask questions or help support it in some other way
 
 Acceptance Tests
 
-* User views the idea creator's email on the project details page
-* User can send an email with the idea creator's email
-* Idea Creator and/or Idea Admin receives an email from the user and can reply back to it
+* User clicks on a button to contact the idea creator from an idea details page
+* User can send a message and a subject line to the idea creator
+* Idea Creator and/or Idea Admin receives a notification from the user and can reply back to it
 ```
 
 <a name="create-idea"></a>
@@ -294,6 +305,7 @@ Acceptance Tests
 
 * User clicks on a "Create Idea" button
 * User fills out info such as title, description, and status of the project
+* User has the option of adding tags to their idea by clicking on a button to adding tags through text forms
 * User sees a message saying that the idea has been successfully created given the information input in the previous step
 * Idea starts off with 0 upvotes, backers, volunteers, honorarium notes, updates
 * Idea listings page gets updated to show the idea for the given location
@@ -310,9 +322,8 @@ So that I don't get spammed with many separate emails
 
 Acceptance Tests
 
-* User follows 2 or more projects
-* User receives one email containing updates for those projects
-* If user just follows 1 project, they will still get one email
+* User follows 1 or more projects
+* User receives one email containing updates for all those projects which they follow
 ```
 
 <a name="honorarium-note"></a>
@@ -344,7 +355,9 @@ Acceptance Tests
 
 * Idea Creator clicks on "add new project message" button on their idea page if there is at least one or more followers and volunteers otherwise the button is disabled
 * Idea Creator enters text input for their message
-* Followers and volunteers get a new notification on the website regarding the new message to check out
+* Followers and volunteers get a new notification on the website regarding the new message to check out 
+* Followers will also recieve this information as part of the email digest if they have signed up for it 
+* Any person who views the details of an idea can click "idea history" to see the timeline of updates for the project 
 ```
 
 <a name="email-updates"></a>
@@ -378,15 +391,32 @@ So that everyone can see updated details about the project
 
 Acceptance Tests
 
-* Idea Creator clicks on "update idea" button on their project page
+* Idea Creator clicks on "update idea" button on their My Ideas page
 * Idea Creator enters input to change all or some of the fields such as title, description, status
 * Idea page gets updated with the changed info
 * If user decides to cancel updating the idea, the resulting idea page will reflect no changes
 ```
 
+<a name="update-log-project"></a>
+```
+US 3.05 - Log of Updates for a Project
+As an idea creator
+
+I want to have a log of all changes/updates to the project
+
+So that I can track the progression of my project
+
+Acceptance Tests
+
+* After an Idea Creator has edited an idea, the action will be logges in our database 
+* This log list tracks all updates with the changes made
+* Users can click an "idea history" button which will show a timeline-styled list of project updates 
+* If there are no updates to be shown, a message will be shown instead indicating that there are "No updates for this idea yet"
+```
+
 <a name="add-idea-admin"></a>
 ```
-US 3.05 - Add Idea Admins
+US 3.06 - Add Idea Admins
 As an idea creator
 
 I want to invite others to be idea admins
@@ -400,6 +430,41 @@ Acceptance Tests
 * New Idea Admins are notified that they have been added as admins to specified idea
 * Idea Admins can do everything an Idea Creator can but not add new admins
 * If there are no other users, Idea Creator will be shown with an empty menu stating that there is no one to select from and can try again when there are more registered users
+```
+
+<a name="reproduce-app"></a>
+```
+US 3.07 - Reproduce the #ideas4 web app 
+As a site admin
+
+I want the site to be reusable and reproducible for admins/developers
+
+So that I can recreate the app in different environments outside if just geographical locations
+
+Acceptance Tests
+
+* Site admin can reproduce website 
+* Site admin can choose the types of locations or "groups" to organuze the site by (yeg/yyc etc.) 
+* generalize the term "location" in case the site admin chooses to make the site used for work places or other non-geographical groups
+```
+
+<a name="signup-thirdparty"></a>
+```
+US 3.08 - Create account through 3rd party authorization
+As a user 
+
+I want to create an account through third party organizations such as google
+
+So that I do not have to create a new username/password independant from my other account 
+
+Acceptance Tests
+
+* User navigates to main page in website and clicks sign up to go to sign up page 
+* User can click a button to "sign up through google"
+* User can enter their google account information and then click a submission button 
+* If the account information is valid, they can confirm their account 
+* Once confirmed, user can log in using their google account
+
 ```
 
 <a name="new-location"></a>
@@ -430,8 +495,7 @@ So that I can add or remove ideas, and update content on a specific location pag
 Acceptance Tests
 
 * Location admin navigates to a location settings page
-* Location admin changes the content of the location page
-by either adding new ideas, removing ideas if ideas exist, and/or updating general content of the page
+* Location admin changes the content of the location page by either adding new ideas, removing ideas if ideas exist
 * Resulting pages are updated successfully
 * If the operation is cancelled, no changes are reflected
 ```
@@ -470,6 +534,37 @@ Acceptance Tests
 * Location admins can now edit the content of their location page but not the site
 * If there are no other users, Site admin will be shown with an empty menu stating that there is no one to select from and can try again when there are more registered users
 ```
+<a name="welcoming-guide"></a>
+```
+US 4.05 - Welcoming Guide for using website
+As a user
+
+I want to go through a guide or tutorial to show me how the site works when I create an account
+
+So that I can know how the site works and all the features available to me 
+
+Acceptance Tests
+
+* If a user creates a new account and logs in for the first time they are prompted to take the guide
+* The guide can go through all the pages of the site 
+* The guide can go explain how to create/edit/view/delete an idea
+```
+<a name="customizable-styling"></a>
+```
+US 4.06 - Customizable Styling of different pages 
+As a user
+
+I want to be able to have some say into the styling of my pages 
+
+So that I can customize my #ideas4 website the way I like 
+
+Acceptance Tests
+
+* Background color for the idea details page card component will change based on status (different colors for seeking help, ongoing, or completed)
+* Background color for the small idea card component on the general feed pages will change based on status based on status (different colors for seeking help, ongoing, or completed)
+
+```
+
 
 <a name="must-have"></a>
 ## Must Have
@@ -489,6 +584,8 @@ Acceptance Tests
 * US 1.03 - Search Ideas
 * US 2.05 - Contact Idea Creator
 * US 3.02 - Post New Message on Project
+* US 3.05 - Log of Updates for a Project
+* US 3.07 - Reproduce the #ideas4 web app 
 * US 4.01 - Add New Location Page on Website
 * US 4.02 - Edit Location Page Content
 * US 4.03 - Edit Website Content
@@ -499,11 +596,14 @@ Acceptance Tests
 * US 2.04 - Donate to a Project
 * US 3.01 - Add Honorarium
 * US 3.03 - Send Email Update to Followers and Volunteers
-* US 3.05 - Add Idea Admins
+* US 3.06 - Add Idea Admins
 
 <a name="could-have"></a>
 ## Could Have
 * US 2.07 - Email Digest
+* US 3.08 - Create account through 3rd party authorization
+* US 4.05 - Welcoming Guide for using website
+* US 4.06 - Cuztimizable Styling of different pages 
 
 # Technical Resources
 ## Backend
