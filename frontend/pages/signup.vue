@@ -79,6 +79,19 @@ const LAST_NAME_MAX_LENGTH = 32;
 const LAST_NAME_MIN_LENGTH = 1;
 
 export default {
+  // Define constants in page export for unit testing
+  consts: [
+    EMAIL_VALIDATION_REGEX,
+    PASSWORD_MIN_LENGTH,
+    PASSWORD_MAX_LENGTH,
+    USERNAME_MIN_LENGTH,
+    USERNAME_MAX_LENGTH,
+    FIRST_NAME_MAX_LENGTH,
+    FIRST_NAME_MIN_LENGTH,
+    LAST_NAME_MAX_LENGTH,
+    LAST_NAME_MIN_LENGTH,
+  ],
+
   components: {},
 
   data() {
