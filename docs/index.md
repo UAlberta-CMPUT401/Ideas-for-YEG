@@ -603,7 +603,7 @@ Acceptance Tests
 * US 2.07 - Email Digest
 * US 3.08 - Create account through 3rd party authorization
 * US 4.05 - Welcoming Guide for using website
-* US 4.06 - Cuztimizable Styling of different pages 
+* US 4.06 - Customizable Styling of different pages 
 
 # Technical Resources
 ## Backend
