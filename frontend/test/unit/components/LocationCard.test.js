@@ -3,7 +3,16 @@ import LocationCard from '@/components/LocationCard.vue';
 
 describe('Location Card', () => {
   test('component mounts successfully', () => {
-    const wrapper = mount(LocationCard);
+    const propsData = {
+      locations: [
+        {
+          name: 'Edmonton',
+          code: 'YEG',
+          src: null,
+        },
+      ],
+    };
+    const wrapper = mount(LocationCard, propsData);
     expect(wrapper.isVueInstance()).toBeTruthy();
   });
 });

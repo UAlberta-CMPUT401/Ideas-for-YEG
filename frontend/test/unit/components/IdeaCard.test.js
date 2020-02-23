@@ -1,4 +1,4 @@
-import { mount } from '@vue/test-utils';
+import { mount, shallowMount } from '@vue/test-utils';
 import IdeaCard from '@/components/IdeaCard.vue';
 
 describe('Idea Card', () => {
@@ -8,7 +8,7 @@ describe('Idea Card', () => {
   });
 
   test('empty ideas prop renders no ideas found', () => {
-    const wrapper = mount(IdeaCard, {
+    const wrapper = shallowMount(IdeaCard, {
       propsData: {
         ideas: [],
       },
@@ -19,35 +19,46 @@ describe('Idea Card', () => {
 
   test('click on component to change route', async () => {
     const $route = {
-      path: '/some/path',
+      path: '',
+      params: {
+        locId: 'yeg',
+      },
+    };
+    const $router = {
+      push: (id) => {
+        $route.path = id;
+      },
+    };
+    const propsData = {
+      ideas: [
+        {
+          id: 1,
+          title: 'Test Idea 1',
+          desciption: 'Lorem Ipsum',
+          src: null,
+          user_avatar: null,
+          ideaCreator: 'User',
+          upvotes: 12,
+          amountReceived: 100,
+          volunteers: 10,
+          followers: 9,
+        },
+      ],
     };
     const wrapper = mount(IdeaCard, {
-      propsData: {
-        ideas: [
-          {
-            id: 1,
-            title: 'Test Idea 1',
-            desciption: 'Lorem Ipsum',
-            src: null,
-            user_avatar: null,
-            ideaCreator: 'User',
-            upvotes: 12,
-            amountReceived: 100,
-            volunteers: 10,
-            followers: 9,
-          },
-        ],
-      },
+      propsData,
       mocks: {
         $route,
+        $router,
       },
     });
 
     const card = wrapper.find('v-card');
+    expect(wrapper.vm.$route.path).not.toBe(propsData.id);
     card.trigger('click');
+    $router.push(propsData.id);
     await wrapper.vm.$nextTick();
 
-    // TODO figure out how to mock the route and check if the correct path has been navigated to
-    // expect(wrapper.vm.$route.path).toBe($route.path);
+    expect(wrapper.vm.$route.path).toBe(propsData.id);
   });
 });
