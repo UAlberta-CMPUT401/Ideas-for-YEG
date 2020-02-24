@@ -34,12 +34,11 @@ export default {
       ideas: this.$store.getters['ideas/getIdeas'],
     };
   },
-  // computed: {
-  //   return this.searchTerm
-  // },
+
   async mounted() {
     await this.search();
   },
+
   methods: {
     async search() {
       this.isLoading = true;
