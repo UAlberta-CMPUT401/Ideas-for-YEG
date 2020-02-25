@@ -1,12 +1,9 @@
 <template>
   <v-layout column justify-center align-center>
     <v-flex xs12 sm8 md6>
-      <v-system-bar color="black" dark>
-        <v-spacer></v-spacer>
-        <v-btn href="/edit-my-idea" text class="pa-0 btnSpacing">
-          <v-icon color="white">mdi-plus-thick</v-icon>
-        </v-btn>
-      </v-system-bar>
+      <v-btn href="/edit-my-idea" class="ma-2" outlined color="indigo"
+        >Create an Idea</v-btn
+      >
       <IdeaCard isEditable v-bind:ideas="ideas" />
     </v-flex>
   </v-layout>
