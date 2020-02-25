@@ -10,7 +10,8 @@
     <v-row>
       <v-tabs v-model="tab" background-color="transparent" color="basil" grow>
         <v-tab v-for="(item, i) in items" :key="i" :to="item.to" router exact>
-          {{ item.title }}
+          <v-icon>{{ item.icon }}</v-icon
+          >{{ item.title }}
         </v-tab>
       </v-tabs>
     </v-row>
