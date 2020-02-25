@@ -4,16 +4,16 @@
       <h2>Featured</h2>
       <v-carousel cycle height="400" hide-delimiters show-arrows-on-hover>
         <v-carousel-item v-for="(featIdea, i) in ideas" :key="i">
-          <NuxtLink :to="route + '/ideas/' + featIdea.slug">
-            <v-img
-              :src="featIdea.src"
-              class="white--text align-end"
-              gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-              height="400"
-            >
-              <v-card-title v-text="featIdea.title"></v-card-title>
-            </v-img>
-          </NuxtLink>
+          <v-img
+            :src="featIdea.src"
+            class="white--text align-end"
+            gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+            height="400"
+            v-on:click="onClick(featIdea.id, featIdea.slug)"
+            style="cursor: pointer"
+          >
+            <v-card-title v-text="featIdea.title"></v-card-title>
+          </v-img>
         </v-carousel-item>
       </v-carousel>
     </v-row>
@@ -119,6 +119,11 @@ export default {
         this.hasFeatured = true;
       }
       this.isLoading = false;
+    },
+    onClick(id) {
+      this.$router.push({
+        path: `/${this.$props.route}/${id}`,
+      });
     },
   },
 };
