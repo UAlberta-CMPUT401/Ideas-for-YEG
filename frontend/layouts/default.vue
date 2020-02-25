@@ -3,8 +3,27 @@
     <v-card-title class="text-center justify-center py-6">
       <h1 class="font-weight-bold display-3 basil--text">{{ title }}</h1>
       <v-spacer></v-spacer>
-
-      <v-btn v-if="!isAuthenticated" :to="'/login'" router exact>Login</v-btn>
+      <!--TODO: Need to have logic to check if a user is logged in-->
+      <client-only>
+        <v-btn v-if="!isAuthenticated" :to="'/login'" router exact>Login</v-btn>
+        <v-menu v-else :offset-y="true">
+          <template v-slot:activator="{ on }">
+            <v-btn v-on="on" color="primary" v-bind:fab="true" dark>
+              <v-icon>mdi-account-circle</v-icon>
+            </v-btn>
+          </template>
+          <v-list>
+            <v-subheader>{{ username }}</v-subheader>
+            <v-list-item
+              v-for="(item, index) in authItems"
+              :key="index"
+              @click="item.onClick"
+            >
+              <v-list-item-title>{{ item.title }}</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </client-only>
     </v-card-title>
 
     <v-row>
