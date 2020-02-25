@@ -13,7 +13,7 @@
             label="Search"
           ></v-text-field>
         </v-form>
-        <IdeaCard v-bind:ideas="ideas" />
+        <IdeaCard v-bind:isEditable="false" v-bind:ideas="ideas" />
       </v-col>
     </v-row>
   </v-container>

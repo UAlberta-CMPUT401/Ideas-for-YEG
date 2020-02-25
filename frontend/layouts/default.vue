@@ -81,6 +81,11 @@ export default {
           title: 'Location Selection',
           to: '/',
         },
+        {
+          icon: 'mdi-chart-bubble',
+          title: 'My Ideas',
+          to: '/my-ideas',
+        },
       ],
       miniVariant: false,
       right: true,
