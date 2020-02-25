@@ -126,7 +126,7 @@
 
     <v-divider></v-divider>
 
-    <v-expansion-panels v-model="panel" :disabled="disabled" multiple>
+    <v-expansion-panels multiple>
       <v-expansion-panel>
         <v-expansion-panel-header>Tags</v-expansion-panel-header>
         <v-expansion-panel-content>
@@ -145,7 +145,7 @@
 
     <v-divider></v-divider>
 
-    <v-expansion-panels v-model="panel" :disabled="disabled" multiple>
+    <v-expansion-panels multiple>
       <v-expansion-panel>
         <v-expansion-panel-header>Honorarium</v-expansion-panel-header>
         <v-expansion-panel-content>
@@ -204,7 +204,38 @@ export default {
       description:
         'To indicate short quotations (four typed lines or fewer of prose or three lines of verse) in your text, enclose the quotation within double quotation marks. Provide the author and specific page number (in the case of verse, provide line numbers) in the in-text citation, and include a complete reference on the Works Cited page. Punctuation marks such as periods, commas, and semicolons should appear after the parenthetical citation.To indicate short quotations (four typed lines or fewer of prose or three lines of verse) in your text, enclose the quotation within double quotation marks. Provide the author and specific page number (in the case of verse, provide line numbers) in the in-text citation, and include a complete reference on the Works Cited page. Punctuation marks such as periods, commas, and semicolons should appear after the parenthetical citation.',
       upvotes: 100,
-      ideaCreator: 'Rehab',
+      ideaCreator: {
+        confirmed: true,
+        blocked: false,
+        _id: '5e3c99fb41c08b409b7a4953',
+        username: 'tester',
+        email: 'tester@gmail.com',
+        provider: 'local',
+        createdAt: '2020-02-06T22:58:03.453Z',
+        updatedAt: '2020-02-19T23:21:06.386Z',
+        __v: 0,
+        role: '5e3c925057263540022ebd94',
+        idea: '5e409cb109d421443053be98',
+        firstName: 'Tester',
+        lastName: 'Last',
+        avatar: {
+          _id: '5e443e7ce581db5c8903b802',
+          name: 'avatar.jpg',
+          sha256: 'C1mr67dPxbcUFfBLOsuCdNHE2ZysPT9Hw8pyQrCuTzU',
+          hash: '0d496df0137e46939601317ecdee2be2',
+          ext: '.jpg',
+          mime: 'image/jpeg',
+          size: 25.54,
+          url: '/uploads/0d496df0137e46939601317ecdee2be2.jpg',
+          provider: 'local',
+          related: ['5e3c99fb41c08b409b7a4953'],
+          createdAt: '2020-02-12T18:05:48.500Z',
+          updatedAt: '2020-02-12T18:05:48.761Z',
+          __v: 1,
+          id: '5e443e7ce581db5c8903b802',
+        },
+        id: '5e3c99fb41c08b409b7a4953',
+      },
       volunteers: [
         {
           username: 'Test',

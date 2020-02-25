@@ -1,13 +1,16 @@
 <template>
   <v-container fluid>
     <v-row justify="center">
+      <v-col v-if="ideas.length === 0">
+        <h2>No ideas have been found</h2>
+      </v-col>
       <v-col v-for="idea in ideas" :key="idea.title" justify="center">
         <v-card
           d-flex
           justify-center
           class="mx-auto"
           max-width="700"
-          v-on:click="onClick(idea.id)"
+          v-on:click="onClick(idea.id, idea.slug)"
         >
           <v-list-item>
             <v-list-item-content>
@@ -58,7 +61,7 @@
               </v-btn>
 
               <div class="btnSpacing">
-                <v-icon color="black">mdi-currency-usd</v-icon>
+                <v-icon color="black">mdi-cash-usd-outline</v-icon>
                 <span class="subheading mr-2" color="black"
                   >{{ idea.amountReceived }} raised</span
                 >

@@ -33,6 +33,8 @@ services:
         - DATABASE_AUTHENTICATION_DATABASE=strapi
     ports:
         - 1337:1337
+    volumes:
+        - ./backend/public:/api/public
     depends_on:
         - mongodb
     command: 'npm run strapi dev'

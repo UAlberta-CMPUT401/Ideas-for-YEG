@@ -13,6 +13,35 @@
               label="Title"
             ></v-text-field>
           </v-col>
+
+          <v-col cols="12" sm="6">
+            <v-select
+              v-model="form.status"
+              :items="status"
+              color="pink"
+              label="Idea Status"
+              required
+            ></v-select>
+          </v-col>
+          <v-col cols="12" sm="6">
+            <v-select
+              v-model="form.locations"
+              :items="locations"
+              color="pink"
+              label="Idea Location"
+              required
+            ></v-select>
+          </v-col>
+          <v-col cols="12" sm="6">
+            <v-select
+              v-model="form.categories"
+              :items="categories"
+              color="pink"
+              label="Category"
+              required
+            ></v-select>
+          </v-col>
+
           <v-col cols="12">
             <v-textarea v-model="form.description" color="teal">
               <template v-slot:label>
@@ -20,10 +49,57 @@
               </template>
             </v-textarea>
           </v-col>
+
+          <v-combobox
+            v-model="tags"
+            :items="oldTags"
+            tags
+            clearable
+            label="Enter tags related to your idea"
+            multiple
+            solo
+          >
+            <template v-slot:selection="{ attrs, item, select, selected }">
+              <v-chip
+                v-bind="attrs"
+                :input-value="selected"
+                close
+                @click="select"
+                @click:close="remove(item)"
+              >
+                <strong>{{ item }}</strong
+                >&nbsp;
+              </v-chip>
+            </template>
+          </v-combobox>
+
+          <v-col cols="12">
+            <v-row>
+              <template>
+                <v-file-input
+                  label="Upload a profile photo for this idea"
+                  filled
+                  prepend-icon="mdi-camera"
+                ></v-file-input>
+              </template>
+            </v-row>
+          </v-col>
+        </v-row>
+
+        <v-row>
+          <template>
+            <AddIdeaAdmin />
+          </template>
+          <template>
+            <IdeaCreatorUpdate />
+          </template>
+          <template>
+            <CreateHonorarium />
+          </template>
         </v-row>
       </v-container>
       <v-card-actions>
-        <v-btn text @click.stop="dialog = true">Delete</v-btn>
+        <v-btn @click.stop="dialog = true" text>Delete</v-btn>
         <v-dialog v-model="dialog" max-width="290">
           <v-card>
             <v-card-title class="headline"
@@ -31,10 +107,10 @@
             >
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="red" text @click="dialog = false">
+              <v-btn @click="dialog = false" color="red" text>
                 Delete
               </v-btn>
-              <v-btn color="green darken-1" text @click="dialog = false">
+              <v-btn @click="dialog = false" color="green darken-1" text>
                 Cancel
               </v-btn>
             </v-card-actions>
@@ -49,9 +125,17 @@
   </v-card>
 </template>
 <script>
+import AddIdeaAdmin from '../components/AddIdeaAdmin';
+import IdeaCreatorUpdate from '../components/IdeaCreatorUpdate';
+import CreateHonorarium from '../components/CreateHonorarium';
+
 export default {
+  components: {
+    AddIdeaAdmin,
+    IdeaCreatorUpdate,
+    CreateHonorarium,
+  },
   props: {
-    slug: String,
     ideas: {
       type: Array,
       default: () => {
@@ -69,10 +153,24 @@ export default {
     return {
       dialog: false,
       form: Object.assign({}, defaultForm),
-      rules: {
-        title: [(val) => (val || '').length > 0 || 'This field is required'],
-      },
       status: ['Ongoing', 'Seeking Help', 'Completed'],
+      locations: [
+        'yeg',
+        'yyc',
+        'nyc',
+        'lax',
+        'yxy',
+        'yxh',
+        'yxu',
+        'yyt',
+        'yyz',
+        'yyj',
+        'yyd',
+        'yum',
+      ],
+      categories: ['animals', 'sports', 'winter'],
+      tags: ['create new tags here', 'Programming'],
+      oldTags: ['existing tags here', 'fundraiser'],
       snackbar: false,
       defaultForm,
     };
@@ -82,6 +180,10 @@ export default {
     submit() {
       this.snackbar = true;
       console.log(this.title, this.description);
+    },
+    remove(item) {
+      this.tags.splice(this.tags.indexOf(item), 1);
+      this.tags = [...this.tags];
     },
   },
 };

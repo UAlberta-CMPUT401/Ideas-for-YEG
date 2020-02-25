@@ -13,25 +13,24 @@
 
     <v-card>
       <v-card-title class="headline grey lighten-2" primary-title>
-        {{ DialogTitle }}
+        {{ dialogTitle }}
       </v-card-title>
 
       <v-timeline>
         <v-timeline-item
-          v-for="item in ProjectUpdates"
-          :key="item.update"
+          v-for="update in updates"
+          :key="update.id"
           color="red lighten-2"
           large
         >
           <template v-slot:opposite>
             <span
-              ><td>{{ item.date }}</td></span
+              ><td>{{ update.createdAt }}</td></span
             >
           </template>
           <v-card class="elevation-2">
-            <v-card-title class="headline">Action</v-card-title>
             <v-card-text>
-              <td>{{ item.update }}</td>
+              <td>{{ update.description }}</td>
             </v-card-text>
           </v-card>
         </v-timeline-item>
@@ -48,35 +47,17 @@
     </v-card>
   </v-dialog>
 </template>
+
 <script>
 export default {
   props: {
-    ideas: {
-      type: Array,
-      default: () => {
-        return [];
-      },
-    },
+    updates: Array,
   },
+
   data() {
     return {
       dialog: false,
-      DialogTitle: 'Update History',
-      title: 'My title',
-      ProjectUpdates: [
-        {
-          update: 'Created',
-          date: 'Jan 5 2020',
-        },
-        {
-          update: 'Edited',
-          date: 'Feb 2 2020',
-        },
-        {
-          update: 'Edited',
-          date: 'Feb 10 2020',
-        },
-      ],
+      dialogTitle: 'Update History',
     };
   },
 };

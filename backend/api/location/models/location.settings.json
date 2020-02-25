@@ -27,6 +27,7 @@
       "required": true
     },
     "ideas": {
+      "via": "location",
       "collection": "idea"
     },
     "admins": {

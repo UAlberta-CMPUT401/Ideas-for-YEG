@@ -78,6 +78,13 @@
       ],
       "default": "SeekingHelp",
       "required": true
+    },
+    "location": {
+      "model": "location",
+      "via": "ideas"
+    },
+    "slug": {
+      "type": "string"
     }
   }
 }

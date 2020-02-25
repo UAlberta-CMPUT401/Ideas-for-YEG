@@ -79,6 +79,19 @@ const LAST_NAME_MAX_LENGTH = 32;
 const LAST_NAME_MIN_LENGTH = 1;
 
 export default {
+  // Define constants in page export for unit testing
+  consts: [
+    EMAIL_VALIDATION_REGEX,
+    PASSWORD_MIN_LENGTH,
+    PASSWORD_MAX_LENGTH,
+    USERNAME_MIN_LENGTH,
+    USERNAME_MAX_LENGTH,
+    FIRST_NAME_MAX_LENGTH,
+    FIRST_NAME_MIN_LENGTH,
+    LAST_NAME_MAX_LENGTH,
+    LAST_NAME_MIN_LENGTH,
+  ],
+
   components: {},
 
   data() {
@@ -135,6 +148,8 @@ export default {
     /*
     Validate input, then make a request to the backend.
      */
+
+    // Request API.
     async signUp() {
       if (this.$refs.form.validate()) {
         const data = await this.$axios
@@ -161,14 +176,28 @@ export default {
           });
         // Handle success.
         if (data) {
-          // const user = data.user;
-          const jwt = data.jwt;
-          if (process.browser) {
-            // Access token like so: console.log(document.cookie.replace(/(?:(?:^|.*;\s*)accessToken\s*=\s*([^;]*).*$)|^.*$/, "$1"));
-            document.cookie = 'accessToken=' + jwt;
-            window.localStorage.setItem(LS_USER_DATA, JSON.stringify(data));
-            this.$store.commit('userData/update', data);
-            await this.$router.push('/');
+          const email = await this.$axios
+            .$post('/auth/send-email-confirmation', {
+              email: this.email,
+            })
+            .then((response) => {
+              // Handle success.
+              console.log('Your user received an email');
+            })
+            .catch((error) => {
+              // Handle error.
+              console.log('An error occured:', error);
+            });
+          if (email) {
+            // const user = data.user;
+            const jwt = data.jwt;
+            if (process.browser) {
+              // Access token like so: console.log(document.cookie.replace(/(?:(?:^|.*;\s*)accessToken\s*=\s*([^;]*).*$)|^.*$/, "$1"));
+              document.cookie = 'accessToken=' + jwt;
+              window.localStorage.setItem(LS_USER_DATA, JSON.stringify(data));
+              this.$store.commit('userData/update', data);
+              await this.$router.push('/');
+            }
           }
         }
       }
