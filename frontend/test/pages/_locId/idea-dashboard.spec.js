@@ -57,10 +57,7 @@ describe('IdeaDashboard Page', () => {
     expect(wrapper.isVueInstance()).toBeTruthy();
     await wrapper.vm.$nextTick();
 
-    // const idea = response.data.locations[0].ideas[0];
-
-    expect(wrapper.vm.ideas).toEqual([]);
-    /*
+    const idea = response.data.locations[0].ideas[0];
     expect(wrapper.vm.ideas).toEqual([
       {
         id: idea.id,
@@ -75,7 +72,7 @@ describe('IdeaDashboard Page', () => {
         user_avatar: `http://localhost:1337${idea.user_creator.avatar.url}`,
         slug: idea.slug,
       },
-    ]); */
+    ]);
   });
 
   test('Idea api call returns an error', async () => {
