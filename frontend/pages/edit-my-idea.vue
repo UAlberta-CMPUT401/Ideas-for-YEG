@@ -14,34 +14,26 @@
             ></v-text-field>
           </v-col>
 
-          <v-col cols="12" sm="6">
-            <v-select
-              v-model="form.status"
-              :items="status"
-              color="pink"
-              label="Idea Status"
-              required
-            ></v-select>
-          </v-col>
-          <v-col cols="12" sm="6">
-            <v-select
-              v-model="form.locations"
-              :items="locations"
-              color="pink"
-              label="Idea Location"
-              required
-            ></v-select>
-          </v-col>
-          <v-col cols="12" sm="6">
-            <v-select
-              v-model="form.categories"
-              :items="categories"
-              color="pink"
-              label="Category"
-              required
-            ></v-select>
-          </v-col>
-
+          <v-row>
+            <v-col cols="12" sm="6">
+              <v-select
+                v-model="form.status"
+                :items="status"
+                color="pink"
+                label="Idea Status"
+                required
+              ></v-select>
+            </v-col>
+            <v-col cols="12" sm="6">
+              <v-select
+                v-model="form.locations"
+                :items="locations"
+                color="pink"
+                label="Idea Location"
+                required
+              ></v-select>
+            </v-col>
+          </v-row>
           <v-col cols="12">
             <v-textarea v-model="form.description" color="teal">
               <template v-slot:label>
@@ -50,28 +42,18 @@
             </v-textarea>
           </v-col>
 
-          <v-combobox
-            v-model="tags"
-            :items="oldTags"
-            tags
-            clearable
-            label="Enter tags related to your idea"
-            multiple
-            solo
-          >
-            <template v-slot:selection="{ attrs, item, select, selected }">
-              <v-chip
-                v-bind="attrs"
-                :input-value="selected"
-                close
-                @click="select"
-                @click:close="remove(item)"
-              >
-                <strong>{{ item }}</strong
-                >&nbsp;
-              </v-chip>
-            </template>
-          </v-combobox>
+          <v-col cols="12">
+            <v-autocomplete
+              v-model="values"
+              :items="categories"
+              outlined
+              dense
+              chips
+              small-chips
+              label="Categories"
+              multiple
+            ></v-autocomplete>
+          </v-col>
 
           <v-col cols="12">
             <v-row>
@@ -169,8 +151,6 @@ export default {
         'yum',
       ],
       categories: ['animals', 'sports', 'winter'],
-      tags: ['create new tags here', 'Programming'],
-      oldTags: ['existing tags here', 'fundraiser'],
       snackbar: false,
       defaultForm,
     };
@@ -180,10 +160,6 @@ export default {
     submit() {
       this.snackbar = true;
       console.log(this.title, this.description);
-    },
-    remove(item) {
-      this.tags.splice(this.tags.indexOf(item), 1);
-      this.tags = [...this.tags];
     },
   },
 };
