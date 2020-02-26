@@ -3,8 +3,24 @@
     <v-row justify="center">
       <v-col v-for="idea in ideas" :key="idea.title" justify="center">
         <v-card d-flex justify-center class="mx-auto" max-width="700">
-          <v-btn text class="pa-0 btnSpacing" v-on:click="onClick(ideas, idea)">
+          <v-btn v-on:click="onClick(ideas, idea)" text class="pa-0 btnSpacing">
             <v-icon color="black">mdi-delete</v-icon>
+          </v-btn>
+          <v-btn
+            v-if="idea.featured === true"
+            v-on:click="featured(ideas, idea)"
+            text
+            class="pa-0 btnSpacing"
+          >
+            <v-icon color="blue">mdi-star</v-icon>
+          </v-btn>
+          <v-btn
+            v-else
+            v-on:click="featured(ideas, idea)"
+            text
+            class="pa-0 btnSpacing"
+          >
+            <v-icon color="black">mdi-star</v-icon>
           </v-btn>
           <v-list-item>
             <v-list-item-content>
@@ -30,7 +46,7 @@
                 class="d-none d-sm-flex d-md-flex d-lg-flex d-xl-flex"
                 color="grey darken-3"
               >
-                <v-img class="elevation-6" :src="idea.user_avatar"></v-img>
+                <v-img :src="idea.user_avatar" class="elevation-6"></v-img>
               </v-list-item-avatar>
 
               <v-list-item-content
@@ -147,6 +163,45 @@ export default {
         });
       if (response) {
         window.location.reload();
+      }
+    },
+    async featured(ideas, idea) {
+      // Get the jwt
+      const userJSON = window.localStorage.getItem('userData');
+      const userData = JSON.parse(userJSON);
+
+      // // Remove the selected category from the category list
+      // let ideaArray = ideas;
+      // const index = ideaArray.indexOf(idea);
+      // idea.featured = !idea.featured;
+      // ideaArray.$set(index, idea);
+      //
+      // // Format the JSON for insertion into the graphql
+      // ideaArray = JSON.stringify(ideaArray);
+
+      // feature idea
+      idea.featured = !idea.featured;
+
+      // Send the graphql post
+      const response = await this.$axios
+        .$put(
+          `/ideas/${idea.id}`,
+          { featured: idea.featured },
+          {
+            headers: {
+              Authorization: 'Bearer ' + userData.jwt,
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+          },
+        )
+        .catch((err) => {
+          console.log(err.response);
+        });
+      if (response) {
+        // update the array accordingly
+        const index = ideas.indexOf(idea);
+        ideas.splice(index, 1, idea);
       }
     },
   },
