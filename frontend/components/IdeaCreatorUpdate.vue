@@ -53,9 +53,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="red" text @click="dialog = false">Cancel</v-btn>
-          <v-btn color="green darken-1" text @click="dialog = false"
-            >Send</v-btn
-          >
+          <v-btn @click="sendUpdate" color="green darken-1" text>Send</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -66,8 +64,17 @@ export default {
   data() {
     return {
       dialog: false,
+      Subject: '',
+      Message: '',
       Groups: ['Followers', 'Volunteers', 'Idea admins'],
     };
+  },
+  methods: {
+    sendUpdate() {
+      // do something
+      console.log('wowowo');
+      console.log('this.Subject, this.Message');
+    },
   },
 };
 </script>
