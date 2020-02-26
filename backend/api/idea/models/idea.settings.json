@@ -87,7 +87,10 @@
       "default": false
     },
     "upvote_count": {
-      "type": "integer"
+      "type": "integer",
+      "required": false,
+      "min": 0,
+      "default": 0
     }
   }
 }

@@ -27,14 +27,16 @@ module.exports = {
 
     let upvoters = entity.user_upvoters;
     if (upvoters.find(element => element.id == ctx.state.user.id) != undefined) {
-      upvoters = removeUserArray(upvoters, ctx.state.user)
+      upvoters = removeUserArray(upvoters, ctx.state.user);
     } else {
-      upvoters.push(ctx.state.user)
+      upvoters.push(ctx.state.user);
     }
+    let upvoteCount = upvoters.length;
 
     let thing;
     thing = await strapi.services.idea.update(entity, {
-      'user_upvoters': upvoters
+      'user_upvoters': upvoters,
+      'upvote_count': upvoteCount,
     });
 
     return sanitizeEntity(thing, {
@@ -90,7 +92,7 @@ module.exports = {
     let resLimit = 100;
     let skip = 0;
     const queryParams = {$and:[]};
-    let sortBy = {'createdAt':1};
+    let sortBy = {'createdAt':-1};
 
     // Query params include: searchTerm, sortBy, limit, skip,
     const qParams = ctx.request.query;
@@ -117,10 +119,10 @@ module.exports = {
     }
     if( qParams.sortBy ){
       if( qParams.sortBy === 'new'){
-        sortBy = {'createdAt':1};
+        sortBy = {'createdAt':-1};
       }
       else if (qParams.sortBy === 'top'){
-        sortBy = {};
+        sortBy = {'upvote_count':-1};
       }
     }
     if( qParams.limit && qParams.limit < resLimit ){

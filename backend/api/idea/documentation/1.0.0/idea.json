@@ -1372,6 +1372,10 @@
           "featured": {
             "type": "boolean",
             "default": false
+          },
+          "upvote_count": {
+            "type": "integer",
+            "default": 0
           }
         }
       },
@@ -1593,6 +1597,10 @@
           "featured": {
             "type": "boolean",
             "default": false
+          },
+          "upvote_count": {
+            "type": "integer",
+            "default": 0
           }
         }
       }
