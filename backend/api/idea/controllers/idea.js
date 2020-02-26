@@ -85,4 +85,12 @@ module.exports = {
       model: strapi.models.idea
     });
   },
+
+  async search(ctx){
+    const result = strapi.query('idea').model.find({
+
+    });
+
+    return result;
+  }
 };
