@@ -31,17 +31,17 @@
                 multiple
                 single-line
               ></v-autocomplete>
-              <v-divider></v-divider>
+
               <v-text-field
                 label="Subject"
-                v-model="selected"
+                v-model="subject"
                 single-line
                 full-width
                 hide-details
               ></v-text-field>
-              <v-divider></v-divider>
+
               <v-textarea
-                v-model="title"
+                v-model="message"
                 label="Message"
                 counter
                 full-width
@@ -64,16 +64,16 @@ export default {
   data() {
     return {
       dialog: false,
-      Subject: '',
-      Message: '',
+      subject: '',
+      message: '',
+      selected: '',
       Groups: ['Followers', 'Volunteers', 'Idea admins'],
     };
   },
   methods: {
     sendUpdate() {
       // do something
-      console.log('wowowo');
-      console.log('this.Subject, this.Message');
+      console.log(this.subject, this.message, this.selected);
     },
   },
 };
