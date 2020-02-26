@@ -1,38 +1,39 @@
 <template>
-  <v-container align="center" justify="center">
-    <v-row align="center" justify="center">
-      <v-col justify="center" cols="12" sm="9" md="9" lg="8" xl="6">
-        <FeaturedCarousel v-bind:route="this.$route.params.locId" />
-        <v-form ref="form" class="my-3">
-          <v-text-field
-            @click:append="search"
-            v-on:keydown.enter.prevent="search"
-            v-model="searchTerm"
-            :loading="isLoading"
-            append-icon="mdi-magnify"
-            name="searchTerm"
-            label="Search"
-          ></v-text-field>
-        </v-form>
-        <IdeaCard v-bind:isEditable="false" v-bind:ideas="ideas" />
-      </v-col>
+  <v-container v-if="hasFeatured" fluid>
+    <v-row justify="center">
+      <h2>Featured</h2>
+      <v-carousel cycle height="400" hide-delimiters show-arrows-on-hover>
+        <v-carousel-item v-for="(featIdea, i) in ideas" :key="i">
+          <v-img
+            :src="featIdea.src"
+            class="white--text align-end"
+            gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+            height="400"
+            v-on:click="onClick(featIdea.id, featIdea.slug)"
+            style="cursor: pointer"
+          >
+            <v-card-title v-text="featIdea.title"></v-card-title>
+          </v-img>
+        </v-carousel-item>
+      </v-carousel>
     </v-row>
   </v-container>
 </template>
 
 <script>
-import IdeaCard from '../../components/IdeaCard';
-import FeaturedCarousel from '../../components/idea-dashboard/FeaturedCarosel';
-
+/**
+ * Template Credits: https://vuetifyjs.com/en/components/cards
+ * MIT License
+ * https://github.com/vuetifyjs/vuetify
+ */
 export default {
-  components: {
-    IdeaCard,
-    FeaturedCarousel,
+  props: {
+    route: String,
   },
-
   data() {
     return {
       searchTerm: '',
+      hasFeatured: false,
       isLoading: false,
       ideas: this.$store.getters['ideas/getIdeas'],
     };
@@ -46,45 +47,38 @@ export default {
     async search() {
       this.isLoading = true;
       // If the search field is filled, add a search condition to search on a term
-      let descSearchCond = '';
-      if (this.searchTerm.length > 0) {
-        descSearchCond = `description_contains:"${this.searchTerm}"`;
-      }
       const response = await this.$axios
         .$post('/graphql', {
           query: `query {
-            locations(where: { route: "${this.$route.params.locId}"}) {
-              ideas(where: {${descSearchCond}}) {
-                location {
-                  route
-                }
-                id
-                title
-                description
-                volunteers {
-                  username
-                }
-                images {
+          locations(where: { route: "${this.$route.params.locId}"}) {
+            ideas(where: {featured: true}) {
+              id
+              title
+              description
+              volunteers {
+                username
+              }
+              images {
+                url
+              }
+              user_creator {
+                username
+                avatar {
                   url
                 }
-                user_creator {
-                  username
-                  avatar {
-                    url
-                  }
-                }
-                user_upvoters {
-                  username
-                }
-                followers {
-                  username
-                }
-                slug
-                featured
               }
+              user_upvoters {
+                username
+              }
+              followers {
+                username
+              }
+              slug
+              featured
             }
           }
-          `,
+        }
+        `,
         })
         .catch((err) => {
           console.log(err);
@@ -117,14 +111,26 @@ export default {
                 ? `http://localhost:1337${idea.user_creator.avatar.url}`
                 : 'https://www.everypixel.com/image-638397625280524203.jpg',
               slug: idea.slug,
-              location: idea.location.route,
-              featured: idea.featured,
             };
           });
         }
       }
+      if (this.ideas.length > 0) {
+        this.hasFeatured = true;
+      }
       this.isLoading = false;
+    },
+    onClick(id) {
+      this.$router.push({
+        path: `/${this.$props.route}/${id}`,
+      });
     },
   },
 };
 </script>
+
+<style scoped>
+.btnSpacing {
+  padding: 0 6px;
+}
+</style>

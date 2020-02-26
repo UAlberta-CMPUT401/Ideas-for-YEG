@@ -1,9 +1,40 @@
 {
-  "routes": [
-    {
+  "routes": [{
       "method": "GET",
       "path": "/ideas",
       "handler": "idea.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/idea/:id/admin",
+      "handler": "idea.setAdmin",
+      "config": {
+        "policies": ["isIdeaCreator"]
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/idea/upvote/:id",
+      "handler": "idea.upvote",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/idea/volunteer/:id",
+      "handler": "idea.volunteer",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/idea/follow/:id",
+      "handler": "idea.follow",
       "config": {
         "policies": []
       }
@@ -37,7 +68,7 @@
       "path": "/ideas/:id",
       "handler": "idea.update",
       "config": {
-        "policies": []
+        "policies": ["isIdeaCreator"]
       }
     },
     {
