@@ -93,11 +93,11 @@ module.exports = {
     let skip = 0;
     const queryParams = {$and:[]};
     let sortBy = {'createdAt':-1};
-
+    let loc;
     // Query params include: searchTerm, sortBy, limit, skip,
     const qParams = ctx.request.query;
     if( qParams.locId ){
-      let loc = await strapi.query('location').findOne({route: qParams.locId});
+      loc = await strapi.query('location').findOne({route: qParams.locId});
       if(!loc){
         ctx.throw(400, 'invalid location id provided');
       }
@@ -108,12 +108,21 @@ module.exports = {
     }
 
     if( qParams.searchTerm ){
+      /* TODO: Update the category schema such that it only contains the name, and the location (remove it's repeatable relation with itself).
+        the current schema has categories nested in catagories (see strapi dashboard), which cannot easily be
+        used to make relations to ideas.
+       */
+
+      // Get ids that match a given search term exactly (case insensitive)
+      // let categories = await strapi.query('categories').findOne({location:loc});
+      // let category = categories.category.filter(x => x.name === qParams.searchTerm);
+
       // Push clause that looks if titles or documents contain the search term as a substring
       queryParams.$and.push({
         $or:[
           {"title" : {$regex : `.*${qParams.searchTerm}.*`, $options : 'i'}},
           {"description" : {$regex : `.*${qParams.searchTerm}.*`, $options : 'i'}},
-          // {"categories" : {$regex : `.*${qParams.searchTerm}.*`}},
+          // {"categories" : {$in:{category}}},
           ]
       });
     }
