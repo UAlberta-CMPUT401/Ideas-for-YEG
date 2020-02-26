@@ -69,6 +69,7 @@
                   prepend-icon="mdi-camera"
                   multiple
                   v-model="images"
+                  ref="file"
                 ></v-file-input>
               </template>
             </v-row>
@@ -183,14 +184,6 @@ export default {
     }
   },
 
-  /**
-   * dynamically get the locations that exists
-   * dyanmically set categories based on selected location. user needs to select location first before selecting categories
-   * fix title, description, status flex box
-   *
-   * DONE -> click on an idea to view details, need to grab location from API or route
-   */
-
   methods: {
     locationOnChange(location) {
       this.selectedLocation = location;
@@ -220,6 +213,8 @@ export default {
         .get('/users/me', config)
         .catch((error) => {
           console.log(error);
+          this.loading = false;
+          this.error = true;
         });
 
       if (!userResponse) {
@@ -241,45 +236,47 @@ export default {
         slug: this.title,
         user_creator: userResponse.data.id,
       };
-      // NEED A WAY TO ADD IDEA CREATOR TO THIS
 
       const postIdeaResponse = await this.$axios
         .$post('/ideas', ideaRequest, config)
         .catch((error) => {
           console.log(error);
           this.error = true;
+          this.loading = false;
         });
 
       if (postIdeaResponse) {
         const formData = new FormData();
-        console.log(this.images);
 
-        this.images.forEach((file) => {
-          formData.append('files', file, file.name);
+        this.images.forEach((file, index) => {
+          formData.append(`files`, file);
         });
+
         formData.append('refId', postIdeaResponse.id);
         formData.append('ref', 'ideas');
         formData.append('field', 'images');
-
-        this.success = true;
-        this.loading = false;
 
         const imageResponse = await this.$axios
           .$post('/upload', formData, {
             headers: {
               Authorization: 'Bearer ' + userData.jwt,
-              Accept: 'application/json',
               'Content-Type': 'multipart/form-data',
             },
           })
           .catch((error) => {
             console.log(error);
             this.error = true;
+            this.loading = false;
           });
-        console.log(imageResponse);
-        // this.$router.push('/my-ideas');
+
+        if (imageResponse) {
+          this.success = true;
+          this.loading = false;
+          // this.$router.push('/my-ideas');
+        }
       } else {
         this.error = true;
+        this.loading = false;
       }
     },
   },
