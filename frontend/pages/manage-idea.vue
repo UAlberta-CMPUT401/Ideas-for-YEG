@@ -31,6 +31,8 @@
                 v-model="selectedLocation"
                 :items="locations"
                 label="Idea Location"
+                item-text="location"
+                item-value="id"
                 :rules="requiredFieldRules"
                 v-on:change="locationOnChange"
               ></v-select>
@@ -156,6 +158,7 @@ export default {
       loading: false,
       error: false,
       requiredFieldRules: [(v) => v.length >= 1 || `Field is required`],
+      locationIds: [],
     };
   },
 
@@ -171,9 +174,12 @@ export default {
               return category.name;
             })
           : [];
-        this.allLocationsWithCategories[location.route] = allCategories;
+        this.allLocationsWithCategories[location.id] = allCategories;
+        this.locations.push({
+          location: location.route,
+          id: location.id,
+        });
       });
-      this.locations = Object.keys(this.allLocationsWithCategories);
     }
   },
 
@@ -194,12 +200,32 @@ export default {
       this.selectedStatus = status;
     },
 
-    submit() {
+    async submit() {
       if (!this.$refs.form.validate()) {
         return;
       }
 
       this.loading = true;
+      const userJSON = window.localStorage.getItem('userData');
+      const userData = JSON.parse(userJSON);
+      const config = {
+        headers: {
+          Authorization: 'Bearer ' + userData.jwt,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      };
+
+      const userResponse = await this.$axios
+        .get('/users/me', config)
+        .catch((error) => {
+          console.log(error);
+        });
+
+      if (!userResponse) {
+        this.error = true;
+        return;
+      }
 
       // TODO add honorarium, add idea admins, send project updates later
       const ideaRequest = {
@@ -212,35 +238,25 @@ export default {
             name: category,
           };
         }),
-        // images: this.images
         slug: this.title,
+        user_creator: userResponse.data.id,
       };
       // NEED A WAY TO ADD IDEA CREATOR TO THIS
 
-      console.log(ideaRequest);
-
-      const userJSON = window.localStorage.getItem('userData');
-      const userData = JSON.parse(userJSON);
-      const config = {
-        headers: {
-          Authorization: 'Bearer ' + userData.jwt,
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-      };
-      console.log(config);
-
-      const postIdeaResponse = this.$axios
+      const postIdeaResponse = await this.$axios
         .$post('/ideas', ideaRequest, config)
         .catch((error) => {
           console.log(error);
           this.error = true;
         });
 
-      console.log('res', postIdeaResponse);
       if (postIdeaResponse) {
         const formData = new FormData();
-        formData.append('files', this.images);
+        console.log(this.images);
+
+        this.images.forEach((file) => {
+          formData.append('files', file, file.name);
+        });
         formData.append('refId', postIdeaResponse.id);
         formData.append('ref', 'ideas');
         formData.append('field', 'images');
@@ -248,12 +264,19 @@ export default {
         this.success = true;
         this.loading = false;
 
-        const imageResponse = this.$axios
-          .$post('/upload', formData, config)
+        const imageResponse = await this.$axios
+          .$post('/upload', formData, {
+            headers: {
+              Authorization: 'Bearer ' + userData.jwt,
+              Accept: 'application/json',
+              'Content-Type': 'multipart/form-data',
+            },
+          })
           .catch((error) => {
             console.log(error);
+            this.error = true;
           });
-        console.log('images', imageResponse);
+        console.log(imageResponse);
         // this.$router.push('/my-ideas');
       } else {
         this.error = true;
