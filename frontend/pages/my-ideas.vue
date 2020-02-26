@@ -1,7 +1,7 @@
 <template>
   <v-layout column justify-center align-center>
     <v-flex xs12 sm8 md6>
-      <v-btn href="/edit-my-idea" class="ma-2" outlined color="indigo"
+      <v-btn href="/manage-idea" class="ma-2" outlined color="indigo"
         >Create an Idea</v-btn
       >
       <IdeaCard isEditable v-bind:ideas="ideas" />
@@ -29,6 +29,9 @@ export default {
         query: `query {
             locations(where: { route: "yeg" }) {
               ideas {
+                location {
+                  route
+                }
                 id
                 title
                 description
@@ -84,6 +87,7 @@ export default {
             user_avatar: idea.user_creator.avatar
               ? `http://localhost:1337${idea.user_creator.avatar.url}`
               : 'https://www.everypixel.com/image-638397625280524203.jpg',
+            location: idea.location.route,
           };
         });
       } else {

@@ -201,7 +201,7 @@ export default {
       if (userJSON !== null) {
         const userData = JSON.parse(userJSON);
         if (userData.user.role.type !== 'authenticated') {
-          this.$route.push('/');
+          this.$router.push('/');
         }
       } else {
         this.$router.push('/');
