@@ -41,10 +41,6 @@
       "plugin": "users-permissions",
       "collection": "user"
     },
-    "user_downvoters": {
-      "plugin": "users-permissions",
-      "collection": "user"
-    },
     "update": {
       "type": "component",
       "repeatable": true,
