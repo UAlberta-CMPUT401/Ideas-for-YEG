@@ -221,15 +221,17 @@ export default {
 
       const userJSON = window.localStorage.getItem('userData');
       const userData = JSON.parse(userJSON);
-      const headers = {
-        Authorization: 'Bearer ' + userData.jwt,
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
+      const config = {
+        headers: {
+          Authorization: 'Bearer ' + userData.jwt,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
       };
-      console.log(headers);
+      console.log(config);
 
       const postIdeaResponse = this.$axios
-        .$post('/ideas', ideaRequest, headers)
+        .$post('/ideas', ideaRequest, config)
         .catch((error) => {
           console.log(error);
           this.error = true;
@@ -247,7 +249,7 @@ export default {
         this.loading = false;
 
         const imageResponse = this.$axios
-          .$post('/upload', formData, headers)
+          .$post('/upload', formData, config)
           .catch((error) => {
             console.log(error);
           });
