@@ -4,7 +4,10 @@
       <span>Idea created!</span>
     </v-snackbar>
     <v-snackbar v-model="error" absolute top right color="error">
-      <span>An error occured while trying to create/update the idea!</span>
+      <span
+        >An error occurred while trying to create/update the idea. Please try
+        again.</span
+      >
     </v-snackbar>
     <v-form ref="form">
       <v-container fluid>
@@ -23,7 +26,6 @@
                 :items="status"
                 label="Idea Status"
                 :rules="requiredFieldRules"
-                v-on:change="statusOnChange"
               ></v-select>
             </v-col>
             <v-col cols="12" sm="3">
@@ -34,7 +36,6 @@
                 item-text="location"
                 item-value="id"
                 :rules="requiredFieldRules"
-                v-on:change="locationOnChange"
               ></v-select>
             </v-col>
           </v-row>
@@ -48,16 +49,11 @@
           </v-col>
 
           <v-col cols="12">
-            <v-autocomplete
+            <v-select
               v-model="selectedCategories"
               :items="allLocationsWithCategories[selectedLocation]"
-              outlined
-              dense
-              chips
-              small-chips
               label="Categories"
-              multiple
-            ></v-autocomplete>
+            ></v-select>
           </v-col>
 
           <v-col cols="12">
@@ -70,6 +66,7 @@
                   multiple
                   v-model="images"
                   ref="file"
+                  @change="fileOnClick"
                 ></v-file-input>
               </template>
             </v-row>
@@ -133,6 +130,7 @@ export default {
     IdeaCreatorUpdate,
     CreateHonorarium,
   },
+
   props: {
     idea: {
       type: Object,
@@ -160,6 +158,7 @@ export default {
       error: false,
       requiredFieldRules: [(v) => v.length >= 1 || `Field is required`],
       locationIds: [],
+      imagesToAttach: [],
     };
   },
 
@@ -185,12 +184,33 @@ export default {
   },
 
   methods: {
-    locationOnChange(location) {
-      this.selectedLocation = location;
-    },
+    async fileOnClick(event) {
+      const formData = new FormData();
 
-    statusOnChange(status) {
-      this.selectedStatus = status;
+      this.images.forEach((file) => {
+        formData.append(`files`, file, file.name);
+      });
+
+      const userJSON = window.localStorage.getItem('userData');
+      const userData = JSON.parse(userJSON);
+
+      const imageResponse = await this.$axios
+        .$post('/upload', formData, {
+          headers: {
+            Authorization: 'Bearer ' + userData.jwt,
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
+      if (imageResponse) {
+        this.imagesToAttach = [];
+        imageResponse.forEach((image) => {
+          this.imagesToAttach.push(image.id);
+        });
+      }
     },
 
     async submit() {
@@ -228,13 +248,17 @@ export default {
         description: this.description,
         status: this.selectedStatus,
         location: this.selectedLocation,
-        categories: this.selectedCategories.map((category) => {
-          return {
-            name: category,
-          };
-        }),
+        categories:
+          this.selectedCategories.length > 0
+            ? [
+                {
+                  name: this.selectedCategories,
+                },
+              ]
+            : [],
         slug: this.title,
         user_creator: userResponse.data.id,
+        images: this.imagesToAttach,
       };
 
       const postIdeaResponse = await this.$axios
@@ -246,34 +270,9 @@ export default {
         });
 
       if (postIdeaResponse) {
-        const formData = new FormData();
-
-        this.images.forEach((file, index) => {
-          formData.append(`files`, file);
-        });
-
-        formData.append('refId', postIdeaResponse.id);
-        formData.append('ref', 'ideas');
-        formData.append('field', 'images');
-
-        const imageResponse = await this.$axios
-          .$post('/upload', formData, {
-            headers: {
-              Authorization: 'Bearer ' + userData.jwt,
-              'Content-Type': 'multipart/form-data',
-            },
-          })
-          .catch((error) => {
-            console.log(error);
-            this.error = true;
-            this.loading = false;
-          });
-
-        if (imageResponse) {
-          this.success = true;
-          this.loading = false;
-          // this.$router.push('/my-ideas');
-        }
+        this.success = true;
+        this.loading = false;
+        this.$router.push('/my-ideas');
       } else {
         this.error = true;
         this.loading = false;

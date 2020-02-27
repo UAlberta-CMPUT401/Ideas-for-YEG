@@ -24,6 +24,7 @@ export default {
   },
 
   async mounted() {
+    // TODO get all ideas associated with current user
     const response = await this.$axios
       .$post('/graphql', {
         query: `query {
