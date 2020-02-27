@@ -229,19 +229,6 @@ export default {
         },
       };
 
-      const userResponse = await this.$axios
-        .get('/users/me', config)
-        .catch((error) => {
-          console.log(error);
-          this.loading = false;
-          this.error = true;
-        });
-
-      if (!userResponse) {
-        this.error = true;
-        return;
-      }
-
       // TODO add honorarium, add idea admins, send project updates later
       const ideaRequest = {
         title: this.title,
@@ -257,7 +244,7 @@ export default {
               ]
             : [],
         slug: this.title,
-        user_creator: userResponse.data.id,
+        user_creator: userData.user.id,
         images: this.imagesToAttach,
       };
 
