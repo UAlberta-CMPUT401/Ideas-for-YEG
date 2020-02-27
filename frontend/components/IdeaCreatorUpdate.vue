@@ -128,33 +128,40 @@ export default {
   methods: {
     async sendUpdate() {
       console.log(this.subject, this.message, this.selected);
+      // Add this.title, this.description
 
       // check if user authenticated
-      const email = await this.$axios
-        .$post('/email', {
-          to: 'moc@ualberta.ca',
-          from: 'no-reply@ideas4yeg.com',
-          replyTo: 'no-reply@ideas4yeg.com',
-          // "cc":"no-reply@ideas4yeg.com",
-          // "bcc":"no-reply@ideas4yeg.com",
-          subject: 'New update on idea',
-          text: 'Check out this update!',
-          html: 'Hi',
-        })
-        .then((response) => {
-          // Handle success.
-          console.log('Your user received an email');
-        })
-        .catch((error) => {
-          // Handle error.
-          console.log('An error occured:', error);
-        });
-
-      // send email
-      if (email) {
-        // do nothing
-        console.log(email);
-      }
+      // const emails = await this.$axios
+      //   .$get('/ideas/?title=' + this.title, {
+      //   })
+      //   .then((response) => {
+      //     // Handle success.
+      //     console.log('');
+      //     return response[this.selected];
+      //   })
+      //   .catch((error) => {
+      //     // Handle error.
+      //     console.log('An error occured:', error);
+      //     return null;
+      //   });
+      // for email in emails {
+      //   this.$axios
+      //     .$post('/email', {
+      //       to: email,
+      //       from: 'no-reply@ideas4yeg.com',
+      //       replyTo: 'no-reply@ideas4yeg.com',
+      //       subject: 'New update on idea : ' + this.title,
+      //       html: this.description,
+      //     })
+      //     .then((response) => {
+      //       // Handle success.
+      //       console.log('Your user received an email');
+      //     })
+      //     .catch((error) => {
+      //       // Handle error.
+      //       console.log('An email error occured:', error);
+      //     });
+      // }
       this.snackbar = true;
     },
   },
