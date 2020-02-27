@@ -20,6 +20,39 @@ function removeUserArray(arr, value) {
 }
 
 module.exports = {
+  async setAdmin(ctx) {
+    let entity;
+    entity = await strapi.services.idea.findOne(ctx.params);
+
+    let user, action;
+    user = {
+      id: ctx.request.body.user
+    };
+    action = ctx.request.body.action;
+
+    if (user == undefined || action == undefined) {
+      return "Missing Parameters."
+    }
+
+    var admins = entity.admins;
+    let found = (admins.find(element => element.id == user.id) != undefined);
+
+    if (action == "add" && !found) {
+      admins.push(user.id)
+    }
+    if (action == "remove" && found) {
+      admins = removeUserArray(admins, user)
+    }
+
+    let thing;
+    thing = await strapi.services.idea.update(entity, {
+      'admins': admins
+    });
+
+    return sanitizeEntity(thing, {
+      model: strapi.models.idea
+    });
+  },
   async upvote(ctx) {
 
     let entity;

@@ -16,6 +16,13 @@
       "via": "related",
       "plugin": "upload",
       "required": false
+    },
+    "date": {
+      "type": "datetime",
+      "required": true
+    },
+    "externalLink": {
+      "type": "string"
     }
   }
 }

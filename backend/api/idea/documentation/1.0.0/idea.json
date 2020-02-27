@@ -254,13 +254,14 @@
         }
       }
     },
-    "/ideas/search": {
-      "get": {
+
+    "/idea/{id}/admin": {
+      "put": {
         "deprecated": false,
-        "description": "",
+        "description": "Update a single idea record",
         "responses": {
           "200": {
-            "description": "response",
+            "description": "Retrieve idea document(s)",
             "content": {
               "application/json": {
                 "schema": {
@@ -308,7 +309,33 @@
         "tags": [
           "Idea"
         ],
-        "parameters": []
+        "requestBody": {
+          "description": "",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "foo": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "deprecated": false,
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
       }
     },
     "/idea/upvote/{id}": {
@@ -1105,7 +1132,8 @@
               "type": "object",
               "required": [
                 "id",
-                "description"
+                "description",
+                "date"
               ],
               "properties": {
                 "id": {
@@ -1159,6 +1187,12 @@
                       "type": "string"
                     }
                   }
+                },
+                "date": {
+                  "type": "datetime"
+                },
+                "externalLink": {
+                  "type": "string"
                 }
               }
             }
@@ -1411,7 +1445,8 @@
               "type": "object",
               "required": [
                 "id",
-                "description"
+                "description",
+                "date"
               ],
               "properties": {
                 "id": {
@@ -1465,6 +1500,12 @@
                       "type": "string"
                     }
                   }
+                },
+                "date": {
+                  "type": "datetime"
+                },
+                "externalLink": {
+                  "type": "string"
                 }
               }
             }

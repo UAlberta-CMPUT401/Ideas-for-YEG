@@ -14,6 +14,14 @@
     },
     {
       "method": "PUT",
+      "path": "/idea/:id/admin",
+      "handler": "idea.setAdmin",
+      "config": {
+        "policies": ["isIdeaCreator"]
+      }
+    },
+    {
+      "method": "PUT",
       "path": "/idea/upvote/:id",
       "handler": "idea.upvote",
       "config": {
@@ -65,7 +73,7 @@
       "path": "/ideas/:id",
       "handler": "idea.update",
       "config": {
-        "policies": []
+        "policies": ["isIdeaCreator"]
       }
     },
     {
