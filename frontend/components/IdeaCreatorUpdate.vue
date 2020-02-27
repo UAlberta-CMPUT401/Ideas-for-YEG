@@ -126,13 +126,35 @@ export default {
     };
   },
   methods: {
-    sendUpdate() {
+    async sendUpdate() {
       console.log(this.subject, this.message, this.selected);
 
       // check if user authenticated
+      const email = await this.$axios
+        .$post('/email', {
+          to: 'moc@ualberta.ca',
+          from: 'no-reply@ideas4yeg.com',
+          replyTo: 'no-reply@ideas4yeg.com',
+          // "cc":"no-reply@ideas4yeg.com",
+          // "bcc":"no-reply@ideas4yeg.com",
+          subject: 'New update on idea',
+          text: 'Check out this update!',
+          html: 'Hi',
+        })
+        .then((response) => {
+          // Handle success.
+          console.log('Your user received an email');
+        })
+        .catch((error) => {
+          // Handle error.
+          console.log('An error occured:', error);
+        });
 
       // send email
-
+      if (email) {
+        // do nothing
+        console.log(email);
+      }
       this.snackbar = true;
     },
   },
