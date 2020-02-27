@@ -109,10 +109,18 @@ export default {
   },
 
   methods: {
-    onClick(id, slug, location) {
+    async onClick(id, slug, location) {
       let locationParam = null;
       if (location) {
-        locationParam = location;
+        const locationResponse = await this.$axios
+          .get(`/locations/${location}`)
+          .catch((error) => {
+            console.log(error);
+          });
+
+        if (locationResponse) {
+          locationParam = locationResponse.data.route;
+        }
       } else {
         locationParam = this.$route.params.locId;
       }
