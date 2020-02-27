@@ -55,9 +55,6 @@ export default {
           query: `query {
             locations(where: { route: "${this.$route.params.locId}"}) {
               ideas(where: {${descSearchCond}}) {
-                location {
-                  route
-                }
                 id
                 title
                 description
@@ -117,7 +114,6 @@ export default {
                 ? `http://localhost:1337${idea.user_creator.avatar.url}`
                 : 'https://www.everypixel.com/image-638397625280524203.jpg',
               slug: idea.slug,
-              location: idea.location.route,
               featured: idea.featured,
             };
           });
