@@ -85,6 +85,12 @@
     "featured": {
       "type": "boolean",
       "default": false
+    },
+    "upvote_count": {
+      "type": "integer",
+      "required": false,
+      "min": 0,
+      "default": 0
     }
   }
 }
