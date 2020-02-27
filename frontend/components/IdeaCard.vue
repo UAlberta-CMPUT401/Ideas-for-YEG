@@ -21,7 +21,11 @@
             <v-spacer></v-spacer>
 
             <div v-if="isEditable">
-              <v-btn href="/manage-idea" text class="pa-0 btnSpacing">
+              <v-btn
+                :href="`/manage-idea?id=${idea.id}`"
+                text
+                class="pa-0 btnSpacing"
+              >
                 <v-icon>mdi-lead-pencil</v-icon>
               </v-btn>
             </div>

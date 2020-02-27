@@ -36,6 +36,7 @@
                 item-text="location"
                 item-value="id"
                 :rules="requiredFieldRules"
+                @change="clearSelectedCategory"
               ></v-select>
             </v-col>
           </v-row>
@@ -73,11 +74,35 @@
           </v-col>
         </v-row>
 
+        <v-row justify="center" align="center">
+          <v-col cols="12" sm="9">
+            <v-carousel
+              v-if="savedImages.length > 0"
+              height="600"
+              hide-delimiter-background
+              show-arrows-on-hover
+            >
+              <v-carousel-item v-for="(image, i) in savedImages" :key="i">
+                <div justify="right" align="right">
+                  <v-btn text class="pa-0" @click="imageDeleteOnClick(i)">
+                    <v-icon color="black">mdi-delete-circle</v-icon>
+                  </v-btn>
+                </div>
+                <v-sheet height="100%">
+                  <v-row class="fill-height" align="center" justify="center">
+                    <v-img :src="`http://localhost:1337/${image.url}`"></v-img>
+                  </v-row>
+                </v-sheet>
+              </v-carousel-item>
+            </v-carousel>
+          </v-col>
+        </v-row>
+
         <v-row>
           <template>
             <AddIdeaAdmin />
           </template>
-          <template>
+          <template v-if="ideaId">
             <IdeaCreatorUpdate />
           </template>
           <template>
@@ -86,18 +111,20 @@
         </v-row>
       </v-container>
       <v-card-actions>
-        <v-btn @click.stop="dialog = true" text>Delete</v-btn>
-        <v-dialog v-model="dialog" max-width="290">
+        <v-btn v-if="ideaId" @click.stop="deleteDialog = true" text
+          >Delete</v-btn
+        >
+        <v-dialog v-model="deleteDialog" max-width="290">
           <v-card>
             <v-card-title class="headline"
               >Are you sure you want to delete this idea?</v-card-title
             >
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn @click="dialog = false" color="green darken-1" text>
+              <v-btn @click="deleteDialog = false" color="green darken-1" text>
                 Cancel
               </v-btn>
-              <v-btn @click="dialog = false" color="red" text>
+              <v-btn @click="onDeleteIdea" color="red" text>
                 Delete
               </v-btn>
             </v-card-actions>
@@ -144,7 +171,7 @@ export default {
     return {
       title: '',
       description: '',
-      dialog: false,
+      deleteDialog: false,
       status: ['Ongoing', 'SeekingHelp', 'Completed'],
       locations: [],
       categories: [],
@@ -152,14 +179,21 @@ export default {
       selectedLocation: '',
       selectedStatus: '',
       allLocationsWithCategories: {},
-      selectedCategories: [],
+      selectedCategories: '',
       images: [],
       loading: false,
       error: false,
       requiredFieldRules: [(v) => v.length >= 1 || `Field is required`],
       locationIds: [],
-      imagesToAttach: [],
+      ideaId: '',
+      savedImages: [],
     };
+  },
+
+  created() {
+    if (this.$route.query && this.$route.query.id) {
+      this.ideaId = this.$route.query.id;
+    }
   },
 
   async mounted() {
@@ -180,6 +214,26 @@ export default {
           id: location.id,
         });
       });
+    }
+
+    if (this.ideaId) {
+      const ideaResponse = await this.$axios
+        .$get(`/ideas/${this.ideaId}`)
+        .catch((err) => console.log(err));
+
+      if (ideaResponse) {
+        this.selectedLocation = ideaResponse.location.id;
+        this.selectedCategories =
+          ideaResponse.categories.length > 0
+            ? ideaResponse.categories[0].name
+            : '';
+        this.title = ideaResponse.title;
+        this.description = ideaResponse.description;
+        this.selectedStatus = ideaResponse.status;
+        this.savedImages = ideaResponse.images;
+      } else {
+        this.error = true;
+      }
     }
   },
 
@@ -206,10 +260,78 @@ export default {
         });
 
       if (imageResponse) {
-        this.imagesToAttach = [];
         imageResponse.forEach((image) => {
-          this.imagesToAttach.push(image.id);
+          this.savedImages.push({
+            id: image.id,
+            url: image.url,
+            name: image.name,
+          });
         });
+      }
+    },
+
+    clearSelectedCategory() {
+      if (
+        !(
+          this.selectedCategories &&
+          this.allLocationsWithCategories[this.selectedLocation].includes(
+            this.selectedCategories,
+          )
+        )
+      ) {
+        this.selectedCategories = '';
+      }
+    },
+
+    async onDeleteIdea() {
+      const userJSON = window.localStorage.getItem('userData');
+      const userData = JSON.parse(userJSON);
+      const config = {
+        headers: {
+          Authorization: 'Bearer ' + userData.jwt,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      };
+
+      await this.$axios
+        .$delete(`/ideas/${this.ideaId}`, config)
+        .catch((error) => {
+          console.log(error);
+        });
+
+      this.deleteDialog = false;
+      this.$router.push('/my-ideas');
+    },
+
+    async imageDeleteOnClick(index) {
+      const userJSON = window.localStorage.getItem('userData');
+      const userData = JSON.parse(userJSON);
+      const config = {
+        headers: {
+          Authorization: 'Bearer ' + userData.jwt,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      };
+      const imageToDelete = this.savedImages[index];
+
+      const deleteImageResponse = await this.$axios
+        .$delete(`/upload/files/${imageToDelete.id}`, config)
+        .catch((error) => {
+          console.log(error);
+        });
+
+      if (deleteImageResponse) {
+        this.savedImages.splice(index, 1);
+
+        // delete the first image found in the file uploader if it exists
+        for (let i = 0; i < this.images.length; i++) {
+          if (this.images[i].name === imageToDelete.name) {
+            this.images.splice(i, 1);
+            break;
+          }
+        }
       }
     },
 
@@ -229,34 +351,46 @@ export default {
         },
       };
 
-      // TODO add honorarium, add idea admins, send project updates later
       const ideaRequest = {
         title: this.title,
         description: this.description,
         status: this.selectedStatus,
         location: this.selectedLocation,
-        categories:
-          this.selectedCategories.length > 0
-            ? [
-                {
-                  name: this.selectedCategories,
-                },
-              ]
-            : [],
+        categories: this.selectedCategories
+          ? [
+              {
+                name: this.selectedCategories,
+              },
+            ]
+          : [],
         slug: this.title,
         user_creator: userData.user.id,
-        images: this.imagesToAttach,
+        images: this.savedImages.map((image) => {
+          return image.id;
+        }),
       };
 
-      const postIdeaResponse = await this.$axios
-        .$post('/ideas', ideaRequest, config)
-        .catch((error) => {
-          console.log(error);
-          this.error = true;
-          this.loading = false;
-        });
+      let response = null;
+      if (!this.ideaId) {
+        // TODO add honorarium, add idea admins, send project updates later
+        response = await this.$axios
+          .$post('/ideas', ideaRequest, config)
+          .catch((error) => {
+            console.log(error);
+            this.error = true;
+            this.loading = false;
+          });
+      } else {
+        response = await this.$axios
+          .$put(`/ideas/${this.ideaId}`, ideaRequest, config)
+          .catch((error) => {
+            console.log(error);
+            this.error = true;
+            this.loading = false;
+          });
+      }
 
-      if (postIdeaResponse) {
+      if (response) {
         this.success = true;
         this.loading = false;
         this.$router.push('/my-ideas');
