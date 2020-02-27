@@ -34,6 +34,9 @@ export default {
       },
     };
 
+    /**
+     * TODO add all ideas that the logged in user is a idea admin of when admins are a functionality
+     */
     const userResponse = await this.$axios
       .get(`/users/${userData.user.id}`, config)
       .catch((error) => {
