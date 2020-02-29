@@ -8,6 +8,11 @@
       }
     },
     {
+      "method": "GET",
+      "path": "/ideas/search",
+      "handler": "idea.search"
+    },
+    {
       "method": "PUT",
       "path": "/ideas/admin/:id",
       "handler": "idea.setAdmin",

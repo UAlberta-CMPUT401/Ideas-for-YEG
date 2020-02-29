@@ -10,7 +10,7 @@
           justify-center
           class="mx-auto"
           max-width="700"
-          v-on:click="onClick(idea.id, idea.slug)"
+          v-on:click="onClick(idea.id, idea.slug, idea.location)"
         >
           <v-list-item>
             <v-list-item-content>
@@ -21,8 +21,12 @@
             <v-spacer></v-spacer>
 
             <div v-if="isEditable">
-              <v-btn href="/edit-my-idea" text class="pa-0 btnSpacing">
-                <v-icon>mdi-dots-vertical</v-icon>
+              <v-btn
+                :href="`/manage-idea?id=${idea.id}`"
+                text
+                class="pa-0 btnSpacing"
+              >
+                <v-icon>mdi-lead-pencil</v-icon>
               </v-btn>
             </div>
           </v-list-item>
@@ -96,7 +100,10 @@
  */
 export default {
   props: {
-    isEditable: Boolean,
+    isEditable: {
+      type: Boolean,
+      default: false,
+    },
     ideas: {
       type: Array,
       default: () => {
@@ -106,9 +113,24 @@ export default {
   },
 
   methods: {
-    onClick(id) {
+    async onClick(id, slug, location) {
+      let locationParam = null;
+      if (location) {
+        const locationResponse = await this.$axios
+          .get(`/locations/${location}`)
+          .catch((error) => {
+            console.log(error);
+          });
+
+        if (locationResponse) {
+          locationParam = locationResponse.data.route;
+        }
+      } else {
+        locationParam = this.$route.params.locId;
+      }
+
       this.$router.push({
-        path: `/${this.$route.params.locId}/${id}`,
+        path: `/${locationParam}/${id}`,
       });
     },
   },

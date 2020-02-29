@@ -254,7 +254,12 @@
         }
       }
     },
+<<<<<<< HEAD
     "/ideas/admin/{id}": {
+=======
+
+    "/idea/{id}/admin": {
+>>>>>>> a5c1f4195241983f6bc7bf3d761d6a9b2cedd56d
       "put": {
         "deprecated": false,
         "description": "Update a record",
@@ -1411,6 +1416,10 @@
           "featured": {
             "type": "boolean",
             "default": false
+          },
+          "upvote_count": {
+            "type": "integer",
+            "default": 0
           }
         }
       },
@@ -1639,6 +1648,10 @@
           "featured": {
             "type": "boolean",
             "default": false
+          },
+          "upvote_count": {
+            "type": "integer",
+            "default": 0
           }
         }
       }
