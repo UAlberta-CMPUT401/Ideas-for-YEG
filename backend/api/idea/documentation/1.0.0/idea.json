@@ -254,13 +254,13 @@
         }
       }
     },
-    "/idea/{id}/admin": {
+    "/ideas/admin/{id}": {
       "put": {
         "deprecated": false,
-        "description": "Update a single idea record",
+        "description": "Update a record",
         "responses": {
           "200": {
-            "description": "Retrieve idea document(s)",
+            "description": "response",
             "content": {
               "application/json": {
                 "schema": {
@@ -337,13 +337,13 @@
         ]
       }
     },
-    "/idea/upvote/{id}": {
+    "/ideas/upvote/{id}": {
       "put": {
         "deprecated": false,
-        "description": "Update a single idea record",
+        "description": "Update a record",
         "responses": {
           "200": {
-            "description": "Retrieve idea document(s)",
+            "description": "response",
             "content": {
               "application/json": {
                 "schema": {
@@ -420,13 +420,13 @@
         ]
       }
     },
-    "/idea/volunteer/{id}": {
+    "/ideas/volunteer/{id}": {
       "put": {
         "deprecated": false,
-        "description": "Update a single idea record",
+        "description": "Update a record",
         "responses": {
           "200": {
-            "description": "Retrieve idea document(s)",
+            "description": "response",
             "content": {
               "application/json": {
                 "schema": {
@@ -503,13 +503,13 @@
         ]
       }
     },
-    "/idea/follow/{id}": {
+    "/ideas/follow/{id}": {
       "put": {
         "deprecated": false,
-        "description": "Update a single idea record",
+        "description": "Update a record",
         "responses": {
           "200": {
-            "description": "Retrieve idea document(s)",
+            "description": "response",
             "content": {
               "application/json": {
                 "schema": {
@@ -1396,6 +1396,12 @@
               },
               "categories": {
                 "type": "string"
+              },
+              "sub_pages": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
               }
             }
           },

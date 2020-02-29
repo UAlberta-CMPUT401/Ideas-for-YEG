@@ -44,12 +44,12 @@ module.exports = {
       admins = removeUserArray(admins, user)
     }
 
-    let thing;
-    thing = await strapi.services.idea.update(entity, {
+    let updated;
+    updated = await strapi.services.idea.update(entity, {
       'admins': admins
     });
 
-    return sanitizeEntity(thing, {
+    return sanitizeEntity(updated, {
       model: strapi.models.idea
     });
   },
@@ -65,12 +65,12 @@ module.exports = {
       upvoters.push(ctx.state.user)
     }
 
-    let thing;
-    thing = await strapi.services.idea.update(entity, {
+    let updated;
+    updated = await strapi.services.idea.update(entity, {
       'user_upvoters': upvoters
     });
 
-    return sanitizeEntity(thing, {
+    return sanitizeEntity(updated, {
       model: strapi.models.idea
     });
   },
@@ -87,12 +87,12 @@ module.exports = {
       volunteers.push(ctx.state.user)
     }
 
-    let thing;
-    thing = await strapi.services.idea.update(entity, {
+    let updated;
+    updated = await strapi.services.idea.update(entity, {
       'volunteers': volunteers
     });
 
-    return sanitizeEntity(thing, {
+    return sanitizeEntity(updated, {
       model: strapi.models.idea
     });
   },
@@ -109,12 +109,12 @@ module.exports = {
       followers.push(ctx.state.user)
     }
 
-    let thing;
-    thing = await strapi.services.idea.update(entity, {
+    let updated;
+    updated = await strapi.services.idea.update(entity, {
       'followers': followers
     });
 
-    return sanitizeEntity(thing, {
+    return sanitizeEntity(updated, {
       model: strapi.models.idea
     });
   },
