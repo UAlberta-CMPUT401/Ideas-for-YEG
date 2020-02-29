@@ -11,32 +11,40 @@
         <v-card-title align-center>Moderation Portal</v-card-title>
       </v-img>
     </v-card>
-    <v-card-title align-center>
-      Category Management
-    </v-card-title>
-    <v-flex xs12 sm8 md6 color="#bdbdbd">
-      <CategoryCard v-bind:categories="categories" />
-      <form>
-        <v-text-field
-          v-model="name"
-          :error-messages="nameErrors"
-          :counter="10"
-          label="Category Name"
-          @input="$v.name.$touch()"
-          @blur="$v.name.$touch()"
-        >
-        </v-text-field>
-        <v-btn class="mr-4" @click="createCategory(categories, $v.name.$model)"
-          >Create</v-btn
-        >
-      </form>
-    </v-flex>
-    <v-card-title align-center>
-      Idea Management
-    </v-card-title>
-    <v-flex xs12 sm8 md6>
-      <DeleteableIdeaCard v-bind:ideas="ideas" v-bind:location="location" />
-    </v-flex>
+    <v-tabs centered>
+      <v-tabs-slider></v-tabs-slider>
+      <v-tab href="#tab-1"> Subpage Manager </v-tab>
+      <v-tab-item eager value="tab-1">
+        <SubPageManager v-bind:subpages="subpages" />
+      </v-tab-item>
+      <v-tab href="#tab-2"> Category Manager </v-tab>
+      <v-tab-item eager value="tab-2">
+        <CategoryCard v-bind:categories="categories" />
+        <form>
+          <v-text-field
+            v-model="name"
+            :error-messages="nameErrors"
+            :counter="20"
+            label="Category Name"
+            @input="$v.name.$touch()"
+            @blur="$v.name.$touch()"
+          >
+          </v-text-field>
+          <v-btn
+            class="mr-4"
+            @click="createCategory(categories, $v.name.$model)"
+            >Create</v-btn
+          >
+        </form>
+      </v-tab-item>
+      <v-tab href="#tab-3"> Idea Manager </v-tab>
+      <v-tab-item eager value="tab-3">
+        <v-card-title align-center>
+          Idea Management
+        </v-card-title>
+        <DeleteableIdeaCard v-bind:ideas="ideas" v-bind:location="location" />
+      </v-tab-item>
+    </v-tabs>
   </v-layout>
 </template>
 
@@ -45,17 +53,19 @@ import { validationMixin } from 'vuelidate';
 import { required, maxLength } from 'vuelidate/lib/validators';
 import DeleteableIdeaCard from '../../components/DeleteableIdeaCard';
 import CategoryCard from '../../components/CategoryCard';
+import SubPageManager from '../../components/SubPageManageCard';
 import { LS_USER_DATA } from '../../constants/constants';
 
 export default {
   mixins: [validationMixin],
 
   validations: {
-    name: { required, maxLength: maxLength(10) },
+    name: { required, maxLength: maxLength(20) },
   },
   components: {
     DeleteableIdeaCard,
     CategoryCard,
+    SubPageManager,
   },
   data() {
     // TODO: use this.$route.params.locId to get information about the given location
@@ -63,6 +73,9 @@ export default {
      * coolidea photo: Photo by Ameen Fahmy on Unsplash https://unsplash.com/photos/_gEKtyIbRSM
      */
     return {
+      subpages: {
+        pages: [{ title: 'first page' }, { title: 'second page' }],
+      },
       name: '',
       ideas: this.$store.getters['ideas/getIdeas'],
       categories: {
@@ -121,7 +134,7 @@ export default {
       }
       !(indexName === -1) && errors.push('Name already exists');
       !this.$v.name.maxLength &&
-        errors.push('Name must be at most 10 characters long');
+        errors.push('Name must be at most 20 characters long');
       !this.$v.name.required && errors.push('Name is required.');
       if (errors.length > 0) return;
 

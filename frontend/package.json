@@ -32,6 +32,7 @@
     "express": "^4.16.4",
     "moment": "^2.24.0",
     "nuxt": "^2.0.0",
+    "vue-quill-editor": "^3.0.6",
     "vuelidate": "^0.7.5"
   },
   "devDependencies": {
