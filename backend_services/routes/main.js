@@ -12,15 +12,36 @@ router.post("/email", function(request, response){
 	request_body = request.body;
 	try {
 		if (request_body.email.trim() !== '') {
-			var instance = new Email({email_address: request_body.email_address, subject: request_body.subject, body: request_body.body });
-			instance.save(function (err) {
+			Email.findOneAndUpdate({ email: request_body.email }, 
+				{ $push: { 
+	            	data: {
+	              		'subject' : request_body.subject,
+	               		'body' : request_body.body
+	               	}  
+	          	}
+   			}, {new: true}, function(err, doc) {
 				if (err) {
-					throw 'Error writing to databse for : ' + request_body.email;
+					response.status(500);
+					response.send(err);
 				} else {
-					response.status(200);
-					response.send('Email written to database for : ' + request.body.email + '!');
+					// Doesn't exist
+					if (!doc) {
+						var instance = new Email({email: request_body.email, data: [{subject : request_body.subject, body : request_body.body}]});
+						instance.save(function (err) {
+							if (err) {
+								response.status(500);
+								response.send(err);
+							} else {
+								response.status(200);
+								response.send('Email digest created for : ' + request.body.email + '!');
+							}
+						});
+					} else {
+						response.status(200);
+						response.send('Email appended to digest for : ' + request.body.email + '!');
+					}
 				}
-			});
+   			});
 	    } else {
 	        response.status(403);
 			response.send('None shall pass.');
