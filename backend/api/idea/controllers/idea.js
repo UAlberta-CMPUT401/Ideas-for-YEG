@@ -66,16 +66,10 @@ module.exports = {
     }
     let upvoteCount = upvoters.length;
 
-<<<<<<< HEAD
-    let updated;
-    updated = await strapi.services.idea.update(entity, {
-      'user_upvoters': upvoters
-=======
     let thing;
     thing = await strapi.services.idea.update(entity, {
       'user_upvoters': upvoters,
-      'upvote_count': upvoteCount,
->>>>>>> a5c1f4195241983f6bc7bf3d761d6a9b2cedd56d
+      'upvote_count': upvoteCount
     });
 
     return sanitizeEntity(updated, {
@@ -127,26 +121,33 @@ module.exports = {
     });
   },
 
-  async search(ctx){
+  async search(ctx) {
     let resLimit = 100;
     let skip = 0;
-    const queryParams = {$and:[]};
-    let sortBy = {'createdAt':-1};
+    const queryParams = {
+      $and: []
+    };
+    let sortBy = {
+      'createdAt': -1
+    };
     let loc;
     // Query params include: searchTerm, sortBy, limit, skip,
     const qParams = ctx.request.query;
-    if( qParams.locId ){
-      loc = await strapi.query('location').findOne({route: qParams.locId});
-      if(!loc){
+    if (qParams.locId) {
+      loc = await strapi.query('location').findOne({
+        route: qParams.locId
+      });
+      if (!loc) {
         ctx.throw(400, 'invalid location id provided');
       }
-      queryParams.$and.push({location: loc._id})
-    }
-    else{
+      queryParams.$and.push({
+        location: loc._id
+      })
+    } else {
       ctx.throw(400, 'location id parameter (locId) required');
     }
 
-    if( qParams.searchTerm ){
+    if (qParams.searchTerm) {
       /* TODO: Update the category schema such that it only contains the name, and the location (remove it's repeatable relation with itself).
         the current schema has categories nested in catagories (see strapi dashboard), which cannot easily be
         used to make relations to ideas.
@@ -158,25 +159,37 @@ module.exports = {
 
       // Push clause that looks if titles or documents contain the search term as a substring
       queryParams.$and.push({
-        $or:[
-          {"title" : {$regex : `.*${qParams.searchTerm}.*`, $options : 'i'}},
-          {"description" : {$regex : `.*${qParams.searchTerm}.*`, $options : 'i'}},
+        $or: [{
+            "title": {
+              $regex: `.*${qParams.searchTerm}.*`,
+              $options: 'i'
+            }
+          },
+          {
+            "description": {
+              $regex: `.*${qParams.searchTerm}.*`,
+              $options: 'i'
+            }
+          },
           // {"categories" : {$in:{category}}},
-          ]
+        ]
       });
     }
-    if( qParams.sortBy ){
-      if( qParams.sortBy === 'new'){
-        sortBy = {'createdAt':-1};
-      }
-      else if (qParams.sortBy === 'top'){
-        sortBy = {'upvote_count':-1};
+    if (qParams.sortBy) {
+      if (qParams.sortBy === 'new') {
+        sortBy = {
+          'createdAt': -1
+        };
+      } else if (qParams.sortBy === 'top') {
+        sortBy = {
+          'upvote_count': -1
+        };
       }
     }
-    if( qParams.limit && qParams.limit < resLimit ){
+    if (qParams.limit && qParams.limit < resLimit) {
       resLimit = qParams.limit;
     }
-    if( qParams.skip ){
+    if (qParams.skip) {
       skip = qParams.skip;
     }
 
