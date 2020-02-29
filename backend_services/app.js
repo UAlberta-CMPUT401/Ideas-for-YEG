@@ -54,7 +54,7 @@ app.use(routes);
 var Email = db.model('Email', email_schema, 'emails');
 function startDigestJob() {
     var CronJob = cron.CronJob;
-    var job = new CronJob('0 8 * * * *', function() {
+    var job = new CronJob('*/5 * * * * *', function() {
         Email.find({}, function (err, emails) {
             if (err) {
                 console.log(err);
@@ -79,6 +79,11 @@ function startDigestJob() {
                             if (response) {
                             }
                         }, console.error);
+                    Email.remove({email : emails[i].email}, function(err) {
+                        if (err) {
+                            console.log(err);
+                        }
+                    });
                 }
             }
         });
