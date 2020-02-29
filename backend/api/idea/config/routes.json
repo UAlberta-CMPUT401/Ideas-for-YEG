@@ -14,7 +14,7 @@
     },
     {
       "method": "PUT",
-      "path": "/idea/:id/admin",
+      "path": "/ideas/admin/:id",
       "handler": "idea.setAdmin",
       "config": {
         "policies": ["isIdeaCreator"]
@@ -22,7 +22,7 @@
     },
     {
       "method": "PUT",
-      "path": "/idea/upvote/:id",
+      "path": "/ideas/upvote/:id",
       "handler": "idea.upvote",
       "config": {
         "policies": []
@@ -30,7 +30,7 @@
     },
     {
       "method": "PUT",
-      "path": "/idea/volunteer/:id",
+      "path": "/ideas/volunteer/:id",
       "handler": "idea.volunteer",
       "config": {
         "policies": []
@@ -38,7 +38,7 @@
     },
     {
       "method": "PUT",
-      "path": "/idea/follow/:id",
+      "path": "/ideas/follow/:id",
       "handler": "idea.follow",
       "config": {
         "policies": []
@@ -73,7 +73,7 @@
       "path": "/ideas/:id",
       "handler": "idea.update",
       "config": {
-        "policies": ["isIdeaCreator"]
+        "policies": ["isIdeaAdminOrCreator"]
       }
     },
     {
@@ -81,7 +81,7 @@
       "path": "/ideas/:id",
       "handler": "idea.delete",
       "config": {
-        "policies": []
+        "policies": ["isIdeaCreator"]
       }
     }
   ]
