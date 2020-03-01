@@ -48,6 +48,7 @@
   </v-layout>
 </template>
 
+<script src="https://unpkg.com/turndown/dist/turndown.js"></script>
 <script>
 import { validationMixin } from 'vuelidate';
 import { required, maxLength } from 'vuelidate/lib/validators';
@@ -74,12 +75,12 @@ export default {
      */
     return {
       subpages: {
-        pages: [{ title: 'first page' }, { title: 'second page' }],
+        pages: [{ title: 'first page', content: 'Empty', updatedAt: '' }],
       },
       name: '',
       ideas: this.$store.getters['ideas/getIdeas'],
       categories: {
-        name: 'testName',
+        name: 'Calgary',
         id: 'tN',
         category: {
           id: '1',
@@ -88,7 +89,7 @@ export default {
       },
       location: {
         id: '',
-        name: 'testName',
+        name: 'Edmonton',
         route: 'TN',
         imgSrc:
           'https://images.unsplash.com/photo-1567177662154-dfeb4c93b6ae?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=80',
@@ -201,9 +202,6 @@ export default {
         .catch((err) => {
           console.log(err.response);
         });
-      if (response) {
-        console.log(response);
-      }
     },
   },
 
@@ -223,6 +221,24 @@ export default {
   },
 
   async mounted() {
+    const userJSON = window.localStorage.getItem('userData');
+    const userData = JSON.parse(userJSON);
+    const config = {
+      headers: {
+        Authorization: 'Bearer ' + userData.jwt,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    };
+
+    const subpageResponse = await this.$axios
+      .get(`/sub-pages?location.route=${this.$route.params.locId}`, config)
+      .catch((error) => {
+        console.log(error);
+      });
+    if (subpageResponse) {
+      this.subpages.pages = subpageResponse.data;
+    }
     const response = await this.$axios
       .$post('/graphql', {
         query: `query {

@@ -56,7 +56,7 @@ export default {
       category: {
         type: Array,
         default: () => {
-          return [];
+          return [{ id: 'i1', name: 'General' }];
         },
       },
     },

@@ -40,32 +40,37 @@
       </v-card>
     </v-dialog>
     <v-tabs vertical>
-      <v-tab v-for="i in 3" :key="i" :href="`#tab-${i}`"> Tab {{ i }} </v-tab>
-      <v-tab-item eager v-for="i in 3" :key="i" :value="'tab-' + i">
-        <section class="container">
-          <div
-            class="quill-editor"
-            :content="content"
-            @change="onEditorChange($event)"
-            @blur="onEditorBlur($event)"
-            @focus="onEditorFocus($event)"
-            @ready="onEditorReady($event)"
-            v-quill:myQuillEditor="editorOption"
-          ></div>
-        </section>
+      <v-tab v-for="i in subpages.pages" :key="i.title" :href="`#${i.title}`">
+        {{ i.title }} Page
+      </v-tab>
+      <v-tab-item
+        eager
+        v-for="i in subpages.pages"
+        :key="i.title"
+        :value="i.title"
+      >
+        <editor
+          v-model="i.content"
+          v-bind:pageTitle="i.title"
+          v-bind:pageId="i.id"
+        ></editor>
       </v-tab-item>
     </v-tabs>
   </v-container>
 </template>
 
 <script>
+import editor from './MarkdownEditor';
 export default {
+  components: {
+    editor,
+  },
   props: {
     subpages: {
       pages: {
         type: Array,
         default: () => {
-          return [{ title: 'Page 1' }, { title: 'Page 2' }];
+          return [{ title: 'Page 1', content: '' }];
         },
       },
     },
@@ -103,36 +108,33 @@ export default {
     },
   },
   methods: {
-    onEditorBlur(editor) {
-      console.log('editor blur!', editor);
-    },
-    onEditorFocus(editor) {
-      console.log('editor focus!', editor);
-    },
-    onEditorReady(editor) {
-      console.log('editor ready!', editor);
-    },
-    onEditorChange({ editor, html, text }) {
-      console.log('editor change!', editor, html, text);
-      this.content = html;
-    },
-    createPage(n) {
-      console.log('app init, my quill insrance object is:', this.myQuillEditor);
-      /* setTimeout(() => {
-        this.content = 'i am changed';
-      }, 3000); */
-      this.$v.$touch();
-      console.log('LOL');
-      console.log(n);
+    async createPage(n) {
+      const userJSON = window.localStorage.getItem('userData');
+      const userData = JSON.parse(userJSON);
+      const config = {
+        headers: {
+          Authorization: 'Bearer ' + userData.jwt,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      };
+
+      const addPageRequest = {
+        title: n,
+        content: '',
+        location: this.subpages.pages[0].location.id,
+      };
+      let response = null;
+      response = await this.$axios
+        .$post('/sub-pages', addPageRequest, config)
+        .catch((error) => {
+          console.log(error);
+        });
+
+      if (response) {
+        window.location.reload();
+      }
     },
   },
 };
 </script>
-
-<style lang="scss" scoped>
-.quill-editor {
-  min-height: 200px;
-  max-height: 400px;
-  overflow-y: auto;
-}
-</style>
