@@ -54,13 +54,12 @@ app.use(routes);
 var Email = db.model('Email', email_schema, 'emails');
 function startDigestJob() {
     var CronJob = cron.CronJob;
-    var job = new CronJob('*/5 * * * * *', function() {
+    var job = new CronJob('0 8 * * * *', function() {
         Email.find({}, function (err, emails) {
             if (err) {
                 console.log(err);
             } else {
                 for (var i = 0; i < emails.length; i++) {
-                    // Sendgrid
                     html = '<img src=\"https://www.webuildvalue.com/static/upload/jed/jeddah-tower.jpg\" style=\"display: block; margin-left: auto; margin-right: auto; width: 30%; margin-bottom: 100px\">\n'
                     for (var j = 0; j < emails[i].data.length; j++) {
                         subject = emails[i].data[j].subject;

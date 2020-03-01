@@ -46,13 +46,6 @@ router.post("/email", function(request, response){
 	        response.status(403);
 			response.send('None shall pass.');
 	    }
-		// request_url = BASE_URL + '?users.email=' + body['email'];
-		// request(request_url, { json: true }, (err, res, body) => {
-		// 	console.log(request_body);
-		// 	if (err) {
-		// 		throw err;
-		// 	}
-		// });
 	} catch (err) {
 		response.status(500);
 		response.send(err);
