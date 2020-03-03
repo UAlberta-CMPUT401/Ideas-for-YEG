@@ -321,7 +321,7 @@ export default {
       this.images = response.images;
       this.donations = response.donation;
       this.upvotes = response.upvote_count;
-      this.hasUserUpvoted = this.isLoggedIn
+      this.hasUserUpvoted = userData
         ? response.user_upvoters.filter((user) => {
             return user.id === userData.user.id;
           }).length === 1
