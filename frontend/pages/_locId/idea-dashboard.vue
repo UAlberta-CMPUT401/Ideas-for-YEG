@@ -6,6 +6,7 @@
         <v-form ref="form" class="my-3">
           <v-text-field
             @click:append="search"
+            v-on:keyup="debounceSearch"
             v-on:keydown.enter.prevent="search"
             v-model="searchTerm"
             :loading="isLoading"
@@ -21,8 +22,11 @@
 </template>
 
 <script>
+import _ from 'lodash';
 import IdeaCard from '../../components/IdeaCard';
 import FeaturedCarousel from '../../components/idea-dashboard/FeaturedCarosel';
+
+const DEBOUNCE_DELAY = 450;
 
 export default {
   components: {
@@ -43,45 +47,24 @@ export default {
   },
 
   methods: {
+    debounceSearch: _.debounce(function() {
+      console.log('DSFFDSFSSFSFD');
+      this.search();
+    }, DEBOUNCE_DELAY),
+
     async search() {
       this.isLoading = true;
       // If the search field is filled, add a search condition to search on a term
-      let descSearchCond = '';
+      const params = {
+        locId: this.$route.params.locId,
+      };
       if (this.searchTerm.length > 0) {
-        descSearchCond = `description_contains:"${this.searchTerm}"`;
+        params.searchTerm = this.searchTerm;
       }
+
       const response = await this.$axios
-        .$post('/graphql', {
-          query: `query {
-            locations(where: { route: "${this.$route.params.locId}"}) {
-              ideas(where: {${descSearchCond}}) {
-                id
-                title
-                description
-                volunteers {
-                  username
-                }
-                images {
-                  url
-                }
-                user_creator {
-                  username
-                  avatar {
-                    url
-                  }
-                }
-                user_upvoters {
-                  username
-                }
-                followers {
-                  username
-                }
-                slug
-                featured
-              }
-            }
-          }
-          `,
+        .$get('/ideas/search', {
+          params,
         })
         .catch((err) => {
           console.log(err);
@@ -93,8 +76,8 @@ export default {
       // Clear previous ideas
       this.ideas = [];
       if (response) {
-        if (response.data.locations[0].ideas.length > 0) {
-          this.ideas = response.data.locations[0].ideas.map((idea) => {
+        if (response.length > 0) {
+          this.ideas = response.map((idea) => {
             return {
               id: idea.id.toString(),
               title: idea.title,
