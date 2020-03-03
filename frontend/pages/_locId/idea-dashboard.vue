@@ -143,6 +143,10 @@ export default {
     async updateUpvote(id, index) {
       const userJSON = window.localStorage.getItem('userData');
       const userData = JSON.parse(userJSON);
+      if (!userData) {
+        return;
+      }
+
       const config = {
         headers: {
           Authorization: 'Bearer ' + userData.jwt,

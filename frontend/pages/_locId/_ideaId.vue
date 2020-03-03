@@ -39,7 +39,6 @@
         <template v-slot:activator="{ on }">
           <v-btn
             v-if="hasUserUpvoted"
-            :disabled="!isLoggedIn"
             text
             class="pa-0"
             color="blue"
@@ -49,14 +48,7 @@
             <v-icon>mdi-thumb-up</v-icon>
             <span class="subheading mr-2">{{ upvotes }}</span>
           </v-btn>
-          <v-btn
-            v-else
-            :disabled="!isLoggedIn"
-            text
-            class="pa-0"
-            v-on="on"
-            v-on:click="updateUpvote"
-          >
+          <v-btn v-else text class="pa-0" v-on="on" v-on:click="updateUpvote">
             <v-icon>mdi-thumb-up</v-icon>
             <span class="subheading mr-2">{{ upvotes }}</span>
           </v-btn>
@@ -219,7 +211,6 @@ export default {
 
   data() {
     return {
-      isLoggedIn: false,
       title: 'My title',
       description:
         'To indicate short quotations (four typed lines or fewer of prose or three lines of verse) in your text, enclose the quotation within double quotation marks. Provide the author and specific page number (in the case of verse, provide line numbers) in the in-text citation, and include a complete reference on the Works Cited page. Punctuation marks such as periods, commas, and semicolons should appear after the parenthetical citation.To indicate short quotations (four typed lines or fewer of prose or three lines of verse) in your text, enclose the quotation within double quotation marks. Provide the author and specific page number (in the case of verse, provide line numbers) in the in-text citation, and include a complete reference on the Works Cited page. Punctuation marks such as periods, commas, and semicolons should appear after the parenthetical citation.',
@@ -303,7 +294,6 @@ export default {
   async mounted() {
     const userJSON = window.localStorage.getItem('userData');
     const userData = JSON.parse(userJSON);
-    this.isLoggedIn = !!userData;
 
     const response = await this.$axios
       .$get(`/ideas/${this.$route.params.ideaId}`)
@@ -343,6 +333,11 @@ export default {
     async updateUpvote() {
       const userJSON = window.localStorage.getItem('userData');
       const userData = JSON.parse(userJSON);
+
+      if (!userData) {
+        return;
+      }
+
       const config = {
         headers: {
           Authorization: 'Bearer ' + userData.jwt,
@@ -367,3 +362,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+button.v-btn[disabled] {
+  opacity: 0.6;
+}
+</style>

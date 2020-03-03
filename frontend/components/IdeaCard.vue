@@ -61,7 +61,6 @@
 
               <v-btn
                 v-if="idea.hasUserUpvoted"
-                :disabled="!isLoggedIn"
                 color="blue"
                 text
                 class="pa-0 btnSpacing"
@@ -72,7 +71,6 @@
               </v-btn>
               <v-btn
                 v-else
-                :disabled="!isLoggedIn"
                 color="black"
                 text
                 class="pa-0 btnSpacing"
@@ -128,18 +126,6 @@ export default {
         return [];
       },
     },
-  },
-
-  data() {
-    return {
-      isLoggedIn: false,
-    };
-  },
-
-  mounted() {
-    const userJSON = window.localStorage.getItem('userData');
-    const userData = JSON.parse(userJSON);
-    this.isLoggedIn = !!userData;
   },
 
   methods: {
