@@ -32,7 +32,10 @@ import _ from 'lodash';
 import IdeaCard from '../../components/IdeaCard';
 import FeaturedCarousel from '../../components/idea-dashboard/FeaturedCarosel';
 
+// ms before typing the in input field triggers a search
 const DEBOUNCE_DELAY = 450;
+// limit of results to come back
+const RESULT_LIMIT = 2;
 
 export default {
   components: {
@@ -47,11 +50,14 @@ export default {
       ideas: this.$store.getters['ideas/getIdeas'],
       sortItems: ['New', 'Top'],
       sortSelected: 'New',
+      // Amount of entries needed to skipped when loading new results. Returns to zero on clear
+      skipCount: 0,
     };
   },
 
   async mounted() {
     await this.search();
+    this.scroll();
   },
 
   methods: {
@@ -59,11 +65,15 @@ export default {
       this.search();
     }, DEBOUNCE_DELAY),
 
-    async search() {
+    // Search for given results. Clear is true if results are to be cleared before load
+    async search(clear = true) {
+      console.log('fd');
       this.isLoading = true;
       // If the search field is filled, add a search condition to search on a term
       const params = {
         locId: this.$route.params.locId,
+        limit: RESULT_LIMIT,
+        skip: this.skipCount,
       };
       if (this.searchTerm.length > 0) {
         params.searchTerm = this.searchTerm;
@@ -84,10 +94,12 @@ export default {
        * coolidea photo: Photo by Ameen Fahmy on Unsplash https://unsplash.com/photos/_gEKtyIbRSM
        */
       // Clear previous ideas
-      this.ideas = [];
+      if (clear) {
+        this.ideas = [];
+      }
       if (response) {
         if (response.length > 0) {
-          this.ideas = response.map((idea) => {
+          const ideaResults = response.map((idea) => {
             return {
               id: idea.id.toString(),
               title: idea.title,
@@ -110,9 +122,34 @@ export default {
               featured: idea.featured,
             };
           });
+          if (clear) {
+            this.ideas = ideaResults;
+            this.skipCount = ideaResults.length;
+          } else {
+            this.ideas.push(...ideaResults);
+            // Add amount of entries needed to skip
+            this.skipCount += ideaResults.length;
+          }
         }
       }
       this.isLoading = false;
+    },
+
+    // Create listener that loads more results on scroll
+    // https://alligator.io/vuejs/implementing-infinite-scroll/
+    scroll() {
+      const me = this;
+      window.onscroll = function() {
+        const bottomOfWindow =
+          document.documentElement.scrollTop + window.innerHeight ===
+          document.documentElement.offsetHeight;
+
+        if (bottomOfWindow) {
+          console.log('WORKSSSS');
+          me.search.bind(me);
+          me.search(false);
+        }
+      };
     },
   },
 };

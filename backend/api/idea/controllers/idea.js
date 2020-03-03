@@ -187,10 +187,10 @@ module.exports = {
       }
     }
     if (qParams.limit && qParams.limit < resLimit) {
-      resLimit = qParams.limit;
+      resLimit = parseInt(qParams.limit);
     }
     if (qParams.skip) {
-      skip = qParams.skip;
+      skip = parseInt(qParams.skip);
     }
 
     const result = strapi.query('idea').model.find(queryParams).limit(resLimit).skip(skip).sort(sortBy);
