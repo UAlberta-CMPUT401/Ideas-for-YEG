@@ -59,7 +59,25 @@
               <v-spacer class="d-none d-sm-flex d-md-flex d-lg-flex d-xl-flex">
               </v-spacer>
 
-              <v-btn text class="pa-0 btnSpacing">
+              <v-btn
+                v-if="idea.hasUserUpvoted"
+                :disabled="!isLoggedIn"
+                color="blue"
+                text
+                class="pa-0 btnSpacing"
+                v-on:click.stop="$emit('upvoteOnClick', idea.id, idea.index)"
+              >
+                <v-icon>mdi-thumb-up</v-icon>
+                <span class="subheading mr-2">{{ idea.upvotes }}</span>
+              </v-btn>
+              <v-btn
+                v-else
+                :disabled="!isLoggedIn"
+                color="black"
+                text
+                class="pa-0 btnSpacing"
+                v-on:click.stop="$emit('upvoteOnClick', idea.id, idea.index)"
+              >
                 <v-icon>mdi-thumb-up</v-icon>
                 <span class="subheading mr-2">{{ idea.upvotes }}</span>
               </v-btn>
@@ -110,6 +128,18 @@ export default {
         return [];
       },
     },
+  },
+
+  data() {
+    return {
+      isLoggedIn: false,
+    };
+  },
+
+  mounted() {
+    const userJSON = window.localStorage.getItem('userData');
+    const userData = JSON.parse(userJSON);
+    this.isLoggedIn = !!userData;
   },
 
   methods: {

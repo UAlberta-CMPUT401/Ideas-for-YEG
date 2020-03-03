@@ -37,12 +37,31 @@
     <v-list-item class="d-flex justify-center">
       <v-tooltip bottom>
         <template v-slot:activator="{ on }">
-          <v-btn text class="pa-0" v-on="on">
+          <v-btn
+            v-if="hasUserUpvoted"
+            :disabled="!isLoggedIn"
+            text
+            class="pa-0"
+            color="blue"
+            v-on="on"
+            v-on:click="updateUpvote"
+          >
+            <v-icon>mdi-thumb-up</v-icon>
+            <span class="subheading mr-2">{{ upvotes }}</span>
+          </v-btn>
+          <v-btn
+            v-else
+            :disabled="!isLoggedIn"
+            text
+            class="pa-0"
+            v-on="on"
+            v-on:click="updateUpvote"
+          >
             <v-icon>mdi-thumb-up</v-icon>
             <span class="subheading mr-2">{{ upvotes }}</span>
           </v-btn>
         </template>
-        <span>Number of thumbs up</span>
+        <span>Number of Upvotes</span>
       </v-tooltip>
 
       <template>
@@ -200,6 +219,7 @@ export default {
 
   data() {
     return {
+      isLoggedIn: false,
       title: 'My title',
       description:
         'To indicate short quotations (four typed lines or fewer of prose or three lines of verse) in your text, enclose the quotation within double quotation marks. Provide the author and specific page number (in the case of verse, provide line numbers) in the in-text citation, and include a complete reference on the Works Cited page. Punctuation marks such as periods, commas, and semicolons should appear after the parenthetical citation.To indicate short quotations (four typed lines or fewer of prose or three lines of verse) in your text, enclose the quotation within double quotation marks. Provide the author and specific page number (in the case of verse, provide line numbers) in the in-text citation, and include a complete reference on the Works Cited page. Punctuation marks such as periods, commas, and semicolons should appear after the parenthetical citation.',
@@ -241,7 +261,7 @@ export default {
           username: 'Test',
         },
       ],
-      amountReceived: 100,
+      amountReceived: 0,
       status: 'Ongoing',
       images: [
         {
@@ -281,6 +301,10 @@ export default {
   },
 
   async mounted() {
+    const userJSON = window.localStorage.getItem('userData');
+    const userData = JSON.parse(userJSON);
+    this.isLoggedIn = !!userData;
+
     const response = await this.$axios
       .$get(`/ideas/${this.$route.params.ideaId}`)
       .catch((err) => {
@@ -306,8 +330,40 @@ export default {
       this.tags = response.categories;
       this.images = response.images;
       this.donations = response.donation;
-      this.upvotes = response.user_upvoters.length;
+      this.upvotes = response.upvote_count;
+      this.hasUserUpvoted = this.isLoggedIn
+        ? response.user_upvoters.filter((user) => {
+            return user.id === userData.user.id;
+          }).length === 1
+        : false;
     }
+  },
+
+  methods: {
+    async updateUpvote() {
+      const userJSON = window.localStorage.getItem('userData');
+      const userData = JSON.parse(userJSON);
+      const config = {
+        headers: {
+          Authorization: 'Bearer ' + userData.jwt,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      };
+
+      this.hasUserUpvoted ? this.upvotes-- : this.upvotes++;
+      this.hasUserUpvoted = !this.hasUserUpvoted;
+
+      const response = await this.$axios
+        .$put(`/ideas/upvote/${this.$route.params.ideaId}`, {}, config)
+        .catch((error) => console.log(error));
+
+      // undo upvoting if API fails
+      if (!response) {
+        this.hasUserUpvoted ? this.upvotes-- : this.upvotes++;
+        this.hasUserUpvoted = !this.hasUserUpvoted;
+      }
+    },
   },
 };
 </script>

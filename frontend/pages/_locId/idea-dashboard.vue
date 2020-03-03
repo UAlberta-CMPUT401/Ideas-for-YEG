@@ -14,7 +14,11 @@
             label="Search"
           ></v-text-field>
         </v-form>
-        <IdeaCard v-bind:isEditable="false" v-bind:ideas="ideas" />
+        <IdeaCard
+          v-bind:isEditable="false"
+          v-bind:ideas="ideas"
+          v-on:upvoteOnClick="updateUpvote"
+        />
       </v-col>
     </v-row>
   </v-container>
@@ -50,6 +54,17 @@ export default {
       if (this.searchTerm.length > 0) {
         descSearchCond = `description_contains:"${this.searchTerm}"`;
       }
+
+      const userJSON = window.localStorage.getItem('userData');
+      const userData = JSON.parse(userJSON);
+
+      let currentUserUpvoter = ``;
+      if (userData) {
+        currentUserUpvoter = `current_user_upvoter: user_upvoters (where: {username: "${userData.user.username}"}) {
+                    username
+                }`;
+      }
+
       const response = await this.$axios
         .$post('/graphql', {
           query: `query {
@@ -70,9 +85,8 @@ export default {
                     url
                   }
                 }
-                user_upvoters {
-                  username
-                }
+                upvote_count
+                ${currentUserUpvoter}
                 followers {
                   username
                 }
@@ -94,12 +108,15 @@ export default {
       this.ideas = [];
       if (response) {
         if (response.data.locations[0].ideas.length > 0) {
-          this.ideas = response.data.locations[0].ideas.map((idea) => {
+          this.ideas = response.data.locations[0].ideas.map((idea, index) => {
             return {
               id: idea.id.toString(),
               title: idea.title,
               description: idea.description,
-              upvotes: idea.user_upvoters.length,
+              upvotes: idea.upvote_count,
+              hasUserUpvoted: idea.current_user_upvoter
+                ? idea.current_user_upvoter.length === 1
+                : false,
               ideaCreator: idea.user_creator.username,
               // temporarily use this now as localhost photos are hit/miss
               src: idea.images.length
@@ -115,11 +132,51 @@ export default {
                 : 'https://www.everypixel.com/image-638397625280524203.jpg',
               slug: idea.slug,
               featured: idea.featured,
+              index,
             };
           });
         }
       }
       this.isLoading = false;
+    },
+
+    async updateUpvote(id, index) {
+      const userJSON = window.localStorage.getItem('userData');
+      const userData = JSON.parse(userJSON);
+      const config = {
+        headers: {
+          Authorization: 'Bearer ' + userData.jwt,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      };
+
+      this.ideas[index].hasUserUpvoted
+        ? this.ideas[index].upvotes--
+        : this.ideas[index].upvotes++;
+
+      this.ideas[index] = {
+        ...this.ideas[index],
+        hasUserUpvoted: !this.ideas[index].hasUserUpvoted,
+      };
+      this.ideas.splice();
+
+      const response = await this.$axios
+        .$put(`/ideas/upvote/${id}`, {}, config)
+        .catch((error) => console.log(error));
+
+      // undo upvoting if API fails
+      if (!response) {
+        this.ideas[index].hasUserUpvoted
+          ? this.ideas[index].upvotes--
+          : this.ideas[index].upvotes++;
+
+        this.ideas[index] = {
+          ...this.ideas[index],
+          hasUserUpvoted: !this.ideas[index].hasUserUpvoted,
+        };
+        this.ideas.splice();
+      }
     },
   },
 };
