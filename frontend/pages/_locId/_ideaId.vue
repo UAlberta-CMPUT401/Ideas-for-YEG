@@ -362,9 +362,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-button.v-btn[disabled] {
-  opacity: 0.6;
-}
-</style>
