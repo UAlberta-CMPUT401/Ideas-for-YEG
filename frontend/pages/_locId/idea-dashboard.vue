@@ -14,6 +14,12 @@
             name="searchTerm"
             label="Search"
           ></v-text-field>
+          <v-select
+            v-on:input="search"
+            v-model="sortSelected"
+            :items="sortItems"
+            label="Sort by"
+          ></v-select>
         </v-form>
         <IdeaCard v-bind:isEditable="false" v-bind:ideas="ideas" />
       </v-col>
@@ -39,6 +45,8 @@ export default {
       searchTerm: '',
       isLoading: false,
       ideas: this.$store.getters['ideas/getIdeas'],
+      sortItems: ['New', 'Top'],
+      sortSelected: 'New',
     };
   },
 
@@ -48,7 +56,6 @@ export default {
 
   methods: {
     debounceSearch: _.debounce(function() {
-      console.log('DSFFDSFSSFSFD');
       this.search();
     }, DEBOUNCE_DELAY),
 
@@ -60,6 +67,9 @@ export default {
       };
       if (this.searchTerm.length > 0) {
         params.searchTerm = this.searchTerm;
+      }
+      if (this.sortSelected) {
+        params.sortBy = this.sortSelected;
       }
 
       const response = await this.$axios

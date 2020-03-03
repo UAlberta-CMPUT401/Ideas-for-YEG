@@ -176,11 +176,11 @@ module.exports = {
       });
     }
     if (qParams.sortBy) {
-      if (qParams.sortBy === 'new') {
+      if (qParams.sortBy.toLowerCase() === 'new') {
         sortBy = {
           'createdAt': -1
         };
-      } else if (qParams.sortBy === 'top') {
+      } else if (qParams.sortBy.toLowerCase() === 'top') {
         sortBy = {
           'upvote_count': -1
         };
