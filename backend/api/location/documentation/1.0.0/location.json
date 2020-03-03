@@ -640,6 +640,9 @@
                 },
                 "featured": {
                   "type": "boolean"
+                },
+                "upvote_count": {
+                  "type": "integer"
                 }
               }
             }
@@ -715,6 +718,28 @@
                 "type": "string"
               }
             }
+          },
+          "sub_pages": {
+            "type": "array",
+            "items": {
+              "required": [
+                "id"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "content": {
+                  "type": "string"
+                },
+                "location": {
+                  "type": "string"
+                }
+              }
+            }
           }
         }
       },
@@ -741,6 +766,12 @@
           },
           "categories": {
             "type": "string"
+          },
+          "sub_pages": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         }
       }

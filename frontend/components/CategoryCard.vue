@@ -1,7 +1,11 @@
 <template>
   <v-container fluid>
+    <v-card-title align-center>
+      Category Management
+    </v-card-title>
     <v-row no-gutters justify="center">
       <v-col
+        align="center"
         xs12
         sm4
         v-for="category in categories.category"
@@ -52,7 +56,7 @@ export default {
       category: {
         type: Array,
         default: () => {
-          return [];
+          return [{ id: 'i1', name: 'General' }];
         },
       },
     },

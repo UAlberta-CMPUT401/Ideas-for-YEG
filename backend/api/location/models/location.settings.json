@@ -37,6 +37,10 @@
     "categories": {
       "model": "categories",
       "via": "location"
+    },
+    "sub_pages": {
+      "via": "location",
+      "collection": "sub-page"
     }
   }
 }
