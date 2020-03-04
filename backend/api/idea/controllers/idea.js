@@ -1,22 +1,16 @@
-'use strict';
-
-
+"use strict";
 
 /**
  * Read the documentation (https://strapi.io/documentation/3.0.0-beta.x/concepts/controllers.html#core-controllers)
  * to customize this controller
  */
 
-const {
-  sanitizeEntity
-} = require('strapi-utils');
+const { sanitizeEntity } = require("strapi-utils");
 
 function removeUserArray(arr, value) {
-
-  return arr.filter(function (ele) {
+  return arr.filter(function(ele) {
     return ele.id != value.id;
   });
-
 }
 
 module.exports = {
@@ -31,22 +25,22 @@ module.exports = {
     action = ctx.request.body.action;
 
     if (user == undefined || action == undefined) {
-      return "Missing Parameters."
+      return "Missing Parameters.";
     }
 
     var admins = entity.admins;
-    let found = (admins.find(element => element.id == user.id) != undefined);
+    let found = admins.find(element => element.id == user.id) != undefined;
 
     if (action == "add" && !found) {
-      admins.push(user.id)
+      admins.push(user.id);
     }
     if (action == "remove" && found) {
-      admins = removeUserArray(admins, user)
+      admins = removeUserArray(admins, user);
     }
 
     let updated;
     updated = await strapi.services.idea.update(entity, {
-      'admins': admins
+      admins: admins
     });
 
     return sanitizeEntity(updated, {
@@ -54,22 +48,23 @@ module.exports = {
     });
   },
   async upvote(ctx) {
-
     let entity;
     entity = await strapi.services.idea.findOne(ctx.params);
 
     let upvoters = entity.user_upvoters;
-    if (upvoters.find(element => element.id == ctx.state.user.id) != undefined) {
+    if (
+      upvoters.find(element => element.id == ctx.state.user.id) != undefined
+    ) {
       upvoters = removeUserArray(upvoters, ctx.state.user);
     } else {
       upvoters.push(ctx.state.user);
     }
     let upvoteCount = upvoters.length;
 
-    let thing;
-    thing = await strapi.services.idea.update(entity, {
-      'user_upvoters': upvoters,
-      'upvote_count': upvoteCount
+    let updated;
+    updated = await strapi.services.idea.update(entity, {
+      user_upvoters: upvoters,
+      upvote_count: upvoteCount
     });
 
     return sanitizeEntity(updated, {
@@ -78,20 +73,21 @@ module.exports = {
   },
 
   async volunteer(ctx) {
-
     let entity;
     entity = await strapi.services.idea.findOne(ctx.params);
 
     let volunteers = entity.volunteers;
-    if (volunteers.find(element => element.id == ctx.state.user.id) != undefined) {
-      volunteers = removeUserArray(volunteers, ctx.state.user)
+    if (
+      volunteers.find(element => element.id == ctx.state.user.id) != undefined
+    ) {
+      volunteers = removeUserArray(volunteers, ctx.state.user);
     } else {
-      volunteers.push(ctx.state.user)
+      volunteers.push(ctx.state.user);
     }
 
     let updated;
     updated = await strapi.services.idea.update(entity, {
-      'volunteers': volunteers
+      volunteers: volunteers
     });
 
     return sanitizeEntity(updated, {
@@ -100,20 +96,21 @@ module.exports = {
   },
 
   async follow(ctx) {
-
     let entity;
     entity = await strapi.services.idea.findOne(ctx.params);
 
     let followers = entity.followers;
-    if (followers.find(element => element.id == ctx.state.user.id) != undefined) {
-      followers = removeUserArray(followers, ctx.state.user)
+    if (
+      followers.find(element => element.id == ctx.state.user.id) != undefined
+    ) {
+      followers = removeUserArray(followers, ctx.state.user);
     } else {
-      followers.push(ctx.state.user)
+      followers.push(ctx.state.user);
     }
 
     let updated;
     updated = await strapi.services.idea.update(entity, {
-      'followers': followers
+      followers: followers
     });
 
     return sanitizeEntity(updated, {
@@ -128,23 +125,23 @@ module.exports = {
       $and: []
     };
     let sortBy = {
-      'createdAt': -1
+      createdAt: -1
     };
     let loc;
     // Query params include: searchTerm, sortBy, limit, skip,
     const qParams = ctx.request.query;
     if (qParams.locId) {
-      loc = await strapi.query('location').findOne({
+      loc = await strapi.query("location").findOne({
         route: qParams.locId
       });
       if (!loc) {
-        ctx.throw(400, 'invalid location id provided');
+        ctx.throw(400, "invalid location id provided");
       }
       queryParams.$and.push({
         location: loc._id
-      })
+      });
     } else {
-      ctx.throw(400, 'location id parameter (locId) required');
+      ctx.throw(400, "location id parameter (locId) required");
     }
 
     if (qParams.searchTerm) {
@@ -159,30 +156,31 @@ module.exports = {
 
       // Push clause that looks if titles or documents contain the search term as a substring
       queryParams.$and.push({
-        $or: [{
-            "title": {
+        $or: [
+          {
+            title: {
               $regex: `.*${qParams.searchTerm}.*`,
-              $options: 'i'
+              $options: "i"
             }
           },
           {
-            "description": {
+            description: {
               $regex: `.*${qParams.searchTerm}.*`,
-              $options: 'i'
+              $options: "i"
             }
-          },
+          }
           // {"categories" : {$in:{category}}},
         ]
       });
     }
     if (qParams.sortBy) {
-      if (qParams.sortBy.toLowerCase() === 'new') {
+      if (qParams.sortBy.toLowerCase() === "new") {
         sortBy = {
-          'createdAt': -1
+          createdAt: -1
         };
-      } else if (qParams.sortBy.toLowerCase() === 'top') {
+      } else if (qParams.sortBy.toLowerCase() === "top") {
         sortBy = {
-          'upvote_count': -1
+          upvote_count: -1
         };
       }
     }
@@ -193,7 +191,12 @@ module.exports = {
       skip = parseInt(qParams.skip);
     }
 
-    const result = strapi.query('idea').model.find(queryParams).limit(resLimit).skip(skip).sort(sortBy);
+    const result = strapi
+      .query("idea")
+      .model.find(queryParams)
+      .limit(resLimit)
+      .skip(skip)
+      .sort(sortBy);
 
     return result;
   }

@@ -29,7 +29,11 @@
             label="Sort by"
           ></v-select>
         </v-form>
-        <IdeaCard v-bind:isEditable="false" v-bind:ideas="ideas" />
+        <IdeaCard
+          v-bind:isEditable="false"
+          v-bind:ideas="ideas"
+          v-on:upvoteOnClick="updateUpvote"
+        />
         <v-progress-circular
           v-if="isLoading"
           :size="50"
@@ -112,6 +116,9 @@ export default {
         params.sortBy = this.sortSelected;
       }
 
+      const userJSON = window.localStorage.getItem('userData');
+      const userData = JSON.parse(userJSON);
+
       const response = await this.$axios
         .$get('/ideas/search', {
           params,
@@ -125,12 +132,16 @@ export default {
        */
       if (response) {
         if (response.length > 0) {
-          const ideaResults = response.map((idea) => {
+          const ideaResults = response.map((idea, index) => {
             return {
               id: idea.id.toString(),
               title: idea.title,
               description: idea.description,
-              upvotes: idea.user_upvoters.length,
+              upvotes: idea.upvote_count,
+              hasUserUpvoted:
+                userData && userData.user && userData.user._id
+                  ? this.isUpvotedByUser(idea, userData.user._id)
+                  : false,
               ideaCreator: idea.user_creator.username,
               // temporarily use this now as localhost photos are hit/miss
               src: idea.images.length
@@ -146,6 +157,7 @@ export default {
                 : 'https://www.everypixel.com/image-638397625280524203.jpg',
               slug: idea.slug,
               featured: idea.featured,
+              index,
             };
           });
           if (clear) {
@@ -163,6 +175,59 @@ export default {
         }
       }
       this.isLoading = false;
+    },
+    isUpvotedByUser(idea, userId) {
+      for (const upvoterId of idea.user_upvoters) {
+        if (upvoterId === userId) {
+          return true;
+        }
+      }
+      return false;
+    },
+    async updateUpvote(idea) {
+      const id = idea.id;
+      const index = this.ideas.indexOf(idea);
+
+      const userJSON = window.localStorage.getItem('userData');
+      const userData = JSON.parse(userJSON);
+      if (!userData) {
+        return;
+      }
+
+      const config = {
+        headers: {
+          Authorization: 'Bearer ' + userData.jwt,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      };
+
+      this.ideas[index].hasUserUpvoted
+        ? this.ideas[index].upvotes--
+        : this.ideas[index].upvotes++;
+
+      this.ideas[index] = {
+        ...this.ideas[index],
+        hasUserUpvoted: !this.ideas[index].hasUserUpvoted,
+      };
+      this.ideas.splice();
+
+      const response = await this.$axios
+        .$put(`/ideas/upvote/${id}`, {}, config)
+        .catch((error) => console.log(error));
+
+      // undo upvoting if API fails
+      if (!response) {
+        this.ideas[index].hasUserUpvoted
+          ? this.ideas[index].upvotes--
+          : this.ideas[index].upvotes++;
+
+        this.ideas[index] = {
+          ...this.ideas[index],
+          hasUserUpvoted: !this.ideas[index].hasUserUpvoted,
+        };
+        this.ideas.splice();
+      }
     },
 
     // Create listener that loads more results on scroll
