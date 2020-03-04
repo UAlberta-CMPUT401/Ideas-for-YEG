@@ -59,7 +59,23 @@
               <v-spacer class="d-none d-sm-flex d-md-flex d-lg-flex d-xl-flex">
               </v-spacer>
 
-              <v-btn text class="pa-0 btnSpacing">
+              <v-btn
+                v-if="idea.hasUserUpvoted"
+                color="blue"
+                text
+                class="pa-0 btnSpacing"
+                v-on:click.stop="$emit('upvoteOnClick', idea.id, idea.index)"
+              >
+                <v-icon>mdi-thumb-up</v-icon>
+                <span class="subheading mr-2">{{ idea.upvotes }}</span>
+              </v-btn>
+              <v-btn
+                v-else
+                color="black"
+                text
+                class="pa-0 btnSpacing"
+                v-on:click.stop="$emit('upvoteOnClick', idea.id, idea.index)"
+              >
                 <v-icon>mdi-thumb-up</v-icon>
                 <span class="subheading mr-2">{{ idea.upvotes }}</span>
               </v-btn>
