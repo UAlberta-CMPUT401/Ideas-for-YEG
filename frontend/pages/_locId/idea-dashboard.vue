@@ -1,7 +1,15 @@
 <template>
   <v-container align="center" justify="center">
     <v-row align="center" justify="center">
-      <v-col justify="center" cols="12" sm="9" md="9" lg="8" xl="6">
+      <v-col
+        align="center"
+        justify="center"
+        cols="12"
+        sm="9"
+        md="9"
+        lg="8"
+        xl="6"
+      >
         <FeaturedCarousel v-bind:route="this.$route.params.locId" />
         <v-form ref="form" class="my-3">
           <v-text-field
@@ -22,6 +30,14 @@
           ></v-select>
         </v-form>
         <IdeaCard v-bind:isEditable="false" v-bind:ideas="ideas" />
+        <v-progress-circular
+          v-if="isLoading"
+          :size="50"
+          color="primary"
+          indeterminate
+        ></v-progress-circular>
+        <h2 v-if="noInitialResults">No results found</h2>
+        <h2 v-if="noOtherResults">No other results</h2>
       </v-col>
     </v-row>
   </v-container>
@@ -29,12 +45,13 @@
 
 <script>
 import _ from 'lodash';
-import IdeaCard from '../../components/IdeaCard';
+import IdeaCard from '../../components/idea-dashboard/IdeaCard';
 import FeaturedCarousel from '../../components/idea-dashboard/FeaturedCarosel';
 
 // ms before typing the in input field triggers a search
-const DEBOUNCE_DELAY = 450;
+const DEBOUNCE_DELAY = 650;
 // limit of results to come back
+// NOTE: currently extremely small for the sake of demoing MVP, should be a larger number (~10-20)
 const RESULT_LIMIT = 2;
 
 export default {
@@ -52,6 +69,10 @@ export default {
       sortSelected: 'New',
       // Amount of entries needed to skipped when loading new results. Returns to zero on clear
       skipCount: 0,
+      // If no results are found when trying to load more results via scroll
+      noOtherResults: false,
+      // If no results were found to begin with
+      noInitialResults: false,
     };
   },
 
@@ -61,14 +82,23 @@ export default {
   },
 
   methods: {
+    // Search after debouncing input. Prevents an excessive amount of requests
     debounceSearch: _.debounce(function() {
       this.search();
     }, DEBOUNCE_DELAY),
 
     // Search for given results. Clear is true if results are to be cleared before load
     async search(clear = true) {
-      console.log('fd');
       this.isLoading = true;
+      this.noInitialResults = false;
+      this.noOtherResults = false;
+
+      // Clear previous ideas, set the amount to skip by to 0
+      if (clear) {
+        this.ideas = [];
+        this.skipCount = 0;
+      }
+
       // If the search field is filled, add a search condition to search on a term
       const params = {
         locId: this.$route.params.locId,
@@ -93,10 +123,6 @@ export default {
        * default user avatar photo: https://www.everypixel.com/image-638397625280524203
        * coolidea photo: Photo by Ameen Fahmy on Unsplash https://unsplash.com/photos/_gEKtyIbRSM
        */
-      // Clear previous ideas
-      if (clear) {
-        this.ideas = [];
-      }
       if (response) {
         if (response.length > 0) {
           const ideaResults = response.map((idea) => {
@@ -130,6 +156,10 @@ export default {
             // Add amount of entries needed to skip
             this.skipCount += ideaResults.length;
           }
+        } else if (response.length === 0 && !clear) {
+          this.noOtherResults = true;
+        } else if (response.length === 0 && clear) {
+          this.noInitialResults = true;
         }
       }
       this.isLoading = false;
@@ -138,16 +168,20 @@ export default {
     // Create listener that loads more results on scroll
     // https://alligator.io/vuejs/implementing-infinite-scroll/
     scroll() {
-      const me = this;
+      const self = this;
       window.onscroll = function() {
         const bottomOfWindow =
           document.documentElement.scrollTop + window.innerHeight ===
           document.documentElement.offsetHeight;
-
-        if (bottomOfWindow) {
-          console.log('WORKSSSS');
-          me.search.bind(me);
-          me.search(false);
+        // Only run if the user has got to the bottom of the window and if there are still results to load
+        if (
+          bottomOfWindow &&
+          !self.noOtherResults &&
+          !self.noInitialResults &&
+          !self.isLoading
+        ) {
+          self.search.bind(self);
+          self.search(false);
         }
       };
     },

@@ -9,7 +9,7 @@
   </v-layout>
 </template>
 <script>
-import IdeaCard from '../components/IdeaCard';
+import IdeaCard from '../components/idea-dashboard/IdeaCard';
 
 export default {
   components: {
