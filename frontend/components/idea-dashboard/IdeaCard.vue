@@ -1,9 +1,6 @@
 <template>
   <v-container fluid>
     <v-row justify="center">
-      <v-col v-if="ideas.length === 0">
-        <h2>No ideas have been found</h2>
-      </v-col>
       <v-col v-for="idea in ideas" :key="idea.title" justify="center">
         <v-card
           d-flex
@@ -64,7 +61,7 @@
                 color="blue"
                 text
                 class="pa-0 btnSpacing"
-                v-on:click.stop="$emit('upvoteOnClick', idea.id, idea.index)"
+                v-on:click.stop="$emit('upvoteOnClick', idea)"
               >
                 <v-icon>mdi-thumb-up</v-icon>
                 <span class="subheading mr-2">{{ idea.upvotes }}</span>
@@ -74,7 +71,7 @@
                 color="black"
                 text
                 class="pa-0 btnSpacing"
-                v-on:click.stop="$emit('upvoteOnClick', idea.id, idea.index)"
+                v-on:click.stop="$emit('upvoteOnClick', idea)"
               >
                 <v-icon>mdi-thumb-up</v-icon>
                 <span class="subheading mr-2">{{ idea.upvotes }}</span>
