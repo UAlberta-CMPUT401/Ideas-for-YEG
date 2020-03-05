@@ -143,7 +143,7 @@ export default {
       }
 
       this.$router.push({
-        path: `/${locationParam}/${id}`,
+        path: `/${locationParam}/ideas/${id}`,
       });
     },
   },

@@ -3,7 +3,7 @@ import { mount, RouterLinkStub } from '@vue/test-utils';
 import Vue from 'vue';
 import Vuetify from 'vuetify';
 import NuxtLink from '../../../.nuxt/components/nuxt-link.client.js';
-import IdeaDetailPage from '@/pages/_locId/_ideaId.vue';
+import IdeaDetailPage from '~/pages/_locId/ideas/_ideaId.vue';
 
 describe('Idea Detail Page', () => {
   let wrapper;
