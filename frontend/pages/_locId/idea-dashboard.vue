@@ -40,7 +40,10 @@
           color="primary"
           indeterminate
         ></v-progress-circular>
-        <h2 v-if="noInitialResults">No results found</h2>
+        <h2 v-if="noInitialResults">
+          No Ideas have been found for the given search term. Maybe try creating
+          a new idea?
+        </h2>
         <h2 v-if="noOtherResults">No other results</h2>
       </v-col>
     </v-row>
