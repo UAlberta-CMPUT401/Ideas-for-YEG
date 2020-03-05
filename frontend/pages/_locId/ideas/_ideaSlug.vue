@@ -296,37 +296,38 @@ export default {
     const userData = JSON.parse(userJSON);
 
     const response = await this.$axios
-      .$get(`/ideas/${this.$route.params.ideaId}`)
+      .$get(`/ideas?slug=${this.$route.params.ideaSlug}`)
       .catch((err) => {
         console.log(err);
         return false;
       });
 
-    if (response) {
-      this.title = response.title;
-      this.description = response.description;
-      this.ideaCreator = response.user_creator;
-      this.status = response.status;
-      this.honorarium = response.honorarium;
-      this.upvotes = response.user_upvoters.length;
-      this.followers = response.followers;
-      this.volunteers = response.volunteers;
-      this.updates = response.update.reverse().map((update) => {
+    if (response && response.length > 0) {
+      const data = response[0];
+      this.title = data.title;
+      this.description = data.description;
+      this.ideaCreator = data.user_creator;
+      this.status = data.status;
+      this.honorarium = data.honorarium;
+      this.upvotes = data.user_upvoters.length;
+      this.followers = data.followers;
+      this.volunteers = data.volunteers;
+      this.updates = data.update.reverse().map((update) => {
         return {
           description: update.description,
           createdAt: moment(update.createdAt).format('MMM DD YYYY'),
         };
       });
-      this.tags = response.categories;
-      this.images = response.images;
-      this.donations = response.donation;
-      this.upvotes = response.upvote_count;
+      this.tags = data.categories;
+      this.images = data.images;
+      this.donations = data.donation;
+      this.upvotes = data.upvote_count;
       this.hasUserUpvoted = userData
-        ? response.user_upvoters.filter((user) => {
+        ? data.user_upvoters.filter((user) => {
             return user.id === userData.user.id;
           }).length === 1
         : false;
-      this.contactEmail = response.contact_email;
+      this.contactEmail = data.contact_email;
     }
   },
 
