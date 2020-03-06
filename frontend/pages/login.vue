@@ -50,6 +50,15 @@ export default {
       password: '',
     };
   },
+  mounted() {
+    const self = this;
+    window.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        self.logIn.bind(self);
+        self.logIn();
+      }
+    });
+  },
   methods: {
     async logIn() {
       const data = await this.$axios

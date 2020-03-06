@@ -10,9 +10,11 @@
             You are now successfully signed up! Please verify your email before
             logging in
           </p>
-          <nuxt-link to="/">
-            Return to homepage
-          </nuxt-link>
+          <p>
+            <nuxt-link to="/">
+              Return to Homepage
+            </nuxt-link>
+          </p>
           <v-btn text="true" v-on:click="resendEmail"
             >Didn't get an email? Click here to resend</v-btn
           >
