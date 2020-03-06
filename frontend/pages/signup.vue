@@ -6,7 +6,7 @@
           Sign Up
         </v-card-title>
         <v-card-text>
-          <p v-if="errorMessage !== null">
+          <p v-if="errorMessage !== null" class="red--text">
             {{ errorMessage }}
           </p>
           <v-form ref="form" class="my-3">
@@ -107,10 +107,10 @@ export default {
       usernameRules: [
         (v) =>
           v.length >= USERNAME_MIN_LENGTH ||
-          `Password must be at least ${USERNAME_MIN_LENGTH} characters long`,
+          `Username must be at least ${USERNAME_MIN_LENGTH} characters long`,
         (v) =>
           v.length <= USERNAME_MAX_LENGTH ||
-          `Password cannot exceed ${USERNAME_MAX_LENGTH} characters`,
+          `Username cannot exceed ${USERNAME_MAX_LENGTH} characters`,
       ],
       emailRules: [
         (v) => EMAIL_VALIDATION_REGEX.test(v) || 'Email must be valid',
@@ -176,7 +176,8 @@ export default {
           });
         // Handle success.
         if (data) {
-          const email = await this.$axios
+          // Send email confirmation
+          this.$axios
             .$post('/auth/send-email-confirmation', {
               email: this.email,
             })
@@ -187,17 +188,18 @@ export default {
             .catch((error) => {
               // Handle error.
               console.log('An error occured:', error);
+              this.errorMessage = 'Could not send email confirmation';
             });
-          if (email) {
-            // const user = data.user;
-            const jwt = data.jwt;
-            if (process.browser) {
-              // Access token like so: console.log(document.cookie.replace(/(?:(?:^|.*;\s*)accessToken\s*=\s*([^;]*).*$)|^.*$/, "$1"));
-              document.cookie = 'accessToken=' + jwt;
-              window.localStorage.setItem(LS_USER_DATA, JSON.stringify(data));
-              this.$store.commit('userData/update', data);
-              await this.$router.push('/');
-            }
+
+          // TODO: Redirect regaurdless of email confirmation
+          // const user = data.user;
+          const jwt = data.jwt;
+          if (process.browser) {
+            // Access token like so: console.log(document.cookie.replace(/(?:(?:^|.*;\s*)accessToken\s*=\s*([^;]*).*$)|^.*$/, "$1"));
+            document.cookie = 'accessToken=' + jwt;
+            window.localStorage.setItem(LS_USER_DATA, JSON.stringify(data));
+            this.$store.commit('userData/update', data);
+            await this.$router.push('/signupSuccess');
           }
         }
       }
