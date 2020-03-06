@@ -9,8 +9,8 @@
       </v-list-item-content>
       <v-spacer></v-spacer>
 
-      <template>
-        <ContactIdeaCreatorDialog :ideaCreator="ideaCreator" />
+      <template v-if="contactEmail">
+        <ContactIdeaCreatorDialog :contactEmail="contactEmail" />
       </template>
     </v-list-item>
 
@@ -184,14 +184,14 @@
 
 <script>
 import moment from 'moment';
-import DonateDialog from '../../components/DonateDialog';
-import DonateToIdea from '../../components/DonateToIdea';
-import SubscribeToDigest from '../../components/SubscribeToDigest';
-import VolunteerForIdea from '../../components/VolunteerForIdea';
-import FollowersListDialog from '../../components/FollowersListDialog';
-import ProjectUpdatesDialog from '../../components/ProjectUpdatesDialog';
-import VolunteerListDialog from '../../components/VolunteerListDialog';
-import ContactIdeaCreatorDialog from '../../components/ContactIdeaCreatorDialog';
+import DonateDialog from '../../../components/DonateDialog';
+import DonateToIdea from '../../../components/DonateToIdea';
+import SubscribeToDigest from '../../../components/SubscribeToDigest';
+import VolunteerForIdea from '../../../components/VolunteerForIdea';
+import FollowersListDialog from '../../../components/FollowersListDialog';
+import ProjectUpdatesDialog from '../../../components/ProjectUpdatesDialog';
+import VolunteerListDialog from '../../../components/VolunteerListDialog';
+import ContactIdeaCreatorDialog from '../../../components/_ideaId/ContactIdeaCreatorDialog';
 
 export default {
   components: {
@@ -211,17 +211,16 @@ export default {
 
   data() {
     return {
-      title: 'My title',
-      description:
-        'To indicate short quotations (four typed lines or fewer of prose or three lines of verse) in your text, enclose the quotation within double quotation marks. Provide the author and specific page number (in the case of verse, provide line numbers) in the in-text citation, and include a complete reference on the Works Cited page. Punctuation marks such as periods, commas, and semicolons should appear after the parenthetical citation.To indicate short quotations (four typed lines or fewer of prose or three lines of verse) in your text, enclose the quotation within double quotation marks. Provide the author and specific page number (in the case of verse, provide line numbers) in the in-text citation, and include a complete reference on the Works Cited page. Punctuation marks such as periods, commas, and semicolons should appear after the parenthetical citation.',
-      upvotes: 100,
+      title: '',
+      description: '',
+      upvotes: 0,
       ideaCreator: {
         confirmed: true,
         blocked: false,
-        _id: '5e3c99fb41c08b409b7a4953',
-        username: 'tester',
-        email: 'tester@gmail.com',
-        provider: 'local',
+        _id: '',
+        username: '',
+        email: '',
+        provider: '',
         createdAt: '2020-02-06T22:58:03.453Z',
         updatedAt: '2020-02-19T23:21:06.386Z',
         __v: 0,
@@ -288,6 +287,7 @@ export default {
           description: 'Updates',
         },
       ],
+      contactEmail: '',
     };
   },
 
@@ -296,36 +296,38 @@ export default {
     const userData = JSON.parse(userJSON);
 
     const response = await this.$axios
-      .$get(`/ideas/${this.$route.params.ideaId}`)
+      .$get(`/ideas?slug=${this.$route.params.ideaSlug}`)
       .catch((err) => {
         console.log(err);
         return false;
       });
 
-    if (response) {
-      this.title = response.title;
-      this.description = response.description;
-      this.ideaCreator = response.user_creator;
-      this.status = response.status;
-      this.honorarium = response.honorarium;
-      this.upvotes = response.user_upvoters.length;
-      this.followers = response.followers;
-      this.volunteers = response.volunteers;
-      this.updates = response.update.reverse().map((update) => {
+    if (response && response.length > 0) {
+      const data = response[0];
+      this.title = data.title;
+      this.description = data.description;
+      this.ideaCreator = data.user_creator;
+      this.status = data.status;
+      this.honorarium = data.honorarium;
+      this.upvotes = data.user_upvoters.length;
+      this.followers = data.followers;
+      this.volunteers = data.volunteers;
+      this.updates = data.update.reverse().map((update) => {
         return {
           description: update.description,
           createdAt: moment(update.createdAt).format('MMM DD YYYY'),
         };
       });
-      this.tags = response.categories;
-      this.images = response.images;
-      this.donations = response.donation;
-      this.upvotes = response.upvote_count;
+      this.tags = data.categories;
+      this.images = data.images;
+      this.donations = data.donation;
+      this.upvotes = data.upvote_count;
       this.hasUserUpvoted = userData
-        ? response.user_upvoters.filter((user) => {
+        ? data.user_upvoters.filter((user) => {
             return user.id === userData.user.id;
           }).length === 1
         : false;
+      this.contactEmail = data.contact_email;
     }
   },
 

@@ -58,6 +58,14 @@
           </v-col>
 
           <v-col cols="12">
+            <v-text-field v-model="contactEmail">
+              <template v-slot:label>
+                <div>Contact Email</div>
+              </template>
+            </v-text-field>
+          </v-col>
+
+          <v-col cols="12">
             <v-row>
               <template>
                 <v-file-input
@@ -187,6 +195,7 @@ export default {
       locationIds: [],
       ideaId: '',
       savedImages: [],
+      contactEmail: '',
     };
   },
 
@@ -231,6 +240,7 @@ export default {
         this.description = ideaResponse.description;
         this.selectedStatus = ideaResponse.status;
         this.savedImages = ideaResponse.images;
+        this.contactEmail = ideaResponse.contact_email;
       } else {
         this.error = true;
       }
@@ -368,6 +378,7 @@ export default {
         images: this.savedImages.map((image) => {
           return image.id;
         }),
+        contact_email: this.contactEmail,
       };
 
       let response = null;

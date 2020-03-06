@@ -122,7 +122,7 @@ export default {
     },
     onClick(id) {
       this.$router.push({
-        path: `/${this.$props.route}/${id}`,
+        path: `/${this.$props.route}/ideas/${id}`,
       });
     },
   },
