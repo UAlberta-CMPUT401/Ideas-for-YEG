@@ -191,7 +191,6 @@ export default {
               this.errorMessage = 'Could not send email confirmation';
             });
 
-          // TODO: Redirect regaurdless of email confirmation
           // const user = data.user;
           const jwt = data.jwt;
           if (process.browser) {
