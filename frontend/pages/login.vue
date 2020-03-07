@@ -32,6 +32,14 @@
           </nuxt-link>
         </v-card-text>
       </v-card>
+
+      <v-overlay :value="loading">
+        <v-progress-circular
+          :size="200"
+          color="primary"
+          indeterminate
+        ></v-progress-circular>
+      </v-overlay>
     </v-flex>
   </v-layout>
 </template>
@@ -48,10 +56,13 @@ export default {
       errorMessage: '',
       identifier: '',
       password: '',
+      loading: false,
     };
   },
   methods: {
     async logIn() {
+      this.loading = true;
+
       const data = await this.$axios
         .$post('/auth/local', {
           identifier: this.identifier,
@@ -70,12 +81,15 @@ export default {
             this.errorMessage.data.message[0].messages[0].message
           ) {
             this.errorMessage = this.errorMessage.data.message[0].messages[0].message;
+            this.loading = false;
           }
         });
+
       // Handle success.
       if (data) {
         // const user = data.user;
         const jwt = data.jwt;
+
         // ensure that data is being saved to the client, not the sever
         if (process.browser) {
           // Access token like so: console.log(document.cookie.replace(/(?:(?:^|.*;\s*)accessToken\s*=\s*([^;]*).*$)|^.*$/, "$1"));
@@ -85,6 +99,8 @@ export default {
           await this.$router.push('/');
         }
       }
+
+      this.loading = false;
     },
   },
 };
