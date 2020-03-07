@@ -9,7 +9,7 @@
             class="white--text align-end"
             gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
             height="400"
-            v-on:click="onClick(featIdea.id, featIdea.slug)"
+            v-on:click="onClick(featIdea.slug)"
             style="cursor: pointer"
           >
             <v-card-title v-text="featIdea.title"></v-card-title>
@@ -83,6 +83,7 @@ export default {
         .catch((err) => {
           console.log(err);
         });
+
       /**
        * default user avatar photo: https://www.everypixel.com/image-638397625280524203
        * coolidea photo: Photo by Ameen Fahmy on Unsplash https://unsplash.com/photos/_gEKtyIbRSM
@@ -120,9 +121,10 @@ export default {
       }
       this.isLoading = false;
     },
-    onClick(id) {
+
+    onClick(slug) {
       this.$router.push({
-        path: `/${this.$props.route}/ideas/${id}`,
+        path: `/${this.$props.route}/ideas/${slug}`,
       });
     },
   },

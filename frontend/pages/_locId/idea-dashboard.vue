@@ -53,7 +53,7 @@
 <script>
 import _ from 'lodash';
 import IdeaCard from '../../components/idea-dashboard/IdeaCard';
-import FeaturedCarousel from '../../components/idea-dashboard/FeaturedCarosel';
+import FeaturedCarousel from '../../components/idea-dashboard/FeaturedCarousel';
 
 // ms before typing the in input field triggers a search
 const DEBOUNCE_DELAY = 650;
@@ -180,6 +180,7 @@ export default {
       }
       this.isLoading = false;
     },
+
     isUpvotedByUser(idea, userId) {
       for (const upvoterId of idea.user_upvoters) {
         if (upvoterId === userId) {
@@ -188,6 +189,7 @@ export default {
       }
       return false;
     },
+
     async updateUpvote(idea) {
       const id = idea.id;
       const index = this.ideas.indexOf(idea);
