@@ -4,10 +4,15 @@
       <v-btn href="/manage-idea" class="ma-2" outlined color="indigo"
         >Create an Idea</v-btn
       >
+      <h1 v-if="ideas.length === 0">
+        You have not created any ideas yet. Click on the Create an Idea button
+        to get started.
+      </h1>
       <IdeaCard isEditable v-bind:ideas="ideas" />
     </v-flex>
   </v-layout>
 </template>
+
 <script>
 import IdeaCard from '../components/idea-dashboard/IdeaCard';
 
@@ -18,8 +23,11 @@ export default {
 
   data() {
     return {
-      ideas: this.$store.getters['ideas/getIdeas'],
+      ideas: [],
       currentUser: this.$store.getters['users/getUser'],
+      snackbarSuccess: false,
+      snackbarError: false,
+      snackbarMessage: false,
     };
   },
 

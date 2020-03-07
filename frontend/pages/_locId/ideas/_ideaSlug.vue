@@ -1,10 +1,7 @@
 <template>
   <v-card>
     <v-snackbar v-model="snackbarSuccess" absolute top right color="success">
-      <span
-        >Volunteer Signup Success! The Idea Creator will email you for more
-        information soon.</span
-      >
+      <span>{{ snackbarMessage }}</span>
     </v-snackbar>
     <v-snackbar v-model="snackbarError" absolute top right color="error">
       <span>{{ snackbarMessage }}</span>
@@ -144,6 +141,7 @@
           <VolunteerForIdea
             @dialogOperationCallback="dialogOperationCallback"
             v-bind:ideaId="ideaId"
+            v-bind:allVolunteers="volunteers"
           />
         </template>
       </v-row>
@@ -198,6 +196,11 @@
 
 <script>
 import moment from 'moment';
+import {
+  MUST_LOGIN_MESSAGE,
+  VOLUNTEER_SUCCESS_MESSAGE,
+  VOLUNTEER_REMOVAL_MESSAGE,
+} from '../../../constants/constants';
 import DonateDialog from '../../../components/DonateDialog';
 import DonateToIdea from '../../../components/DonateToIdea';
 import SubscribeToDigest from '../../../components/SubscribeToDigest';
@@ -263,11 +266,7 @@ export default {
         },
         id: '5e3c99fb41c08b409b7a4953',
       },
-      volunteers: [
-        {
-          username: 'Test',
-        },
-      ],
+      volunteers: [],
       amountReceived: 0,
       status: 'Ongoing',
       images: [
@@ -380,14 +379,32 @@ export default {
       }
     },
 
-    dialogOperationCallback(
-      displayMessage,
-      showSuccess = false,
-      showError = false,
-    ) {
-      this.snackbarSuccess = showSuccess;
-      this.snackbarError = showError;
+    dialogOperationCallback(displayMessage, success, error) {
+      const userJSON = window.localStorage.getItem('userData');
+      const userData = JSON.parse(userJSON);
+
+      if (!userData) {
+        this.snackbarError = true;
+        this.snackbarSuccess = false;
+        this.snackbarMessage = MUST_LOGIN_MESSAGE;
+        return;
+      }
+
+      this.snackbarSuccess = success;
+      this.snackbarError = error;
       this.snackbarMessage = displayMessage;
+
+      if (this.snackbarSuccess) {
+        if (displayMessage === VOLUNTEER_SUCCESS_MESSAGE) {
+          this.volunteers.push({
+            username: userData.user.username,
+          });
+        } else if (displayMessage === VOLUNTEER_REMOVAL_MESSAGE) {
+          this.volunteers = this.volunteers.filter((volunteer) => {
+            return volunteer.username !== userData.user.username;
+          });
+        }
+      }
     },
   },
 };

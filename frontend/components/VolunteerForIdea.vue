@@ -21,16 +21,14 @@
       </template>
 
       <v-card>
-        <v-card-title class="headline"
-          >Confirm to Sign Up As A Volunteer</v-card-title
-        >
+        <v-card-title class="headline">{{ title }}</v-card-title>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn @click="openDialog = false" color="blue darken-1" text>
             Cancel
           </v-btn>
-          <v-btn @click="signupOnClick()" color="green" text>
-            Sign Me Up!
+          <v-btn @click="volunteerOnClick()" color="green" text>
+            {{ primaryAction }}
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -42,7 +40,11 @@
 import {
   VOLUNTEER_SUCCESS_MESSAGE,
   VOLUNTEER_FAILURE_MESSAGE,
+  MUST_LOGIN_MESSAGE,
+  VOLUNTEER_REMOVAL_MESSAGE,
 } from '../constants/constants';
+
+const REMOVE_VOLUNTEER = 'Remove your username from the list of volunteers?';
 
 export default {
   props: {
@@ -50,21 +52,56 @@ export default {
       type: String,
       required: true,
     },
+    allVolunteers: {
+      type: Array,
+      required: true,
+    },
   },
 
   data() {
     return {
       openDialog: false,
+      title: 'Confirm to Sign Up As A Volunteer',
+      primaryAction: 'Sign Me Up!',
     };
   },
 
+  updated() {
+    const userJSON = window.localStorage.getItem('userData');
+    const userData = JSON.parse(userJSON);
+
+    if (!userData) {
+      this.notLoggedIn();
+      return;
+    }
+
+    let isVolunteerAlready = false;
+
+    for (const user of this.$props.allVolunteers) {
+      if (user.username === userData.user.username) {
+        isVolunteerAlready = true;
+        break;
+      }
+    }
+
+    if (isVolunteerAlready) {
+      this.title = REMOVE_VOLUNTEER;
+      this.primaryAction = 'Yes';
+    }
+  },
+
   methods: {
-    async signupOnClick() {
+    notLoggedIn() {
+      this.$emit('dialogOperationCallback', MUST_LOGIN_MESSAGE, false, true);
+      this.openDialog = false;
+    },
+
+    async volunteerOnClick() {
       const userJSON = window.localStorage.getItem('userData');
       const userData = JSON.parse(userJSON);
 
       if (!userData) {
-        this.error = true;
+        this.notLoggedIn();
         return;
       }
 
@@ -81,12 +118,11 @@ export default {
         .catch((error) => console.log(error));
 
       if (volunteerResponse) {
-        this.$emit(
-          'dialogOperationCallback',
-          VOLUNTEER_SUCCESS_MESSAGE,
-          true,
-          false,
-        );
+        let displayMessage = VOLUNTEER_SUCCESS_MESSAGE;
+        if (this.title === REMOVE_VOLUNTEER) {
+          displayMessage = VOLUNTEER_REMOVAL_MESSAGE;
+        }
+        this.$emit('dialogOperationCallback', displayMessage, true, false);
         this.openDialog = false;
       } else {
         this.$emit(
