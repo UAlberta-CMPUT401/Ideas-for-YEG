@@ -74,8 +74,8 @@ export default {
     SubPageManager,
   },
   data() {
-    // TODO: use this.$route.params.locId to get information about the given location
     /**
+     * default user avatar photo: https://medium.com/insider-coub/default-avatars-4275c0e41f62
      * coolidea photo: Photo by Ameen Fahmy on Unsplash https://unsplash.com/photos/_gEKtyIbRSM
      */
     return {
