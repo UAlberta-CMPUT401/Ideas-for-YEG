@@ -24,7 +24,11 @@
         <v-sheet height="100%">
           <v-row class="fill-height" align="center" justify="center">
             <v-img
-              :src="`http://localhost:1337/${image.url}`"
+              :src="
+                image.url === DEFAULT_IDEA_IMG_PATH
+                  ? DEFAULT_IDEA_IMG_PATH
+                  : `${$axios.defaults.baseURL}${image.url}`
+              "
               gradient="to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)"
             ></v-img>
           </v-row>
@@ -192,6 +196,10 @@ import FollowersListDialog from '../../../components/FollowersListDialog';
 import ProjectUpdatesDialog from '../../../components/ProjectUpdatesDialog';
 import VolunteerListDialog from '../../../components/VolunteerListDialog';
 import ContactIdeaCreatorDialog from '../../../components/_ideaId/ContactIdeaCreatorDialog';
+import {
+  DEFAULT_IDEA_IMG_PATH,
+  DEFAULT_AVATAR_IMG_PATH,
+} from '../../../constants/constants';
 
 export default {
   components: {
@@ -211,6 +219,8 @@ export default {
 
   data() {
     return {
+      DEFAULT_IDEA_IMG_PATH,
+      DEFAULT_AVATAR_IMG_PATH,
       title: '',
       description: '',
       upvotes: 0,
@@ -226,68 +236,28 @@ export default {
         __v: 0,
         role: '5e3c925057263540022ebd94',
         idea: '5e409cb109d421443053be98',
-        firstName: 'Tester',
-        lastName: 'Last',
+        firstName: '',
+        lastName: '',
         avatar: {
-          _id: '5e443e7ce581db5c8903b802',
-          name: 'avatar.jpg',
-          sha256: 'C1mr67dPxbcUFfBLOsuCdNHE2ZysPT9Hw8pyQrCuTzU',
-          hash: '0d496df0137e46939601317ecdee2be2',
-          ext: '.jpg',
-          mime: 'image/jpeg',
-          size: 25.54,
-          url: '/uploads/0d496df0137e46939601317ecdee2be2.jpg',
-          provider: 'local',
-          related: ['5e3c99fb41c08b409b7a4953'],
-          createdAt: '2020-02-12T18:05:48.500Z',
-          updatedAt: '2020-02-12T18:05:48.761Z',
-          __v: 1,
-          id: '5e443e7ce581db5c8903b802',
+          url: DEFAULT_AVATAR_IMG_PATH,
         },
         id: '5e3c99fb41c08b409b7a4953',
       },
-      volunteers: [
-        {
-          username: 'Test',
-        },
-      ],
+      volunteers: [],
       amountReceived: 0,
       status: 'Ongoing',
       images: [
         {
-          src:
-            'https://iso.500px.com/wp-content/uploads/2015/10/500px-wallpaper-desktop1-3000x2000.jpg',
+          url: DEFAULT_IDEA_IMG_PATH,
         },
       ],
-      honorarium: [
-        {
-          note: 'Item 1',
-          amount: 159,
-        },
-      ],
-      tags: [
-        {
-          tag: 'animals',
-        },
-      ],
-      followers: [
-        {
-          username: 'Test',
-        },
-      ],
-      donations: [
-        {
-          user: { username: 'Test' },
-          amount: 100,
-        },
-      ],
-      updates: [
-        {
-          createdAt: '2020-02-14',
-          description: 'Updates',
-        },
-      ],
+      honorarium: [],
+      tags: [],
+      followers: [],
+      donations: [],
+      updates: [],
       contactEmail: '',
+      ideaId: '',
     };
   },
 
@@ -304,6 +274,7 @@ export default {
 
     if (response && response.length > 0) {
       const data = response[0];
+      this.ideaId = data.id;
       this.title = data.title;
       this.description = data.description;
       this.ideaCreator = data.user_creator;
@@ -319,7 +290,7 @@ export default {
         };
       });
       this.tags = data.categories;
-      this.images = data.images;
+      this.images = data.images.length > 0 ? data.images : this.images;
       this.donations = data.donation;
       this.upvotes = data.upvote_count;
       this.hasUserUpvoted = userData
@@ -352,7 +323,7 @@ export default {
       this.hasUserUpvoted = !this.hasUserUpvoted;
 
       const response = await this.$axios
-        .$put(`/ideas/upvote/${this.$route.params.ideaId}`, {}, config)
+        .$put(`/ideas/upvote/${this.ideaId}`, {}, config)
         .catch((error) => console.log(error));
 
       // undo upvoting if API fails

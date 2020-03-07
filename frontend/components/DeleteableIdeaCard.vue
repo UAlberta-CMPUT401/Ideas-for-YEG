@@ -77,12 +77,12 @@
                 }}</span>
               </div>
 
-              <v-btn text class="pa-0 btnSpacing">
+              <div class="btnSpacing">
                 <v-icon color="black">mdi-account-multiple-plus</v-icon>
                 <span class="subheading mr-2" color="black">{{
                   idea.followers
                 }}</span>
-              </v-btn>
+              </div>
             </v-list-item>
           </v-card-actions>
         </v-card>

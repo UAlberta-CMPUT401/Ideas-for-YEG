@@ -55,7 +55,12 @@ import { required, maxLength } from 'vuelidate/lib/validators';
 import DeleteableIdeaCard from '../../components/DeleteableIdeaCard';
 import CategoryCard from '../../components/CategoryCard';
 import SubPageManager from '../../components/SubPageManageCard';
-import { LS_USER_DATA } from '../../constants/constants';
+import {
+  LS_USER_DATA,
+  DEFAULT_LOCATION_IMG_PATH,
+  DEFAULT_AVATAR_IMG_PATH,
+  DEFAULT_IDEA_IMG_PATH,
+} from '../../constants/constants';
 
 export default {
   mixins: [validationMixin],
@@ -91,8 +96,7 @@ export default {
         id: '',
         name: 'Edmonton',
         route: 'TN',
-        imgSrc:
-          'https://images.unsplash.com/photo-1567177662154-dfeb4c93b6ae?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=80',
+        imgSrc: `${DEFAULT_LOCATION_IMG_PATH}`,
       },
     };
   },
@@ -297,6 +301,7 @@ export default {
     /**
      * default user avatar photo: https://www.everypixel.com/image-638397625280524203
      * coolidea photo: Photo by Ameen Fahmy on Unsplash https://unsplash.com/photos/_gEKtyIbRSM
+     * edmonton skyline https://www.forbes.com/sites/sandramacgregor/2020/01/09/discover-why-edmonton-is-one-of-canadas-hottest-destinations/
      */
     if (response) {
       this.location = {
@@ -304,8 +309,8 @@ export default {
         name: response.data.locations[0].name,
         route: response.data.locations[0].route,
         imgSrc: response.data.locations[0].image.url
-          ? `http://localhost:1337${response.data.locations[0].image.url}`
-          : 'https://images.unsplash.com/photo-1567177662154-dfeb4c93b6ae?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=80',
+          ? `${this.$axios.defaults.baseURL}${response.data.locations[0].image.url}`
+          : `${DEFAULT_LOCATION_IMG_PATH}`,
       };
 
       this.categories = response.data.locations[0].categories;
@@ -317,18 +322,16 @@ export default {
             description: idea.description,
             upvotes: idea.user_upvoters.length,
             ideaCreator: idea.user_creator.username,
-            // temporarily use this now as localhost photos are hit/miss
             src: idea.images.length
-              ? `http://localhost:1337${idea.images[0].url}`
-              : 'https://images.unsplash.com/photo-1567177662154-dfeb4c93b6ae?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=80',
+              ? `${this.$axios.defaults.baseURL}${idea.images[0].url}`
+              : `${DEFAULT_IDEA_IMG_PATH}`,
             volunteers: idea.volunteers.length,
             // TODO fix API to return donated amount
             amountReceived: 100,
             followers: idea.followers.length,
-            // temporarily use this now as localhost photos are hit/miss
             user_avatar: idea.user_creator.avatar
-              ? `http://localhost:1337${idea.user_creator.avatar.url}`
-              : 'https://www.everypixel.com/image-638397625280524203.jpg',
+              ? `${this.$axios.defaults.baseURL}${idea.user_creator.avatar.url}`
+              : `${DEFAULT_AVATAR_IMG_PATH}`,
             featured: idea.featured,
           };
         });

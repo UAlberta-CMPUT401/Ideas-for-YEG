@@ -98,7 +98,9 @@
                 </div>
                 <v-sheet height="100%">
                   <v-row class="fill-height" align="center" justify="center">
-                    <v-img :src="`http://localhost:1337/${image.url}`"></v-img>
+                    <v-img
+                      :src="`${$axios.defaults.baseURL}${image.url}`"
+                    ></v-img>
                   </v-row>
                 </v-sheet>
               </v-carousel-item>
