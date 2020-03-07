@@ -136,6 +136,7 @@ export default {
       if (response) {
         if (response.length > 0) {
           const ideaResults = response.map((idea, index) => {
+            // TODO fix ideacreator and user avatar since API only returns ID
             return {
               id: idea.id.toString(),
               title: idea.title,

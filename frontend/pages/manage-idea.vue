@@ -193,15 +193,16 @@ export default {
       error: false,
       requiredFieldRules: [(v) => v.length >= 1 || `Field is required`],
       locationIds: [],
-      ideaId: '',
+      slugId: '',
       savedImages: [],
       contactEmail: '',
+      ideaId: '',
     };
   },
 
   created() {
     if (this.$route.query && this.$route.query.id) {
-      this.ideaId = this.$route.query.id;
+      this.slugId = this.$route.query.id;
     }
   },
 
@@ -225,12 +226,13 @@ export default {
       });
     }
 
-    if (this.ideaId) {
-      const ideaResponse = await this.$axios
-        .$get(`/ideas/${this.ideaId}`)
+    if (this.slugId) {
+      let ideaResponse = await this.$axios
+        .$get(`/ideas?slug=${this.slugId}`)
         .catch((err) => console.log(err));
 
       if (ideaResponse) {
+        ideaResponse = ideaResponse[0];
         this.selectedLocation = ideaResponse.location.id;
         this.selectedCategories =
           ideaResponse.categories.length > 0
@@ -241,6 +243,7 @@ export default {
         this.selectedStatus = ideaResponse.status;
         this.savedImages = ideaResponse.images;
         this.contactEmail = ideaResponse.contact_email;
+        this.ideaId = ideaResponse.id;
       } else {
         this.error = true;
       }
@@ -305,7 +308,7 @@ export default {
       };
 
       await this.$axios
-        .$delete(`/ideas/${this.ideaId}`, config)
+        .$delete(`/ideas?slug=${this.slugId}`, config)
         .catch((error) => {
           console.log(error);
         });
@@ -373,7 +376,7 @@ export default {
               },
             ]
           : [],
-        slug: this.title,
+        slug: this.title.toLowerCase().replace(/\s/g, ''),
         user_creator: userData.user.id,
         images: this.savedImages.map((image) => {
           return image.id;
@@ -382,7 +385,7 @@ export default {
       };
 
       let response = null;
-      if (!this.ideaId) {
+      if (!this.slugId) {
         // TODO add honorarium, add idea admins, send project updates later
         response = await this.$axios
           .$post('/ideas', ideaRequest, config)
