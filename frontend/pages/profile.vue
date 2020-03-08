@@ -1,5 +1,5 @@
 <template>
-  <v-layout column justify-center align-center>
+  <v-layout column>
     <v-card class="mx-auto" color="#26c6da" dark max-width="700">
       <v-card-title>
         <v-icon large left>
@@ -9,34 +9,29 @@
       </v-card-title>
     </v-card>
 
-    <v-card>
-      <v-card-title class="headline grey lighten-2" primary-title>
-        Ideas I am a Volunteer for:
-      </v-card-title>
+    <h2>{{ volSectionTitle }}</h2>
 
-      <v-card-text>
-        <v-simple-table justify="center">
-          <template v-slot:default>
-            <thead></thead>
-            <tbody>
-              <tr v-for="idea in ideas">
-                <td>{{ idea.title }}</td>
-              </tr>
-            </tbody>
-          </template>
-        </v-simple-table>
-      </v-card-text>
-    </v-card>
+    <v-expansion-panels v-model="panel" multiple>
+      <v-expansion-panel>
+        <MiniIdeaCard v-bind:ideas="isVolunteerideas" />
+      </v-expansion-panel>
+    </v-expansion-panels>
   </v-layout>
 </template>
 <script>
+import MiniIdeaCard from '../components/idea-dashboard/MiniIdeaCard';
+
 export default {
+  components: {
+    MiniIdeaCard,
+  },
   data() {
     return {
+      volSectionTitle: 'Ideas I am a volunteer for:',
       title: '',
       ideas: this.$store.getters['ideas/getIdeas'],
       currentUser: this.$store.getters['users/getUser'],
-      isVolunteer: Boolean,
+      isVolunteerideas: [],
     };
   },
 
@@ -58,32 +53,42 @@ export default {
       });
 
     if (userResponse) {
-      console.log(userResponse);
-
-      const temp = userResponse.data.map((idea, index) => {
+      this.ideas = userResponse.data.map((idea, index) => {
         return {
           id: idea.id.toString(),
           title: idea.title,
+          description: idea.description,
+          upvotes: idea.user_upvoters.length,
+          ideaCreator: userResponse.data.username,
+          // temporarily use this now as localhost photos are hit/miss
+          src: idea.images.length
+            ? `http://localhost:1337${idea.images[0].url}`
+            : 'https://images.unsplash.com/photo-1567177662154-dfeb4c93b6ae?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=80',
           volunteers: idea.volunteers,
+          // TODO fix API to return donated amount
+          amountReceived: 100,
+          followers: idea.followers.length,
+          // temporarily use this now as localhost photos are hit/miss
+          user_avatar: userResponse.data.avatar
+            ? `http://localhost:1337${userResponse.data.avatar.url}`
+            : 'https://www.everypixel.com/image-638397625280524203.jpg',
+          slug: idea.slug,
+          location: idea.location,
+          featured: idea.featured,
         };
       });
-      console.log(temp[0].volunteers[0].username);
 
-      //  this.ideas = temp.filter((temp) => temp.volunteers.includes('currentUser.username'),);
-      //  const search = currentUser.username;
-      //  this.ideas = temp.filter((temp) => temp.volunteers.username.includes('relhajj'), );
-
-      console.log(temp);
-
-      // this.ideas = temp.filter((idea) => idea.volunteers.includes('relhajj'));
-
-      // this.ideas = temp.filter
-
-      this.ideas = temp;
-
-      console.log(this.ideas);
-
-      console.log(userData.user.username); // currentUser username
+      // filter for ideas current user volunteers in
+      for (const idea in this.ideas) {
+        for (const volunteer in this.ideas[idea].volunteers) {
+          if (
+            this.ideas[idea].volunteers[volunteer].username ===
+            userData.user.username
+          ) {
+            this.isVolunteerideas.push(this.ideas[idea]);
+          }
+        }
+      }
     }
   },
 };
