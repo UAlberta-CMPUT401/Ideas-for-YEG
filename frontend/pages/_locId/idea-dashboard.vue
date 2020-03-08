@@ -54,6 +54,10 @@
 import _ from 'lodash';
 import IdeaCard from '../../components/idea-dashboard/IdeaCard';
 import FeaturedCarousel from '../../components/idea-dashboard/FeaturedCarosel';
+import {
+  DEFAULT_IDEA_IMG_PATH,
+  DEFAULT_AVATAR_IMG_PATH,
+} from '../../constants/constants';
 
 // ms before typing the in input field triggers a search
 const DEBOUNCE_DELAY = 650;
@@ -129,9 +133,11 @@ export default {
         .catch((err) => {
           console.log(err);
         });
+
       /**
-       * default user avatar photo: https://www.everypixel.com/image-638397625280524203
+       * default user avatar photo: https://medium.com/insider-coub/default-avatars-4275c0e41f62
        * coolidea photo: Photo by Ameen Fahmy on Unsplash https://unsplash.com/photos/_gEKtyIbRSM
+       * edmonton skyline https://www.forbes.com/sites/sandramacgregor/2020/01/09/discover-why-edmonton-is-one-of-canadas-hottest-destinations/
        */
       if (response) {
         if (response.length > 0) {
@@ -146,18 +152,16 @@ export default {
                   ? this.isUpvotedByUser(idea, userData.user._id)
                   : false,
               ideaCreator: idea.user_creator.username,
-              // temporarily use this now as localhost photos are hit/miss
               src: idea.images.length
-                ? `http://localhost:1337${idea.images[0].url}`
-                : 'https://images.unsplash.com/photo-1567177662154-dfeb4c93b6ae?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=80',
+                ? `${this.$axios.defaults.baseURL}${idea.images[0].url}`
+                : DEFAULT_IDEA_IMG_PATH,
               volunteers: idea.volunteers.length,
               // TODO fix API to return donated amount
               amountReceived: 100,
               followers: idea.followers.length,
-              // temporarily use this now as localhost photos are hit/miss
               user_avatar: idea.user_creator.avatar
-                ? `http://localhost:1337${idea.user_creator.avatar.url}`
-                : 'https://www.everypixel.com/image-638397625280524203.jpg',
+                ? `${this.$axios.defaults.baseURL}${idea.user_creator.avatar.url}`
+                : DEFAULT_AVATAR_IMG_PATH,
               slug: idea.slug,
               featured: idea.featured,
               index,

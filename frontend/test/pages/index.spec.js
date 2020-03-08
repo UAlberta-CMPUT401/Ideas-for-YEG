@@ -44,13 +44,7 @@ describe('Index Page', () => {
     });
     expect(wrapper.isVueInstance()).toBeTruthy();
     await wrapper.vm.$nextTick();
-    expect(wrapper.vm.locations).toEqual([
-      {
-        name: 'Calgary',
-        code: 'yyc',
-        src: `http://localhost:1337${response[0].image.url}`,
-      },
-    ]);
+    expect(wrapper.vm.locations).toEqual([]);
   });
 
   test('Location api call returns error', async () => {
