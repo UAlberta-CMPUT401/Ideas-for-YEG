@@ -109,8 +109,23 @@
         </v-row>
 
         <v-row>
+          <v-col>
+            <template>
+              <IdeaAdminCardList
+                :key="listChangeCounter"
+                v-on:childToParent="changeListKey"
+              />
+            </template>
+          </v-col>
+          <v-col></v-col>
+          <v-col></v-col>
+        </v-row>
+        <v-row>
           <template>
-            <AddIdeaAdmin />
+            <AddIdeaAdmin
+              :key="listChangeCounter"
+              v-on:childToParent="changeListKey"
+            />
           </template>
           <template v-if="ideaId">
             <IdeaCreatorUpdate />
@@ -160,12 +175,14 @@
 import AddIdeaAdmin from '../components/AddIdeaAdmin';
 import IdeaCreatorUpdate from '../components/IdeaCreatorUpdate';
 import CreateHonorarium from '../components/CreateHonorarium';
+import IdeaAdminCardList from '../components/IdeaAdminCardList';
 
 export default {
   components: {
     AddIdeaAdmin,
     IdeaCreatorUpdate,
     CreateHonorarium,
+    IdeaAdminCardList,
   },
 
   props: {
@@ -199,6 +216,7 @@ export default {
       slugId: '',
       savedImages: [],
       contactEmail: '',
+      listChangeCounter: 0,
     };
   },
 
@@ -253,6 +271,9 @@ export default {
   },
 
   methods: {
+    changeListKey() {
+      this.listChangeCounter++;
+    },
     async fileOnClick(event) {
       const formData = new FormData();
 
