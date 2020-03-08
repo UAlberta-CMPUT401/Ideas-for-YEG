@@ -6,7 +6,7 @@
           Log In
         </v-card-title>
         <v-card-text>
-          <p v-if="errorMessage !== null">
+          <p v-if="errorMessage !== null" class="red--text">
             {{ errorMessage }}
           </p>
           <v-form ref="form" class="my-3">
@@ -49,6 +49,15 @@ export default {
       identifier: '',
       password: '',
     };
+  },
+  mounted() {
+    const self = this;
+    window.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        self.logIn.bind(self);
+        self.logIn();
+      }
+    });
   },
   methods: {
     async logIn() {
