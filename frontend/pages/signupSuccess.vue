@@ -42,7 +42,6 @@ export default {
       const userJSON = window.localStorage.getItem(LS_USER_DATA);
       if (userJSON !== null) {
         const userData = JSON.parse(userJSON);
-        console.log(userData);
         this.$axios
           .$post('/auth/send-email-confirmation', {
             email: userData.user.email,
