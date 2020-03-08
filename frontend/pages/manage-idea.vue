@@ -253,7 +253,9 @@ export default {
 
       if (ideaResponse.length > 0) {
         ideaResponse = ideaResponse[0];
-        this.selectedLocation = ideaResponse.location.id;
+        this.selectedLocation = ideaResponse.location
+          ? ideaResponse.location.id
+          : '';
         this.selectedCategories =
           ideaResponse.categories.length > 0
             ? ideaResponse.categories[0].name
