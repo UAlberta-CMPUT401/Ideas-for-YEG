@@ -251,7 +251,9 @@ export default {
         .catch((err) => console.log(err));
 
       if (ideaResponse) {
-        this.selectedLocation = ideaResponse.location.id;
+        this.selectedLocation = ideaResponse.location
+          ? ideaResponse.location.id
+          : '';
         this.selectedCategories =
           ideaResponse.categories.length > 0
             ? ideaResponse.categories[0].name
