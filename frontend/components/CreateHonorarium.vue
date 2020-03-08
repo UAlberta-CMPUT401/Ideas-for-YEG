@@ -1,6 +1,12 @@
 <template>
   <v-row justify="center">
     <v-dialog v-model="dialog" persistent max-width="600">
+      <v-snackbar v-model="error" absolute top right color="error">
+        <span
+          >An error occurred while trying to edit the honorarium. Please try
+          again.</span
+        >
+      </v-snackbar>
       <template #activator="{ on: dialog }">
         <v-tooltip bottom>
           <template #activator="{ on: tooltip }">
@@ -86,6 +92,7 @@ export default {
     return {
       loading: false,
       dialog: false,
+      error: false,
       honorarium: [],
 
       noteRules: [
