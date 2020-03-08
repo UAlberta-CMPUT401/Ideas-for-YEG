@@ -127,11 +127,9 @@ export default {
   methods: {
     removeItem(index) {
       this.honorarium.splice(index, 1);
-      console.log('item index ' + index + ' deleted');
     },
 
     addItem() {
-      console.log('item added');
       const checkEmptyLines = this.honorarium.filter(
         (line) => line.number === null,
       );
@@ -151,8 +149,6 @@ export default {
     },
 
     async submit() {
-      console.log('item added');
-
       this.loading = true;
       const userJSON = window.localStorage.getItem('userData');
       const userData = JSON.parse(userJSON);
