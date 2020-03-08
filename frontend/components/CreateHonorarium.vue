@@ -51,6 +51,13 @@
                 </v-btn>
               </v-row>
             </v-col>
+            <v-overlay :value="loading">
+              <v-progress-circular
+                :size="200"
+                color="primary"
+                indeterminate
+              ></v-progress-circular>
+            </v-overlay>
           </div>
 
           <v-btn
@@ -77,6 +84,7 @@ export default {
   consts: [NOTE_MAX_LENGTH],
   data() {
     return {
+      loading: false,
       dialog: false,
       honorarium: [],
 
@@ -173,7 +181,6 @@ export default {
       }
 
       if (response) {
-        this.success = true;
         this.loading = false;
       } else {
         this.error = true;
