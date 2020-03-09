@@ -68,8 +68,17 @@
       "required": true
     },
     "ideas": {
-      "via": "user_creator",
-      "collection": "idea"
+      "collection": "idea",
+      "via": "user_creator"
+    },
+    "email_frequency": {
+      "type": "enumeration",
+      "enum": [
+        "daily",
+        "weekly"
+      ],
+      "required": true,
+      "default": "daily"
     }
   }
 }
