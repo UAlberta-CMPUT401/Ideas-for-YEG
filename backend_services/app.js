@@ -2,10 +2,12 @@ var express       = require("express"),
     app           = express(),
     bodyParser    = require("body-parser"),
     cron          = require('cron'),
+    request       = require("request"),
     session       = require('express-session');
     mongoose      = require('mongoose'),
-    sgMail        = require('@sendgrid/mail');
-    email_schema  = require("./models/Email");
+    sgMail        = require('@sendgrid/mail'),
+    email_schema  = require("./models/Email"),
+    EmailHelper   = require("./helpers/emailHelper");
 
 //Configurations---------------------------------------------------------->>>>>>
 //***
@@ -35,20 +37,23 @@ sess = session({
     activeDuration: 5 * 60 * 1000,
     secure : true
 });
-if (process.env.server === 'production') {
+if (process.env.NODE_ENV === 'production') {
     // Use secure cookies in production (requires SSL/TLS)
-    // sess.cookie.secure = true;
+    sess.cookie.secure = true;
 
     // Uncomment if your application is behind a proxy
     // or if you're encountering the error message:
     // "Unable to verify authorization request state"
-    // app.set('trust proxy', 1);
+    app.set('trust proxy', 1);
 }
 app.use(sess);
 
 //Routes------------------------------------------------------------------>>>>>>
-var routes = require("./routes/main");
-app.use(routes);
+var email   = require("./routes/email"),
+    payment = require("./routes/payment");
+
+app.use(email);
+app.use(payment);
 
 //Digest Jobs------------------------------------------------------------------>>>>>>
 var Email = db.model('Email', email_schema, 'emails');
@@ -60,29 +65,24 @@ function startDigestJob() {
                 console.log(err);
             } else {
                 for (var i = 0; i < emails.length; i++) {
-                    html = '<img src=\"https://www.webuildvalue.com/static/upload/jed/jeddah-tower.jpg\" style=\"display: block; margin-left: auto; margin-right: auto; width: 30%; margin-bottom: 100px\">\n'
-                    for (var j = 0; j < emails[i].data.length; j++) {
-                        subject = emails[i].data[j].subject;
-                        body = emails[i].data[j].body;
-                        html = html + '<hr><center><strong><h1>' + subject + '</h1></strong></center><p>' + body + '<p>'
-                    }
-                    const msg = {
-                      to: emails[i].email,
-                      from: 'no-reply@ideas4yeg.com',
-                      subject: 'Your Daily Ideas Digest',
-                      html: html,
-                    };
-                    sgMail
-                        .send(msg)
-                        .then((response) => {
-                            if (response) {
+                    // Check if it is Monday. If it isn't ensure that the user is only daily digest frequency, otherwise do not send it.
+                    var date = new Date();
+                    var weekday = date.getDay();
+                    if (weekday !== 0) {
+                        request(path.join('http://localhost:1337', '/users?email=', emails[i].email), function (error, response, body) {
+                            if (error) {
+                                console.log(error);
+                            } else {
+                                if (body['email_frequency'] !== 'daily') {
+                                    continue;
+                                } else {
+                                    EmailHelper.sendEmails(emails[i]);
+                                }
                             }
-                        }, console.error);
-                    Email.remove({email : emails[i].email}, function(err) {
-                        if (err) {
-                            console.log(err);
-                        }
-                    });
+                        });
+                    } else {
+                        EmailHelper.sendEmails(emails[i]);
+                    }
                 }
             }
         });
