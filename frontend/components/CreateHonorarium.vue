@@ -149,12 +149,7 @@ export default {
 
     cancelChanges() {
       this.dialog = false;
-
-      // this.honorarium = this.backupHonorarium;
-
       this.honorarium = Object.assign([], this.backupHonorarium);
-
-      console.log(this.honorarium);
     },
 
     async submit() {
