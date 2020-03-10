@@ -44,12 +44,12 @@
                   ></v-text-field
                 ></v-col>
 
-                <v-btn icon color="red" @click="removeItem(index)">
+                <v-btn icon color="grey" @click="removeItem(index)">
                   <v-icon>mdi-delete-circle</v-icon>
                 </v-btn>
                 <v-btn
                   icon
-                  color="green"
+                  color="primary"
                   v-if="index + 1 === honorarium.length"
                   @click="addItem"
                 >
@@ -77,8 +77,8 @@
         </v-col>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="red" text @click="cancelChanges">Close</v-btn>
-          <v-btn color="green darken-1" text @click="submit">Save</v-btn>
+          <v-btn color="grey" text @click="cancelChanges">Close</v-btn>
+          <v-btn color="primary" text @click="submit">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -94,7 +94,8 @@ export default {
       dialog: false,
       error: false,
       honorarium: [],
-
+      backupHonorarium: [],
+      ideaId: '',
       noteRules: [
         (v) => !!v || 'Name is required',
         (v) =>
@@ -118,6 +119,8 @@ export default {
 
       if (ideaResponse) {
         this.honorarium = ideaResponse.honorarium;
+
+        this.backupHonorarium = Object.assign([], this.honorarium);
       } else {
         this.error = true;
       }
@@ -146,6 +149,7 @@ export default {
 
     cancelChanges() {
       this.dialog = false;
+      this.honorarium = Object.assign([], this.backupHonorarium);
     },
 
     async submit() {
@@ -188,6 +192,20 @@ export default {
       } else {
         this.error = true;
         this.loading = false;
+      }
+
+      if (this.ideaId) {
+        const ideaResponse = await this.$axios
+          .$get(`/ideas/${this.ideaId}`)
+          .catch((err) => console.log(err));
+
+        if (ideaResponse) {
+          this.honorarium = ideaResponse.honorarium;
+
+          this.backupHonorarium = Object.assign([], this.honorarium);
+        } else {
+          this.error = true;
+        }
       }
     },
   },
