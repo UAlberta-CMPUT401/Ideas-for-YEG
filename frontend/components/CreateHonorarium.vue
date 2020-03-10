@@ -1,6 +1,12 @@
 <template>
   <v-row justify="center">
     <v-dialog v-model="dialog" persistent max-width="600">
+      <v-snackbar v-model="error" absolute top right color="error">
+        <span
+          >An error occurred while trying to edit the honorarium. Please try
+          again.</span
+        >
+      </v-snackbar>
       <template #activator="{ on: dialog }">
         <v-tooltip bottom>
           <template #activator="{ on: tooltip }">
@@ -51,6 +57,13 @@
                 </v-btn>
               </v-row>
             </v-col>
+            <v-overlay :value="loading">
+              <v-progress-circular
+                :size="200"
+                color="primary"
+                indeterminate
+              ></v-progress-circular>
+            </v-overlay>
           </div>
 
           <v-btn
@@ -77,7 +90,9 @@ export default {
   consts: [NOTE_MAX_LENGTH],
   data() {
     return {
+      loading: false,
       dialog: false,
+      error: false,
       honorarium: [],
 
       noteRules: [
@@ -112,11 +127,9 @@ export default {
   methods: {
     removeItem(index) {
       this.honorarium.splice(index, 1);
-      console.log('item index ' + index + ' deleted');
     },
 
     addItem() {
-      console.log('item added');
       const checkEmptyLines = this.honorarium.filter(
         (line) => line.number === null,
       );
@@ -136,8 +149,6 @@ export default {
     },
 
     async submit() {
-      console.log('item added');
-
       this.loading = true;
       const userJSON = window.localStorage.getItem('userData');
       const userData = JSON.parse(userJSON);
@@ -173,7 +184,6 @@ export default {
       }
 
       if (response) {
-        this.success = true;
         this.loading = false;
       } else {
         this.error = true;
