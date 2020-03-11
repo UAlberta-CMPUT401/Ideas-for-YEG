@@ -3,6 +3,7 @@ var mongoose      = require('mongoose'),
 
 var emailModelSchema = new mongoose.Schema({
 	email: String,
+	email_frequency: String,
 	data: [{subject : String, body : String}]
 });
 

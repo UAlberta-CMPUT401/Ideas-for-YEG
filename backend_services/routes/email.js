@@ -1,47 +1,50 @@
 var express       = require("express"),
     router        = express.Router(),
-    request  	  = require("request"),
+    request_mod   = require("request"),
     mongoose      = require("mongoose"),
     path 		  = require("path"),
     sgMail        = require('@sendgrid/mail'),
     email_schema  = require("../models/Email"),
     EmailHelper   = require("../helpers/emailHelper");
 
-BASE_URL = 'http://localhost:1337/'
+const BASE_URL = 'http://localhost:1337/';
 var db = mongoose.connection;
 var Email = db.model('Email', email_schema, 'emails');
+const DONATORS = 'donators';
+const VOLUNTEERS = 'volunteers';
+const FOLLOWERS = 'followers';
 
 router.post("/email/:id", function(request, response){
 	const request_body = request.body;
 	const idea_id = request.params.id;
-	const url = path.join(BASE_URL, '/ideas?id=', idea_id);
+	const url = BASE_URL + 'ideas?id=' + idea_id;
 	var emails = [];
-	console.log(idea_id);
-	console.log(url);
-	request(path.join(BASE_URL, '/ideas?id=', idea_id), function (error, response, body) {
+	request_mod(url, function (error, request_resp, body) {
 		if (error) {
-			if (response && response.statusCode) {
-				response.status(response.statusCode);
+			if (request_resp && request_resp.statusCode) {
+				response.status(request_resp.statusCode);
 			} else {
 				response.status(500);
 			}
-			return response.send(error);
+			return response.send('Error getting list of emails.');
 		} else {
-			if (response && response.statusCode === 200) {
+			if (request_resp && request_resp.statusCode === 200) {
+				body = JSON.parse(body)[0];
 				emails = parseEmailJson(body, request_body['user_group']);
-				reponse.status(200);
+				response.status(200);
 				response.send('Sucessfully retrieved emails from ideas. Sending emails.');
-				// Asynchronous loop. Since it's a big job we should not keep the frontend waiting.
-				// Donators and volunteers get emails immediately
-				if (request_body['user_group'] === 'donators' || request_body['user_group'] === 'volunteers') {
-					const email_obj = {email : request_body['email'], subject : request_body['subject'], body : request_body['body']}
-					Emailhelper.sendEmail(email_obj);
-				// Followers
-				} else if (request_body['user_group'] === 'followers') {
+				if (request_body['user_group'] === DONATORS || request_body['user_group'] === VOLUNTEERS) {
+					emails.forEach(function(email) {
+						if (email.trim() !== '') {
+							const email_obj = {email : email, subject : request_body['subject'], body : request_body['body']}
+							EmailHelper.sendEmail(email_obj);
+						}
+					});
+				} else if (request_body['user_group'] === FOLLOWERS) {
 					emails.forEach(function(email) {
 						try {
-							if (request_body.email.trim() !== '') {
-								Email.findOneAndUpdate({ email: request_body.email }, 
+							if (email.email.trim() !== '') {
+								Email.findOneAndUpdate({ email: email.email }, 
 									{ $push: { 
 						            	data: {
 						              		'subject' : request_body.subject,
@@ -50,42 +53,32 @@ router.post("/email/:id", function(request, response){
 						          	}
 					   			}, {new: true}, function(err, doc) {
 									if (err) {
-										// response.status(500);
-										// response.send(err);
 										console.log('Status Code 500: ' + err);
 									} else {
-										// Doesn't exist
 										if (!doc) {
-											var instance = new Email({email: request_body.email, data: [{subject : request_body.subject, body : request_body.body}]});
+											const email_frequency = email.email_frequency == null ? 'weekly' : email.email_frequency;
+											var instance = new Email({email: email.email, email_frequency : email_frequency, data: [{subject : request_body.subject, body : request_body.body}]});
 											instance.save(function (err) {
 												if (err) {
-													// response.status(500);
-													// response.send(err);
 													console.log(err);
 												} else {
-													// response.status(200);
-													// response.send('Email digest created for : ' + request.body.email + '!');
-													console.log('Email digest created for : ' + request.body.email + '!');
+													console.log('Email digest created for : ' + email.email + '!');
 												}
 											});
 										} else {
-											// response.status(200);
-											// response.send('Email appended to digest for : ' + request.body.email + '!');
-											console.log('Email digest created for : ' + request.body.email + '!');
+											console.log('Email digest created for : ' + email.email + '!');
 										}
 									}
 					   			});
 							}
 						} catch (err) {
-							// response.status(500);
-							// response.send(err);
 							console.log('Status Code 500: ' + err);
 						}
 					});	
 				}
 			} else {
-				response.status(response.statusCode);
-				return response.send('No response from strapi.');
+				response.status(request_resp.statusCode);
+				return response.send('Bad response from strapi.');
 			}
 		}
 	});
@@ -94,16 +87,22 @@ router.post("/email/:id", function(request, response){
 function parseEmailJson(body, user_group) {
 	var emails = [];
 	try {
-		if (user_group === 'donators') {
-			body['Donation'].forEach(function(user) {
+		if (user_group === DONATORS) {
+			body['donation'].forEach(function(user) {
 				if (typeof user['user']['email'] != 'undefined') {
-					emails.push(user[email]);
+					emails.push(user['user']['email']);
+				}
+			});
+		} else if (user_group === VOLUNTEERS) {
+			body[user_group].forEach(function(user) {
+				if (typeof user['email'] != 'undefined') {
+					emails.push(user['email']);
 				}
 			});
 		} else {
 			body[user_group].forEach(function(user) {
 				if (typeof user['email'] != 'undefined') {
-					emails.push(user[email]);
+					emails.push({email : user['email'], email_frequency : user['email_frequency']});
 				}
 			});
 		}
