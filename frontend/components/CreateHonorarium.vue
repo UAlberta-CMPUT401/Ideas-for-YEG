@@ -37,7 +37,7 @@
                 <v-col cols="12" sm="3">
                   <v-text-field
                     v-model="item.amount"
-                    label="amount"
+                    label="Amount"
                     prefix="$"
                     type="number"
                     :rules="amountRules"
