@@ -99,9 +99,11 @@ function parseEmailJson(body, user_group) {
 					emails.push(user['email']);
 				}
 			});
-		} else {
+		} else if (user_group === DONATORS) {
 			body[user_group].forEach(function(user) {
 				if (typeof user['email'] != 'undefined') {
+					// TODO : No longer an array of emails but an array of json objects with email + email_frequencies. Maybe get this from 
+					// the /users route instead. (Currently we are unauthorized 403).
 					emails.push({email : user['email'], email_frequency : user['email_frequency']});
 				}
 			});
