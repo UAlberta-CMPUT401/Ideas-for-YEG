@@ -10,7 +10,7 @@
             <v-btn href="/manage-idea" class="ma-2" outlined color="indigo"
               >Create an Idea</v-btn
             >
-            <IdeaCard isEditable v-bind:ideas="ideas" />
+            <IdeaCard v-bind:isEditable="true" v-bind:ideas="ideas" />
           </v-flex>
         </v-layout>
       </v-tab-item>
@@ -19,11 +19,7 @@
 
       <v-tab-item eager value="tab-2">
         <v-layout column>
-          <v-expansion-panels v-model="panel" multiple>
-            <v-expansion-panel>
-              <MiniIdeaCard v-bind:ideas="isVolunteerideas" />
-            </v-expansion-panel>
-          </v-expansion-panels>
+          <IdeaCard v-bind:isEditable="false" v-bind:ideas="isVolunteerideas" />
         </v-layout>
       </v-tab-item>
     </v-tabs>
@@ -32,12 +28,11 @@
 
 <script>
 import IdeaCard from '../components/idea-dashboard/IdeaCard';
-import MiniIdeaCard from '../components/idea-dashboard/MiniIdeaCard';
+// import MiniIdeaCard from '../components/idea-dashboard/MiniIdeaCard';
 
 export default {
   components: {
     IdeaCard,
-    MiniIdeaCard,
   },
 
   data() {
