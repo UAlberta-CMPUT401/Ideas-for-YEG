@@ -116,7 +116,7 @@
             <IdeaCreatorUpdate />
           </template>
           <template>
-            <CreateHonorarium />
+            <CreateHonorarium v-if="ideaId" />
           </template>
         </v-row>
       </v-container>
@@ -196,6 +196,7 @@ export default {
       requiredFieldRules: [(v) => v.length >= 1 || `Field is required`],
       locationIds: [],
       ideaId: '',
+      slugId: '',
       savedImages: [],
       contactEmail: '',
     };
@@ -203,7 +204,7 @@ export default {
 
   created() {
     if (this.$route.query && this.$route.query.id) {
-      this.ideaId = this.$route.query.id;
+      this.slugId = this.$route.query.id;
     }
   },
 
@@ -227,12 +228,13 @@ export default {
       });
     }
 
-    if (this.ideaId) {
-      const ideaResponse = await this.$axios
-        .$get(`/ideas/${this.ideaId}`)
+    if (this.slugId) {
+      let ideaResponse = await this.$axios
+        .$get(`/ideas?slug=${this.slugId}`)
         .catch((err) => console.log(err));
 
-      if (ideaResponse) {
+      if (ideaResponse.length > 0) {
+        ideaResponse = ideaResponse[0];
         this.selectedLocation = ideaResponse.location.id;
         this.selectedCategories =
           ideaResponse.categories.length > 0
@@ -243,6 +245,7 @@ export default {
         this.selectedStatus = ideaResponse.status;
         this.savedImages = ideaResponse.images;
         this.contactEmail = ideaResponse.contact_email;
+        this.ideaId = ideaResponse.id;
       } else {
         this.error = true;
       }
