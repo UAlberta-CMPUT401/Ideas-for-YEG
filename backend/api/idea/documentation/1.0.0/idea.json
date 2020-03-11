@@ -1496,6 +1496,10 @@
           "upvote_count": {
             "type": "integer",
             "default": 0
+          },
+          "contact_email": {
+            "type": "string",
+            "maxLength": 320
           }
         }
       },
@@ -1732,6 +1736,10 @@
           "upvote_count": {
             "type": "integer",
             "default": 0
+          },
+          "contact_email": {
+            "type": "string",
+            "maxLength": 320
           }
         }
       }

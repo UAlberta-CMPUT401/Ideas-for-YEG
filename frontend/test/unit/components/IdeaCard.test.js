@@ -1,20 +1,10 @@
-import { mount, shallowMount } from '@vue/test-utils';
-import IdeaCard from '@/components/IdeaCard.vue';
+import { mount } from '@vue/test-utils';
+import IdeaCard from '~/components/idea-dashboard/IdeaCard.vue';
 
 describe('Idea Card', () => {
   test('component mounts successfully', () => {
     const wrapper = mount(IdeaCard);
     expect(wrapper.isVueInstance()).toBeTruthy();
-  });
-
-  test('empty ideas prop renders no ideas found', () => {
-    const wrapper = shallowMount(IdeaCard, {
-      propsData: {
-        ideas: [],
-      },
-    });
-    const header = wrapper.find('h2');
-    expect(header.text()).toEqual('No ideas have been found');
   });
 
   test('click on component to change route', async () => {

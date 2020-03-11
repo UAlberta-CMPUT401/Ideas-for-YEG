@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import ContactIdeaCreatorDialog from '@/components/ContactIdeaCreatorDialog.vue';
+import ContactIdeaCreatorDialog from '~/components/_ideaId/ContactIdeaCreatorDialog.vue';
 
 describe('Contact Idea Creator Dialog', () => {
   test('component mounts successfully', () => {

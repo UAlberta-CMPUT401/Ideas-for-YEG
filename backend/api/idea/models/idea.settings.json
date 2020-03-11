@@ -91,6 +91,11 @@
       "required": false,
       "min": 0,
       "default": 0
+    },
+    "contact_email": {
+      "type": "string",
+      "required": false,
+      "maxLength": 320
     }
   }
 }

@@ -21,6 +21,11 @@
 </template>
 
 <script>
+import {
+  DEFAULT_IDEA_IMG_PATH,
+  DEFAULT_AVATAR_IMG_PATH,
+} from '../../constants/constants';
+
 /**
  * Template Credits: https://vuetifyjs.com/en/components/cards
  * MIT License
@@ -83,11 +88,13 @@ export default {
         .catch((err) => {
           console.log(err);
         });
+
       /**
-       * default user avatar photo: https://www.everypixel.com/image-638397625280524203
+       * default user avatar photo: https://medium.com/insider-coub/default-avatars-4275c0e41f62
        * coolidea photo: Photo by Ameen Fahmy on Unsplash https://unsplash.com/photos/_gEKtyIbRSM
+       *
+       * clear previous ideas
        */
-      // Clear previous ideas
       this.ideas = [];
       if (response) {
         if (response.data.locations[0].ideas.length > 0) {
@@ -100,16 +107,16 @@ export default {
               ideaCreator: idea.user_creator.username,
               // temporarily use this now as localhost photos are hit/miss
               src: idea.images.length
-                ? `http://localhost:1337${idea.images[0].url}`
-                : 'https://images.unsplash.com/photo-1567177662154-dfeb4c93b6ae?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=80',
+                ? `${this.$axios.defaults.baseURL}${idea.images[0].url}`
+                : DEFAULT_IDEA_IMG_PATH,
               volunteers: idea.volunteers.length,
               // TODO fix API to return donated amount
               amountReceived: 100,
               followers: idea.followers.length,
               // temporarily use this now as localhost photos are hit/miss
               user_avatar: idea.user_creator.avatar
-                ? `http://localhost:1337${idea.user_creator.avatar.url}`
-                : 'https://www.everypixel.com/image-638397625280524203.jpg',
+                ? `${this.$axios.defaults.baseURL}${idea.user_creator.avatar.url}`
+                : DEFAULT_AVATAR_IMG_PATH,
               slug: idea.slug,
             };
           });
@@ -122,7 +129,7 @@ export default {
     },
     onClick(id) {
       this.$router.push({
-        path: `/${this.$props.route}/${id}`,
+        path: `/${this.$props.route}/ideas/${id}`,
       });
     },
   },
