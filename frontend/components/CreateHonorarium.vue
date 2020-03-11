@@ -3,8 +3,8 @@
     <v-dialog v-model="dialog" persistent max-width="600">
       <v-snackbar v-model="error" absolute top right color="error">
         <span
-          >An error occurred while trying to edit the honorarium. Please try
-          again.</span
+          >An error occurred while trying to add/edit/delete the honorarium.
+          Please try again.</span
         >
       </v-snackbar>
       <template #activator="{ on: dialog }">
@@ -24,8 +24,8 @@
       <v-card>
         <v-card-title class="headline">Honorarium</v-card-title>
         <v-col cols="12">
-          <div v-for="(item, index) in honorarium" :key="note">
-            <v-col>
+          <div v-for="(item, index) in honorarium" :key="index">
+            <v-col class="honorarium-row">
               <v-row>
                 <v-col cols="12" sm="6">
                   <v-text-field
@@ -41,13 +41,18 @@
                     prefix="$"
                     type="number"
                     :rules="amountRules"
-                  ></v-text-field
-                ></v-col>
-
-                <v-btn icon color="grey" @click="removeItem(index)">
+                  ></v-text-field>
+                </v-col>
+                <v-btn
+                  class="action-button"
+                  icon
+                  color="grey"
+                  @click="removeItem(index)"
+                >
                   <v-icon>mdi-delete-circle</v-icon>
                 </v-btn>
                 <v-btn
+                  class="action-button"
                   icon
                   color="primary"
                   v-if="index + 1 === honorarium.length"
@@ -103,23 +108,26 @@ export default {
       ],
 
       amountRules: [(v) => !!v || 'Amount is required'],
+      slugId: '',
     };
   },
+
   created() {
     if (this.$route.query && this.$route.query.id) {
-      this.ideaId = this.$route.query.id;
+      this.slugId = this.$route.query.id;
     }
   },
 
   async mounted() {
-    if (this.ideaId) {
-      const ideaResponse = await this.$axios
-        .$get(`/ideas/${this.ideaId}`)
+    if (this.slugId) {
+      let ideaResponse = await this.$axios
+        .$get(`/ideas?slug=${this.slugId}`)
         .catch((err) => console.log(err));
 
-      if (ideaResponse) {
+      if (ideaResponse.length > 0) {
+        ideaResponse = ideaResponse[0];
         this.honorarium = ideaResponse.honorarium;
-
+        this.ideaId = ideaResponse.id;
         this.backupHonorarium = Object.assign([], this.honorarium);
       } else {
         this.error = true;
@@ -169,23 +177,14 @@ export default {
       };
 
       let response = null;
-      if (!this.ideaId) {
-        response = await this.$axios
-          .$post('/ideas', ideaRequest, config)
-          .catch((error) => {
-            console.log(error);
-            this.error = true;
-            this.loading = false;
-          });
-      } else {
-        response = await this.$axios
-          .$put(`/ideas/${this.ideaId}`, ideaRequest, config)
-          .catch((error) => {
-            console.log(error);
-            this.error = true;
-            this.loading = false;
-          });
-      }
+
+      response = await this.$axios
+        .$put(`/ideas/${this.ideaId}`, ideaRequest, config)
+        .catch((error) => {
+          console.log(error);
+          this.error = true;
+          this.loading = false;
+        });
 
       if (response) {
         this.loading = false;
@@ -201,8 +200,8 @@ export default {
 
         if (ideaResponse) {
           this.honorarium = ideaResponse.honorarium;
-
           this.backupHonorarium = Object.assign([], this.honorarium);
+          this.dialog = false;
         } else {
           this.error = true;
         }
@@ -211,3 +210,13 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.honorarium-row {
+  justify-content: left;
+}
+
+.action-button {
+  align-self: center;
+}
+</style>

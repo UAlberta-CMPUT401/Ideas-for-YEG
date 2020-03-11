@@ -19,7 +19,7 @@
 
             <div v-if="isEditable">
               <v-btn
-                :href="`/manage-idea?id=${idea.id}`"
+                :href="`/manage-idea?id=${idea.slug}`"
                 text
                 class="pa-0 btnSpacing"
               >
