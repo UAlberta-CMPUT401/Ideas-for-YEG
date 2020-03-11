@@ -44,11 +44,6 @@ export default {
       authenticated: false,
       authItems: [
         {
-          title: 'Profile',
-          path: '/profile',
-          onClick: this.redirect.bind(),
-        },
-        {
           title: 'Settings',
           path: '/settings',
           onClick: this.redirect.bind(),

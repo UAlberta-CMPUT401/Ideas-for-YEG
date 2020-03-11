@@ -1,25 +1,51 @@
 <template>
   <v-layout column justify-center align-center>
-    <v-flex xs12 sm8 md6>
-      <v-btn href="/manage-idea" class="ma-2" outlined color="indigo"
-        >Create an Idea</v-btn
-      >
-      <IdeaCard isEditable v-bind:ideas="ideas" />
-    </v-flex>
+    <v-tabs centered>
+      <v-tabs-slider></v-tabs-slider>
+
+      <v-tab href="#tab-1"> My Ideas </v-tab>
+      <v-tab-item eager value="tab-1">
+        <v-layout column justify-center align-center>
+          <v-flex xs12 sm8 md6>
+            <v-btn href="/manage-idea" class="ma-2" outlined color="indigo"
+              >Create an Idea</v-btn
+            >
+            <IdeaCard isEditable v-bind:ideas="ideas" />
+          </v-flex>
+        </v-layout>
+      </v-tab-item>
+
+      <v-tab href="#tab-2"> Ideas I volunteer in </v-tab>
+
+      <v-tab-item eager value="tab-2">
+        <v-layout column>
+          <v-expansion-panels v-model="panel" multiple>
+            <v-expansion-panel>
+              <MiniIdeaCard v-bind:ideas="isVolunteerideas" />
+            </v-expansion-panel>
+          </v-expansion-panels>
+        </v-layout>
+      </v-tab-item>
+    </v-tabs>
   </v-layout>
 </template>
+
 <script>
 import IdeaCard from '../components/idea-dashboard/IdeaCard';
+import MiniIdeaCard from '../components/idea-dashboard/MiniIdeaCard';
 
 export default {
   components: {
     IdeaCard,
+    MiniIdeaCard,
   },
 
   data() {
     return {
       ideas: this.$store.getters['ideas/getIdeas'],
       currentUser: this.$store.getters['users/getUser'],
+      title: '',
+      isVolunteerideas: [],
     };
   },
 
@@ -35,13 +61,13 @@ export default {
     };
 
     const userResponse = await this.$axios
-      .get(`/users/${userData.user.id}`, config)
+      .get(`/ideas`, config)
       .catch((error) => {
         console.log(error);
       });
 
     if (userResponse) {
-      this.ideas = userResponse.data.ideas.map((idea) => {
+      this.ideas = userResponse.data.map((idea, index) => {
         return {
           id: idea.id.toString(),
           title: idea.title,
@@ -52,6 +78,7 @@ export default {
           src: idea.images.length
             ? `http://localhost:1337${idea.images[0].url}`
             : 'https://images.unsplash.com/photo-1567177662154-dfeb4c93b6ae?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=80',
+          volunteerInfo: idea.volunteers,
           volunteers: idea.volunteers.length,
           // TODO fix API to return donated amount
           amountReceived: 100,
@@ -65,6 +92,18 @@ export default {
           featured: idea.featured,
         };
       });
+
+      // filter for ideas current user volunteers in
+      for (const idea in this.ideas) {
+        for (const volunteer in this.ideas[idea].volunteerInfo) {
+          if (
+            this.ideas[idea].volunteerInfo[volunteer].username ===
+            userData.user.username
+          ) {
+            this.isVolunteerideas.push(this.ideas[idea]);
+          }
+        }
+      }
     }
   },
 };

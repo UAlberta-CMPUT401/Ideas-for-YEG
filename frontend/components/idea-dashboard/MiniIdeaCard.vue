@@ -33,7 +33,7 @@
                     <div class="btnSpacing">
                       <v-icon color="black">mdi-hand-heart</v-icon>
                       <span class="subheading mr-2" color="black">{{
-                        idea.volunteers.length
+                        idea.volunteers
                       }}</span>
                     </div>
 
