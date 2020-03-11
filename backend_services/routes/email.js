@@ -5,7 +5,7 @@ var express       = require("express"),
     path 		  = require("path"),
     sgMail        = require('@sendgrid/mail'),
     email_schema  = require("../models/Email"),
-    EmailHelper   = require("./helpers/emailHelper");
+    EmailHelper   = require("../helpers/emailHelper");
 
 BASE_URL = 'http://localhost:1337/'
 var db = mongoose.connection;
@@ -38,7 +38,7 @@ router.post("/email/:id", function(request, response){
 					Emailhelper.sendEmail(email_obj);
 				// Followers
 				} else if (request_body['user_group'] === 'followers') {
-					for each (var email in emails) {
+					emails.forEach(function(email) {
 						try {
 							if (request_body.email.trim() !== '') {
 								Email.findOneAndUpdate({ email: request_body.email }, 
@@ -81,7 +81,7 @@ router.post("/email/:id", function(request, response){
 							// response.send(err);
 							console.log('Status Code 500: ' + err);
 						}
-					}	
+					});	
 				}
 			} else {
 				response.status(response.statusCode);
@@ -95,17 +95,17 @@ function parseEmailJson(body, user_group) {
 	var emails = [];
 	try {
 		if (user_group === 'donators') {
-			for each (var user in body['Donation']) {
+			body['Donation'].forEach(function(user) {
 				if (typeof user['user']['email'] != 'undefined') {
 					emails.push(user[email]);
 				}
-			}
+			});
 		} else {
-			for each (var user in body[user_group]) {
+			body[user_group].forEach(function(user) {
 				if (typeof user['email'] != 'undefined') {
 					emails.push(user[email]);
 				}
-			}
+			});
 		}
 	} catch (err) {
 		console.log(err);

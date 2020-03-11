@@ -1,6 +1,6 @@
 var mongoose      = require('mongoose'),
     sgMail        = require('@sendgrid/mail'),
-    email_schema  = require("./models/Email");
+    email_schema  = require("../models/Email");
 
 BASE_URL = 'http://localhost:1337/'
 var db = mongoose.connection;
