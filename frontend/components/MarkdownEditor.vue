@@ -6,9 +6,11 @@
       @change="onEditorChange($event)"
       v-quill:myQuillEditor="editorOption"
     ></div>
-    <v-btn color="primary" dark @click="deleteContent()">
-      Delete Page
-    </v-btn>
+    <ConfirmDeleteDialog
+      v-bind:contentType="`1`"
+      v-on:childToParent="deleteContent()"
+      v-bind:buttonLabel="`Delete Page`"
+    />
     <v-btn color="primary" dark @click="saveContent()">
       Save Changes
     </v-btn>
@@ -16,7 +18,11 @@
 </template>
 
 <script>
+import ConfirmDeleteDialog from '../components/ConfirmDeleteDialog';
 export default {
+  components: {
+    ConfirmDeleteDialog,
+  },
   props: {
     pageTitle: {
       type: String,
