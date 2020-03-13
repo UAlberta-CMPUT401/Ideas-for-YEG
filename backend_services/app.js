@@ -5,6 +5,7 @@ var express       = require("express"),
     request       = require("request"),
     mongoose      = require('mongoose'),
     sgMail        = require('@sendgrid/mail'),
+    cors          = require('cors'),
     email_schema  = require("./models/Email"),
     EmailHelper   = require("./helpers/emailHelper");
 
@@ -23,6 +24,7 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 sgMail.setApiKey(process.env.sendgridapikey);
 
 // Boilerplate
+app.use(cors());
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
 app.use(express.static(__dirname));
