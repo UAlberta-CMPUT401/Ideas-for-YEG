@@ -53,7 +53,7 @@
 <script>
 import _ from 'lodash';
 import IdeaCard from '../../components/idea-dashboard/IdeaCard';
-import FeaturedCarousel from '../../components/idea-dashboard/FeaturedCarosel';
+import FeaturedCarousel from '../../components/idea-dashboard/FeaturedCarousel';
 import {
   DEFAULT_IDEA_IMG_PATH,
   DEFAULT_AVATAR_IMG_PATH,

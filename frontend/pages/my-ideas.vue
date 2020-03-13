@@ -72,7 +72,6 @@ export default {
           description: idea.description,
           upvotes: idea.user_upvoters.length,
           ideaCreator: userResponse.data.username,
-          // temporarily use this now as localhost photos are hit/miss
           src: idea.images.length
             ? `${this.$axios.defaults.baseURL}${idea.images[0].url}`
             : DEFAULT_IDEA_IMG_PATH,
