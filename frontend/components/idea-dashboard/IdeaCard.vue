@@ -11,7 +11,7 @@
         >
           <v-list-item>
             <v-list-item-content>
-              <v-list-item-title class="headline">{{
+              <v-list-item-title class="headline text-sm-left">{{
                 idea.title
               }}</v-list-item-title>
             </v-list-item-content>
@@ -34,7 +34,7 @@
           >
           </v-img>
 
-          <v-card-text class="text--primary">
+          <v-card-text class="text--primary text-sm-left">
             <div>{{ idea.description }}</div>
           </v-card-text>
 
