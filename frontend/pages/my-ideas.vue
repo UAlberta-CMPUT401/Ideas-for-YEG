@@ -15,7 +15,7 @@
         </v-layout>
       </v-tab-item>
 
-      <v-tab href="#tab-2"> Ideas I volunteer in </v-tab>
+      <v-tab href="#tab-2"> Ideas I Volunteer For </v-tab>
 
       <v-tab-item eager value="tab-2">
         <v-layout column>
@@ -28,7 +28,10 @@
 
 <script>
 import IdeaCard from '../components/idea-dashboard/IdeaCard';
-// import MiniIdeaCard from '../components/idea-dashboard/MiniIdeaCard';
+import {
+  DEFAULT_IDEA_IMG_PATH,
+  DEFAULT_AVATAR_IMG_PATH,
+} from '../constants/constants';
 
 export default {
   components: {
@@ -71,17 +74,17 @@ export default {
           ideaCreator: userResponse.data.username,
           // temporarily use this now as localhost photos are hit/miss
           src: idea.images.length
-            ? `http://localhost:1337${idea.images[0].url}`
-            : 'https://images.unsplash.com/photo-1567177662154-dfeb4c93b6ae?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=80',
+            ? `${this.$axios.defaults.baseURL}${idea.images[0].url}`
+            : DEFAULT_IDEA_IMG_PATH,
           volunteerInfo: idea.volunteers,
           volunteers: idea.volunteers.length,
           // TODO fix API to return donated amount
           amountReceived: 100,
           followers: idea.followers.length,
           // temporarily use this now as localhost photos are hit/miss
-          user_avatar: userResponse.data.avatar
-            ? `http://localhost:1337${userResponse.data.avatar.url}`
-            : 'https://www.everypixel.com/image-638397625280524203.jpg',
+          user_avatar: idea.user_creator.avatar
+            ? `${this.$axios.defaults.baseURL}${idea.user_creator.avatar.url}`
+            : DEFAULT_AVATAR_IMG_PATH,
           slug: idea.slug,
           location: idea.location,
           featured: idea.featured,
