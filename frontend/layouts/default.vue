@@ -107,7 +107,7 @@ export default {
     },
   },
   beforeMount() {
-    // Get stored values from localstoarage and put them into vuex
+    // Get stored values from localStorage and put them into vuex
     if (process.browser) {
       const userJSON = window.localStorage.getItem(LS_USER_DATA);
       if (userJSON !== null) {
