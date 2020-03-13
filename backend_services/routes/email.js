@@ -84,6 +84,25 @@ router.post("/email/:id", function(request, response){
 	});
 });
 
+router.post("/email_volunteer", function(request, response){
+	if (typeof request.body.email === 'undefined') {
+		response.status(400);
+		return response.send('Email is undefined');
+	} else if (typeof request.body.idea_title === 'undefined') {
+		response.status(400);
+		return response.send('Title is undefined');
+	} else if (typeof request.body.volunteer === 'undefined') {
+		response.status(400);
+		return response.send('Volunteer is undefined');
+	}
+	const email_obj = {idea_title : request.body.idea_title, volunteer : request.body.volunteer, email : request.body.email};
+	EmailHelper.sendVolunteerEmailUpdate(email_obj, function(response){
+		console.log(response);
+	});
+	response.status(200);
+	return response.send('Volunteer email update sent!'); 
+});
+
 function parseEmailJson(body, user_group) {
 	var emails = [];
 	try {
