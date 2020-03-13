@@ -133,7 +133,7 @@
             />
           </template>
           <template v-if="ideaId">
-            <IdeaCreatorUpdate />
+            <IdeaCreatorUpdate :ideaId="ideaId" />
           </template>
           <template>
             <CreateHonorarium v-if="ideaId" />
