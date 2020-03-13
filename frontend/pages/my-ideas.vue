@@ -59,13 +59,13 @@ export default {
     };
 
     const userResponse = await this.$axios
-      .get(`/ideas`, config)
+      .get(`/users/${userData.user.id}`, config)
       .catch((error) => {
         console.log(error);
       });
 
     if (userResponse) {
-      this.ideas = userResponse.data.map((idea, index) => {
+      this.ideas = userResponse.data.ideas.map((idea) => {
         return {
           id: idea.id.toString(),
           title: idea.title,
@@ -90,18 +90,40 @@ export default {
           featured: idea.featured,
         };
       });
+    }
 
-      // filter for ideas current user volunteers in
-      for (const idea in this.ideas) {
-        for (const volunteer in this.ideas[idea].volunteerInfo) {
-          if (
-            this.ideas[idea].volunteerInfo[volunteer].username ===
-            userData.user.username
-          ) {
-            this.isVolunteerideas.push(this.ideas[idea]);
-          }
-        }
-      }
+    const volunteerResponse = await this.$axios
+      .get(`/ideas?volunteers.id=${userData.user.id}`, config)
+      .catch((error) => {
+        console.log(error);
+      });
+
+    if (volunteerResponse) {
+      this.isVolunteerideas = volunteerResponse.data.map((idea) => {
+        return {
+          id: idea.id.toString(),
+          title: idea.title,
+          description: idea.description,
+          upvotes: idea.user_upvoters.length,
+          ideaCreator: volunteerResponse.data.username,
+          // temporarily use this now as localhost photos are hit/miss
+          src: idea.images.length
+            ? `${this.$axios.defaults.baseURL}${idea.images[0].url}`
+            : DEFAULT_IDEA_IMG_PATH,
+          volunteerInfo: idea.volunteers,
+          volunteers: idea.volunteers.length,
+          // TODO fix API to return donated amount
+          amountReceived: 100,
+          followers: idea.followers.length,
+          // temporarily use this now as localhost photos are hit/miss
+          user_avatar: idea.user_creator.avatar
+            ? `${this.$axios.defaults.baseURL}${idea.user_creator.avatar.url}`
+            : DEFAULT_AVATAR_IMG_PATH,
+          slug: idea.slug,
+          location: idea.location,
+          featured: idea.featured,
+        };
+      });
     }
   },
 };
