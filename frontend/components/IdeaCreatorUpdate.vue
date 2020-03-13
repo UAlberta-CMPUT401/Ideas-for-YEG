@@ -7,6 +7,13 @@
           again</span
         >
       </v-snackbar>
+      <v-overlay :value="loading">
+        <v-progress-circular
+          :size="200"
+          color="primary"
+          indeterminate
+        ></v-progress-circular>
+      </v-overlay>
       <template #activator="{ on: dialog }">
         <v-tooltip bottom>
           <template #activator="{ on: tooltip }">
@@ -18,7 +25,7 @@
               >Send an Update</v-btn
             >
           </template>
-          <span>Update followers/volunteers!</span>
+          <span>Update followers/volunteers/donators!</span>
         </v-tooltip>
       </template>
       <v-card>
@@ -80,6 +87,7 @@ export default {
       subject: '',
       body: '',
       error: false,
+      loading: false,
     };
   },
 
@@ -95,6 +103,7 @@ export default {
       if (!this.$refs.form.validate()) {
         return;
       }
+      this.loading = true;
 
       const userJSON = window.localStorage.getItem('userData');
       const userData = JSON.parse(userJSON);
@@ -102,10 +111,6 @@ export default {
         headers: {
           Authorization: 'Bearer ' + userData.jwt,
           'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods':
-            'GET, POST, PATCH, PUT, DELETE, OPTIONS',
-          'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token',
         },
       };
 
@@ -126,6 +131,7 @@ export default {
 
       if (!emailResponse) {
         this.error = true;
+        this.loading = false;
         return;
       }
 
@@ -139,15 +145,17 @@ export default {
           ],
         };
         const updateProjectResponse = await this.$axios
-          .$post(`/ideas/${this.$props.ideaId}`, updateProjectRequest, config)
+          .$put(`/ideas/${this.$props.ideaId}`, updateProjectRequest, config)
           .catch((error) => console.log(error));
 
         if (!updateProjectResponse) {
           this.error = true;
+          this.loading = false;
           return;
         }
       }
 
+      this.loading = false;
       this.dialog = false;
     },
   },
