@@ -26,6 +26,8 @@
             v-on:input="search"
             v-model="sortSelected"
             :items="sortItems"
+            item-text="label"
+            item-value="sortBy"
             label="Sort by"
           ></v-select>
         </v-form>
@@ -76,7 +78,10 @@ export default {
       searchTerm: '',
       isLoading: false,
       ideas: this.$store.getters['ideas/getIdeas'],
-      sortItems: ['New', 'Top'],
+      sortItems: [
+        { label: 'New', sortBy: 'New' },
+        { label: 'Top Voted', sortBy: 'Top' },
+      ],
       sortSelected: 'New',
       // Amount of entries needed to skipped when loading new results. Returns to zero on clear
       skipCount: 0,
