@@ -1,2 +1,2 @@
 #!/bin/bash
-sudo docker-compose -f ../docker-compose up --build -d
+sudo docker-compose -f /home/ubuntu/Ideas-for-YEG/docker-compose.yml up --build -d
