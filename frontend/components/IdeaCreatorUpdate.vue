@@ -33,7 +33,7 @@
           <v-card-text>
             <v-form ref="form">
               <v-autocomplete
-                v-model="user_group"
+                v-model="userGroup"
                 :items="groups"
                 :rules="requiredFieldRules"
                 label="To"
@@ -42,6 +42,8 @@
                 hide-no-data
                 hide-selected
                 single-line
+                multiple
+                chips
               ></v-autocomplete>
               <v-divider></v-divider>
               <v-text-field
@@ -83,7 +85,7 @@ export default {
       dialog: false,
       requiredFieldRules: [(v) => v.length >= 1 || `Field is required`],
       groups: ['Followers', 'Volunteers', 'Donators'],
-      user_group: '',
+      userGroup: '',
       subject: '',
       body: '',
       error: false,
@@ -114,49 +116,54 @@ export default {
         },
       };
 
-      const userGroup = this.user_group.toLowerCase();
-
-      const emailRequest = {
-        user_group: userGroup,
-        subject: this.subject,
-        body: this.body,
-      };
-
-      const emailApi = this.$axios.create({});
-      emailApi.setBaseURL('http://localhost:1311/email/');
-
-      const emailResponse = await emailApi
-        .post(`${this.$props.ideaId}`, emailRequest, config)
-        .catch((error) => console.log(error));
-
-      if (!emailResponse) {
-        this.error = true;
-        this.loading = false;
-        return;
-      }
-
-      if (userGroup === 'followers') {
-        const updateProjectRequest = {
-          update: [
-            {
-              description: this.body,
-              date: moment(),
-            },
-          ],
+      for (const group of this.userGroup) {
+        const currentUserGroup = group.toLowerCase();
+        const emailRequest = {
+          user_group: currentUserGroup,
+          subject: this.subject,
+          body: this.body,
         };
-        const updateProjectResponse = await this.$axios
-          .$put(`/ideas/${this.$props.ideaId}`, updateProjectRequest, config)
+
+        const emailApi = this.$axios.create({});
+        const baseURL =
+          process.env.NODE_ENV !== 'production'
+            ? 'http://localhost:1311/email/'
+            : 'http://162.246.157.122:1311/email';
+        emailApi.setBaseURL(baseURL);
+
+        const emailResponse = await emailApi
+          .post(`${this.$props.ideaId}`, emailRequest, config)
           .catch((error) => console.log(error));
 
-        if (!updateProjectResponse) {
+        if (!emailResponse) {
           this.error = true;
           this.loading = false;
           return;
         }
-      }
 
-      this.loading = false;
-      this.dialog = false;
+        if (currentUserGroup === 'followers') {
+          const updateProjectRequest = {
+            update: [
+              {
+                description: this.body,
+                date: moment(),
+              },
+            ],
+          };
+          const updateProjectResponse = await this.$axios
+            .$put(`/ideas/${this.$props.ideaId}`, updateProjectRequest, config)
+            .catch((error) => console.log(error));
+
+          if (!updateProjectResponse) {
+            this.error = true;
+            this.loading = false;
+            return;
+          }
+        }
+
+        this.loading = false;
+        this.dialog = false;
+      }
     },
   },
 };
