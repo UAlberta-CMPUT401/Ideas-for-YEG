@@ -142,6 +142,8 @@
             @dialogOperationCallback="dialogOperationCallback"
             v-bind:ideaId="ideaId"
             v-bind:allVolunteers="volunteers"
+            v-bind:ideaCreatorEmail="ideaCreator.email"
+            v-bind:ideaTitle="title"
           />
         </template>
       </v-row>

@@ -56,6 +56,14 @@ export default {
       type: Array,
       required: true,
     },
+    ideaCreatorEmail: {
+      type: String,
+      required: true,
+    },
+    ideaTitle: {
+      type: String,
+      required: true,
+    },
   },
 
   data() {
@@ -113,16 +121,43 @@ export default {
         },
       };
 
+      console.log(this.$props);
+
+      const emailRequest = {
+        email: this.$props.ideaCreatorEmail,
+        idea_title: this.$props.ideaTitle,
+        volunteer: userData.user.username,
+      };
+
       const volunteerResponse = await this.$axios
         .$put(`/ideas/volunteer/${this.$props.ideaId}`, {}, config)
         .catch((error) => console.log(error));
 
       if (volunteerResponse) {
         let displayMessage = VOLUNTEER_SUCCESS_MESSAGE;
+
         if (this.title === REMOVE_VOLUNTEER) {
           displayMessage = VOLUNTEER_REMOVAL_MESSAGE;
         }
-        this.$emit('dialogOperationCallback', displayMessage, true, false);
+
+        const emailApi = this.$axios.create({});
+        emailApi.setBaseURL('http://localhost:1311/email/');
+
+        const emailResponse = await emailApi
+          .post(`email_volunteer`, emailRequest, config)
+          .catch((error) => console.log(error));
+
+        if (emailResponse) {
+          this.$emit('dialogOperationCallback', displayMessage, true, false);
+        } else {
+          this.$emit(
+            'dialogOperationCallback',
+            VOLUNTEER_FAILURE_MESSAGE,
+            false,
+            true,
+          );
+        }
+
         this.openDialog = false;
       } else {
         this.$emit(

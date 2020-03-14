@@ -16,6 +16,7 @@ export const VOLUNTEER_REMOVAL_MESSAGE =
 
 // Local storage keys
 export const LS_USER_DATA = 'userData';
+export const LS_CURR_LOCATION = 'currLocation';
 
 // default image paths
 export const DEFAULT_IDEA_IMG_PATH = '/default_idea.png';

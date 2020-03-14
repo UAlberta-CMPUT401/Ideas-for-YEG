@@ -39,5 +39,7 @@ export default {
       });
     }
   },
+
+  middleware: 'currLocationDefined',
 };
 </script>

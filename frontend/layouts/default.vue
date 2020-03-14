@@ -1,14 +1,31 @@
 <template>
   <v-app>
     <v-app-bar :clipped-left="clipped" fixed app>
-      <nuxt-link to="/"><v-toolbar-title v-text="title"/></nuxt-link>
+      <div>
+        <nuxt-link to="/"
+          ><v-toolbar-title
+            >Ideas 4{{ currLocationName }}</v-toolbar-title
+          ></nuxt-link
+        >
+      </div>
       <v-spacer />
       <!--TODO: Need to have logic to check if a user is logged in-->
       <client-only>
-        <v-btn v-if="!isAuthenticated" :to="'/login'" router exact>Login</v-btn>
+        <v-btn v-on:click="clearLocationAndRedirect" text small class="mr-2"
+          >Change Location</v-btn
+        >
+        <v-btn
+          v-if="!isAuthenticated"
+          :to="'/login'"
+          rounded="true"
+          small
+          router
+          exact
+          >Login</v-btn
+        >
         <v-menu v-else :offset-y="true">
           <template v-slot:activator="{ on }">
-            <v-btn v-on="on" color="primary" v-bind:fab="true" dark>
+            <v-btn v-on="on" v-bind:fab="true" color="primary">
               <v-icon>mdi-account-circle</v-icon>
             </v-btn>
           </template>
@@ -34,13 +51,14 @@
 </template>
 
 <script>
-import { LS_USER_DATA } from '../constants/constants';
+import _ from 'lodash';
+
+import { LS_CURR_LOCATION, LS_USER_DATA } from '../constants/constants';
 export default {
   data() {
     return {
       clipped: false,
       miniVariant: false,
-      title: 'Ideas 4 Location',
       authenticated: false,
       authItems: [
         {
@@ -76,14 +94,31 @@ export default {
       }
       return 'No Name';
     },
+    currLocationName() {
+      if (
+        this.$store.state.currLocation.currLocation &&
+        this.$store.state.currLocation.currLocation.name
+      ) {
+        return (
+          ' ' + _.startCase(this.$store.state.currLocation.currLocation.name)
+        );
+      }
+      return '';
+    },
   },
   beforeMount() {
-    // Check if user is signed in
+    // Get stored values from localStorage and put them into vuex
     if (process.browser) {
       const userJSON = window.localStorage.getItem(LS_USER_DATA);
       if (userJSON !== null) {
         const userData = JSON.parse(userJSON);
         this.$store.commit('userData/update', userData);
+      }
+
+      const currLocationJSON = window.localStorage.getItem(LS_CURR_LOCATION);
+      if (currLocationJSON !== null) {
+        const currLocation = JSON.parse(currLocationJSON);
+        this.$store.commit('currLocation/update', currLocation);
       }
     }
   },
@@ -91,6 +126,11 @@ export default {
     logOut() {
       window.localStorage.removeItem(LS_USER_DATA);
       this.$store.commit('userData/clear');
+      this.$router.push('/');
+    },
+    clearLocationAndRedirect() {
+      window.localStorage.removeItem(LS_CURR_LOCATION);
+      this.$store.commit('currLocation/clear');
       this.$router.push('/');
     },
     redirect(path) {

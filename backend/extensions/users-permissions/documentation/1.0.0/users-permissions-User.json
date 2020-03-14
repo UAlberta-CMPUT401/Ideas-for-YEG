@@ -1366,6 +1366,9 @@
                 },
                 "upvote_count": {
                   "type": "integer"
+                },
+                "contact_email": {
+                  "type": "string"
                 }
               }
             }
