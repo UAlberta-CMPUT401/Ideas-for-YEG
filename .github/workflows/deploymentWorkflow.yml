@@ -30,7 +30,7 @@ jobs:
           KEY: ${{ secrets.SSHKEY }}
         with:
           source: "."
-          target: "/home/ubuntu/"
+          target: "/home/ubuntu/Ideas-for-YEG"
 
       - name: Start Deployment
         uses: appleboy/ssh-action@master
