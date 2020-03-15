@@ -1,1 +1,1 @@
-(cd ../backend && npm run strapi dev) & (cd ../backend_service &7 npm run dev)
+(cd ../backend && npm run strapi dev) & (cd ../backend_service & npm run dev)
