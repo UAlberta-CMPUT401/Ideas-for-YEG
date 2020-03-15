@@ -141,7 +141,7 @@ export default {
         }
 
         const emailApi = this.$axios.create({});
-        emailApi.setBaseURL('http://localhost:1311/email/');
+        emailApi.setBaseURL('http://localhost:1311/');
 
         const emailResponse = await emailApi
           .post(`email_volunteer`, emailRequest, config)
