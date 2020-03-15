@@ -9,7 +9,7 @@
             class="white--text align-end"
             gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
             height="400"
-            v-on:click="onClick(featIdea.id, featIdea.slug)"
+            v-on:click="onClick(featIdea.slug)"
             style="cursor: pointer"
           >
             <v-card-title v-text="featIdea.title"></v-card-title>
@@ -127,9 +127,10 @@ export default {
       }
       this.isLoading = false;
     },
-    onClick(id) {
+
+    onClick(slug) {
       this.$router.push({
-        path: `/${this.$props.route}/ideas/${id}`,
+        path: `/${this.$props.route}/ideas/${slug}`,
       });
     },
   },

@@ -1,8 +1,5 @@
 <template>
   <v-card flat>
-    <v-snackbar v-model="success" absolute top right color="success">
-      <span>Idea created!</span>
-    </v-snackbar>
     <v-snackbar v-model="error" absolute top right color="error">
       <span
         >An error occurred while trying to create/update the idea. Please try
@@ -207,7 +204,6 @@ export default {
       status: ['Ongoing', 'SeekingHelp', 'Completed'],
       locations: [],
       categories: [],
-      success: false,
       selectedLocation: '',
       selectedStatus: '',
       allLocationsWithCategories: {},
@@ -437,7 +433,7 @@ export default {
               },
             ]
           : [],
-        slug: this.title,
+        slug: this.title.toLowerCase().replace(/\s/g, ''),
         user_creator: userData.user.id,
         images: this.savedImages.map((image) => {
           return image.id;
@@ -447,7 +443,7 @@ export default {
       };
 
       let response = null;
-      if (!this.ideaId) {
+      if (!this.slugId) {
         // TODO add honorarium, add idea admins, send project updates later
         response = await this.$axios
           .$post('/ideas', ideaRequest, config)
@@ -467,7 +463,6 @@ export default {
       }
 
       if (response) {
-        this.success = true;
         this.loading = false;
         this.$router.push('/my-ideas');
       } else {

@@ -151,6 +151,7 @@ export default {
       if (response) {
         if (response.length > 0) {
           const ideaResults = response.map((idea, index) => {
+            // TODO fix ideacreator and user avatar since API only returns ID
             return {
               id: idea.id.toString(),
               title: idea.title,
@@ -192,6 +193,7 @@ export default {
       }
       this.isLoading = false;
     },
+
     isUpvotedByUser(idea, userId) {
       for (const upvoterId of idea.user_upvoters) {
         if (upvoterId === userId) {
@@ -200,6 +202,7 @@ export default {
       }
       return false;
     },
+
     async updateUpvote(idea) {
       const id = idea.id;
       const index = this.ideas.indexOf(idea);
