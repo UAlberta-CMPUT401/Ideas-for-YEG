@@ -16,20 +16,7 @@
         {{ dialogTitle }}
       </v-card-title>
 
-      <v-card-text>
-        <v-container>
-          <v-row>
-            <v-col>
-              <v-text-field label="Subject" required></v-text-field>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col>
-              <v-textarea label="Body" auto-grow required></v-textarea>
-            </v-col>
-          </v-row>
-        </v-container>
-      </v-card-text>
+      <v-card-text> {{ contactEmail }} </v-card-text>
 
       <v-divider></v-divider>
 
@@ -38,8 +25,6 @@
         <v-btn color="primary" text @click="dialog = false">
           CLOSE
         </v-btn>
-
-        <v-btn color="green darken-1" text @click="dialog = false">SEND</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -49,13 +34,13 @@
 export default {
   // TODO access ideaCreator.email (this.$props.ideaCreator.email) to a send button onClick callback
   props: {
-    ideaCreator: Object,
+    contactEmail: String,
   },
 
   data() {
     return {
       dialog: false,
-      dialogTitle: 'Contact Idea Creator',
+      dialogTitle: 'Idea Creator Contact Email',
     };
   },
 };

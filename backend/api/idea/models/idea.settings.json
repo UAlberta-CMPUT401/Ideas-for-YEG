@@ -33,9 +33,9 @@
       "collection": "user"
     },
     "user_creator": {
+      "via": "ideas",
       "plugin": "users-permissions",
-      "model": "user",
-      "via": "ideas"
+      "model": "user"
     },
     "user_upvoters": {
       "plugin": "users-permissions",
@@ -91,6 +91,11 @@
       "required": false,
       "min": 0,
       "default": 0
+    },
+    "contact_email": {
+      "type": "string",
+      "required": false,
+      "maxLength": 320
     }
   }
 }

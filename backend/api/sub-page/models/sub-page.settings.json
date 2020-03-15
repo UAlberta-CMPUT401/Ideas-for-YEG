@@ -1,0 +1,23 @@
+{
+  "connection": "default",
+  "collectionName": "sub_pages",
+  "info": {
+    "name": "Sub-page"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "content": {
+      "type": "richtext"
+    },
+    "location": {
+      "model": "location",
+      "via": "sub_pages"
+    }
+  }
+}

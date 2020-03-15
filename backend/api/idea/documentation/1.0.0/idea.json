@@ -254,14 +254,70 @@
         }
       }
     },
-
-    "/idea/{id}/admin": {
-      "put": {
+    "/ideas/search": {
+      "get": {
         "deprecated": false,
-        "description": "Update a single idea record",
+        "description": "",
         "responses": {
           "200": {
-            "description": "Retrieve idea document(s)",
+            "description": "response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "foo": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "summary": "",
+        "tags": [
+          "Idea"
+        ],
+        "parameters": []
+      }
+    },
+    "/ideas/admin/{id}": {
+      "put": {
+        "deprecated": false,
+        "description": "Update a record",
+        "responses": {
+          "200": {
+            "description": "response",
             "content": {
               "application/json": {
                 "schema": {
@@ -338,13 +394,13 @@
         ]
       }
     },
-    "/idea/upvote/{id}": {
+    "/ideas/upvote/{id}": {
       "put": {
         "deprecated": false,
-        "description": "Update a single idea record",
+        "description": "Update a record",
         "responses": {
           "200": {
-            "description": "Retrieve idea document(s)",
+            "description": "response",
             "content": {
               "application/json": {
                 "schema": {
@@ -421,13 +477,13 @@
         ]
       }
     },
-    "/idea/volunteer/{id}": {
+    "/ideas/volunteer/{id}": {
       "put": {
         "deprecated": false,
-        "description": "Update a single idea record",
+        "description": "Update a record",
         "responses": {
           "200": {
-            "description": "Retrieve idea document(s)",
+            "description": "response",
             "content": {
               "application/json": {
                 "schema": {
@@ -504,13 +560,13 @@
         ]
       }
     },
-    "/idea/follow/{id}": {
+    "/ideas/follow/{id}": {
       "put": {
         "deprecated": false,
-        "description": "Update a single idea record",
+        "description": "Update a record",
         "responses": {
           "200": {
-            "description": "Retrieve idea document(s)",
+            "description": "response",
             "content": {
               "application/json": {
                 "schema": {
@@ -920,7 +976,8 @@
               "username",
               "email",
               "firstName",
-              "lastName"
+              "lastName",
+              "email_frequency"
             ],
             "properties": {
               "id": {
@@ -964,6 +1021,9 @@
                 "items": {
                   "type": "string"
                 }
+              },
+              "email_frequency": {
+                "type": "string"
               }
             }
           },
@@ -973,7 +1033,8 @@
               "username",
               "email",
               "firstName",
-              "lastName"
+              "lastName",
+              "email_frequency"
             ],
             "properties": {
               "id": {
@@ -1017,6 +1078,9 @@
                 "items": {
                   "type": "string"
                 }
+              },
+              "email_frequency": {
+                "type": "string"
               }
             }
           },
@@ -1026,7 +1090,8 @@
               "username",
               "email",
               "firstName",
-              "lastName"
+              "lastName",
+              "email_frequency"
             ],
             "properties": {
               "id": {
@@ -1070,6 +1135,9 @@
                 "items": {
                   "type": "string"
                 }
+              },
+              "email_frequency": {
+                "type": "string"
               }
             }
           },
@@ -1079,7 +1147,8 @@
               "username",
               "email",
               "firstName",
-              "lastName"
+              "lastName",
+              "email_frequency"
             ],
             "properties": {
               "id": {
@@ -1123,6 +1192,9 @@
                 "items": {
                   "type": "string"
                 }
+              },
+              "email_frequency": {
+                "type": "string"
               }
             }
           },
@@ -1214,7 +1286,8 @@
                     "username",
                     "email",
                     "firstName",
-                    "lastName"
+                    "lastName",
+                    "email_frequency"
                   ],
                   "properties": {
                     "id": {
@@ -1258,6 +1331,9 @@
                       "items": {
                         "type": "string"
                       }
+                    },
+                    "email_frequency": {
+                      "type": "string"
                     }
                   }
                 },
@@ -1293,7 +1369,8 @@
               "username",
               "email",
               "firstName",
-              "lastName"
+              "lastName",
+              "email_frequency"
             ],
             "properties": {
               "id": {
@@ -1337,6 +1414,9 @@
                 "items": {
                   "type": "string"
                 }
+              },
+              "email_frequency": {
+                "type": "string"
               }
             }
           },
@@ -1397,6 +1477,12 @@
               },
               "categories": {
                 "type": "string"
+              },
+              "sub_pages": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
               }
             }
           },
@@ -1410,6 +1496,10 @@
           "upvote_count": {
             "type": "integer",
             "default": 0
+          },
+          "contact_email": {
+            "type": "string",
+            "maxLength": 320
           }
         }
       },
@@ -1527,7 +1617,8 @@
                     "username",
                     "email",
                     "firstName",
-                    "lastName"
+                    "lastName",
+                    "email_frequency"
                   ],
                   "properties": {
                     "id": {
@@ -1571,6 +1662,9 @@
                       "items": {
                         "type": "string"
                       }
+                    },
+                    "email_frequency": {
+                      "type": "string"
                     }
                   }
                 },
@@ -1642,6 +1736,10 @@
           "upvote_count": {
             "type": "integer",
             "default": 0
+          },
+          "contact_email": {
+            "type": "string",
+            "maxLength": 320
           }
         }
       }

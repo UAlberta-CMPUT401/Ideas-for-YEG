@@ -573,6 +573,12 @@
               },
               "categories": {
                 "type": "string"
+              },
+              "sub_pages": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
               }
             }
           }

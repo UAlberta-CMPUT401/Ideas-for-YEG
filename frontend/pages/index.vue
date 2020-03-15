@@ -9,6 +9,7 @@
 
 <script>
 import LocationCard from '../components/LocationCard';
+import { DEFAULT_LOCATION_IMG_PATH } from '../constants/constants';
 
 export default {
   components: {
@@ -31,11 +32,14 @@ export default {
         return {
           name: location.name,
           code: location.route,
-          // temporarily use this now as localhost photos are hit/miss
-          src: `http://localhost:1337${location.image.url}`, // ,
+          src: location.image
+            ? `${this.$axios.defaults.baseURL}${location.image.url}`
+            : DEFAULT_LOCATION_IMG_PATH,
         };
       });
     }
   },
+
+  middleware: 'currLocationDefined',
 };
 </script>

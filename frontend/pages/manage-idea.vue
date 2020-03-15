@@ -58,6 +58,14 @@
           </v-col>
 
           <v-col cols="12">
+            <v-text-field v-model="contactEmail">
+              <template v-slot:label>
+                <div>Contact Email</div>
+              </template>
+            </v-text-field>
+          </v-col>
+
+          <v-col cols="12">
             <v-row>
               <template>
                 <v-file-input
@@ -90,7 +98,9 @@
                 </div>
                 <v-sheet height="100%">
                   <v-row class="fill-height" align="center" justify="center">
-                    <v-img :src="`http://localhost:1337/${image.url}`"></v-img>
+                    <v-img
+                      :src="`${$axios.defaults.baseURL}${image.url}`"
+                    ></v-img>
                   </v-row>
                 </v-sheet>
               </v-carousel-item>
@@ -98,15 +108,35 @@
           </v-col>
         </v-row>
 
+        <v-row justify="center" align="center">
+          <v-col cols="6" sm="4">
+            <template>
+              <IdeaAdminCardList
+                ref="IdeaAdminList"
+                v-bind:admins="admins"
+                :key="listChangeCounter"
+                v-on:childToParent="changeListKey"
+                v-on:adminDeleteNewIdea="deleteAdminForNewIdea"
+              />
+            </template>
+          </v-col>
+          <v-col></v-col>
+          <v-col></v-col>
+        </v-row>
         <v-row>
           <template>
-            <AddIdeaAdmin />
+            <AddIdeaAdmin
+              ref="AddAdminDialog"
+              :key="listChangeCounter"
+              v-on:childToParent="changeListKey"
+              @adminsNewIdea="addAdminForNewIdea"
+            />
           </template>
           <template v-if="ideaId">
-            <IdeaCreatorUpdate />
+            <IdeaCreatorUpdate :ideaId="ideaId" />
           </template>
           <template>
-            <CreateHonorarium />
+            <CreateHonorarium v-if="ideaId" />
           </template>
         </v-row>
       </v-container>
@@ -150,12 +180,14 @@
 import AddIdeaAdmin from '../components/AddIdeaAdmin';
 import IdeaCreatorUpdate from '../components/IdeaCreatorUpdate';
 import CreateHonorarium from '../components/CreateHonorarium';
+import IdeaAdminCardList from '../components/IdeaAdminCardList';
 
 export default {
   components: {
     AddIdeaAdmin,
     IdeaCreatorUpdate,
     CreateHonorarium,
+    IdeaAdminCardList,
   },
 
   props: {
@@ -186,13 +218,17 @@ export default {
       requiredFieldRules: [(v) => v.length >= 1 || `Field is required`],
       locationIds: [],
       ideaId: '',
+      slugId: '',
       savedImages: [],
+      contactEmail: '',
+      listChangeCounter: 0,
+      admins: [],
     };
   },
 
   created() {
     if (this.$route.query && this.$route.query.id) {
-      this.ideaId = this.$route.query.id;
+      this.slugId = this.$route.query.id;
     }
   },
 
@@ -216,13 +252,16 @@ export default {
       });
     }
 
-    if (this.ideaId) {
-      const ideaResponse = await this.$axios
-        .$get(`/ideas/${this.ideaId}`)
+    if (this.slugId) {
+      let ideaResponse = await this.$axios
+        .$get(`/ideas?slug=${this.slugId}`)
         .catch((err) => console.log(err));
 
-      if (ideaResponse) {
-        this.selectedLocation = ideaResponse.location.id;
+      if (ideaResponse.length > 0) {
+        ideaResponse = ideaResponse[0];
+        this.selectedLocation = ideaResponse.location
+          ? ideaResponse.location.id
+          : '';
         this.selectedCategories =
           ideaResponse.categories.length > 0
             ? ideaResponse.categories[0].name
@@ -231,6 +270,9 @@ export default {
         this.description = ideaResponse.description;
         this.selectedStatus = ideaResponse.status;
         this.savedImages = ideaResponse.images;
+        this.contactEmail = ideaResponse.contact_email;
+        this.ideaId = ideaResponse.id;
+        this.admins = ideaResponse.admins;
       } else {
         this.error = true;
       }
@@ -238,6 +280,9 @@ export default {
   },
 
   methods: {
+    changeListKey() {
+      this.listChangeCounter++;
+    },
     async fileOnClick(event) {
       const formData = new FormData();
 
@@ -280,6 +325,36 @@ export default {
         )
       ) {
         this.selectedCategories = '';
+      }
+    },
+
+    addAdminForNewIdea(admin) {
+      if (admin == null) {
+        return;
+      }
+      for (let i = 0; i < this.admins.length; i++) {
+        if (this.admins[i].id === admin.id) {
+          this.$refs.AddAdminDialog.errorMessage =
+            'User is already an admin for this idea';
+          this.$refs.AddAdminDialog.loading = false;
+          return;
+        }
+      }
+      this.admins.push(admin);
+      this.listChangeCounter++;
+    },
+
+    deleteAdminForNewIdea(adminId) {
+      let index = -1;
+      for (let i = 0; i < this.admins.length; i++) {
+        if (this.admins[i].id === adminId) {
+          index = i;
+          break;
+        }
+      }
+      if (index > -1) {
+        this.admins.splice(index, 1);
+        this.listChangeCounter++;
       }
     },
 
@@ -350,7 +425,6 @@ export default {
           'Content-Type': 'application/json',
         },
       };
-
       const ideaRequest = {
         title: this.title,
         description: this.description,
@@ -368,6 +442,8 @@ export default {
         images: this.savedImages.map((image) => {
           return image.id;
         }),
+        contact_email: this.contactEmail,
+        admins: this.admins,
       };
 
       let response = null;

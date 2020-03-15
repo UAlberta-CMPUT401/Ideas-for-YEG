@@ -3,9 +3,7 @@
     <v-row justify="center">
       <v-col v-for="idea in ideas" :key="idea.title" justify="center">
         <v-card d-flex justify-center class="mx-auto" max-width="700">
-          <v-btn v-on:click="onClick(ideas, idea)" text class="pa-0 btnSpacing">
-            <v-icon color="black">mdi-delete</v-icon>
-          </v-btn>
+          <ConfirmDeleteDialog v-on:childToParent="onClick(ideas, idea)" />
           <v-btn
             v-if="idea.featured === true"
             v-on:click="featured(ideas, idea)"
@@ -77,12 +75,12 @@
                 }}</span>
               </div>
 
-              <v-btn text class="pa-0 btnSpacing">
+              <div class="btnSpacing">
                 <v-icon color="black">mdi-account-multiple-plus</v-icon>
                 <span class="subheading mr-2" color="black">{{
                   idea.followers
                 }}</span>
-              </v-btn>
+              </div>
             </v-list-item>
           </v-card-actions>
         </v-card>
@@ -97,7 +95,11 @@
  * MIT License
  * https://github.com/vuetifyjs/vuetify
  */
+import ConfirmDeleteDialog from '../components/ConfirmDeleteDialog';
 export default {
+  components: {
+    ConfirmDeleteDialog,
+  },
   props: {
     location: Object,
     ideas: {

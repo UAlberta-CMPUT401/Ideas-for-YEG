@@ -640,6 +640,12 @@
                 },
                 "featured": {
                   "type": "boolean"
+                },
+                "upvote_count": {
+                  "type": "integer"
+                },
+                "contact_email": {
+                  "type": "string"
                 }
               }
             }
@@ -650,7 +656,8 @@
               "username",
               "email",
               "firstName",
-              "lastName"
+              "lastName",
+              "email_frequency"
             ],
             "properties": {
               "id": {
@@ -694,6 +701,9 @@
                 "items": {
                   "type": "string"
                 }
+              },
+              "email_frequency": {
+                "type": "string"
               }
             }
           },
@@ -713,6 +723,28 @@
               },
               "location": {
                 "type": "string"
+              }
+            }
+          },
+          "sub_pages": {
+            "type": "array",
+            "items": {
+              "required": [
+                "id"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "content": {
+                  "type": "string"
+                },
+                "location": {
+                  "type": "string"
+                }
               }
             }
           }
@@ -741,6 +773,12 @@
           },
           "categories": {
             "type": "string"
+          },
+          "sub_pages": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         }
       }

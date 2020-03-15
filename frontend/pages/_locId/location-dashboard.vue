@@ -11,62 +11,81 @@
         <v-card-title align-center>Moderation Portal</v-card-title>
       </v-img>
     </v-card>
-    <v-card-title align-center>
-      Category Management
-    </v-card-title>
-    <v-flex xs12 sm8 md6 color="#bdbdbd">
-      <CategoryCard v-bind:categories="categories" />
-      <form>
-        <v-text-field
-          v-model="name"
-          :error-messages="nameErrors"
-          :counter="10"
-          label="Category Name"
-          @input="$v.name.$touch()"
-          @blur="$v.name.$touch()"
-        >
-        </v-text-field>
-        <v-btn class="mr-4" @click="createCategory(categories, $v.name.$model)"
-          >Create</v-btn
-        >
-      </form>
-    </v-flex>
-    <v-card-title align-center>
-      Idea Management
-    </v-card-title>
-    <v-flex xs12 sm8 md6>
-      <DeleteableIdeaCard v-bind:ideas="ideas" v-bind:location="location" />
-    </v-flex>
+    <v-tabs centered>
+      <v-tabs-slider></v-tabs-slider>
+      <v-tab href="#tab-1"> Subpage Manager </v-tab>
+      <v-tab-item eager value="tab-1">
+        <SubPageManager v-bind:subpages="subpages" />
+      </v-tab-item>
+      <v-tab href="#tab-2"> Category Manager </v-tab>
+      <v-tab-item eager value="tab-2">
+        <CategoryCard v-bind:categories="categories" />
+        <form>
+          <v-text-field
+            v-model="name"
+            :error-messages="nameErrors"
+            :counter="20"
+            label="Category Name"
+            @input="$v.name.$touch()"
+            @blur="$v.name.$touch()"
+          >
+          </v-text-field>
+          <v-btn
+            class="mr-4"
+            @click="createCategory(categories, $v.name.$model)"
+            >Create</v-btn
+          >
+        </form>
+      </v-tab-item>
+      <v-tab href="#tab-3"> Idea Manager </v-tab>
+      <v-tab-item eager value="tab-3">
+        <v-card-title align-center>
+          Idea Management
+        </v-card-title>
+        <DeleteableIdeaCard v-bind:ideas="ideas" v-bind:location="location" />
+      </v-tab-item>
+    </v-tabs>
   </v-layout>
 </template>
 
+<script src="https://unpkg.com/turndown/dist/turndown.js"></script>
 <script>
 import { validationMixin } from 'vuelidate';
 import { required, maxLength } from 'vuelidate/lib/validators';
 import DeleteableIdeaCard from '../../components/DeleteableIdeaCard';
 import CategoryCard from '../../components/CategoryCard';
-import { LS_USER_DATA } from '../../constants/constants';
+import SubPageManager from '../../components/SubPageManageCard';
+import {
+  LS_USER_DATA,
+  DEFAULT_LOCATION_IMG_PATH,
+  DEFAULT_AVATAR_IMG_PATH,
+  DEFAULT_IDEA_IMG_PATH,
+} from '../../constants/constants';
 
 export default {
   mixins: [validationMixin],
 
   validations: {
-    name: { required, maxLength: maxLength(10) },
+    name: { required, maxLength: maxLength(20) },
   },
   components: {
     DeleteableIdeaCard,
     CategoryCard,
+    SubPageManager,
   },
   data() {
-    // TODO: use this.$route.params.locId to get information about the given location
     /**
+     * default user avatar photo: https://medium.com/insider-coub/default-avatars-4275c0e41f62
      * coolidea photo: Photo by Ameen Fahmy on Unsplash https://unsplash.com/photos/_gEKtyIbRSM
      */
     return {
+      subpages: {
+        pages: [{ title: 'first page', content: 'Empty', updatedAt: '' }],
+      },
       name: '',
       ideas: this.$store.getters['ideas/getIdeas'],
       categories: {
-        name: 'testName',
+        name: 'Calgary',
         id: 'tN',
         category: {
           id: '1',
@@ -75,10 +94,9 @@ export default {
       },
       location: {
         id: '',
-        name: 'testName',
+        name: 'Edmonton',
         route: 'TN',
-        imgSrc:
-          'https://images.unsplash.com/photo-1567177662154-dfeb4c93b6ae?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=80',
+        imgSrc: `${DEFAULT_LOCATION_IMG_PATH}`,
       },
     };
   },
@@ -121,7 +139,7 @@ export default {
       }
       !(indexName === -1) && errors.push('Name already exists');
       !this.$v.name.maxLength &&
-        errors.push('Name must be at most 10 characters long');
+        errors.push('Name must be at most 20 characters long');
       !this.$v.name.required && errors.push('Name is required.');
       if (errors.length > 0) return;
 
@@ -188,9 +206,6 @@ export default {
         .catch((err) => {
           console.log(err.response);
         });
-      if (response) {
-        console.log(response);
-      }
     },
   },
 
@@ -210,6 +225,24 @@ export default {
   },
 
   async mounted() {
+    const userJSON = window.localStorage.getItem('userData');
+    const userData = JSON.parse(userJSON);
+    const config = {
+      headers: {
+        Authorization: 'Bearer ' + userData.jwt,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    };
+
+    const subpageResponse = await this.$axios
+      .get(`/sub-pages?location.route=${this.$route.params.locId}`, config)
+      .catch((error) => {
+        console.log(error);
+      });
+    if (subpageResponse) {
+      this.subpages.pages = subpageResponse.data;
+    }
     const response = await this.$axios
       .$post('/graphql', {
         query: `query {
@@ -268,6 +301,7 @@ export default {
     /**
      * default user avatar photo: https://www.everypixel.com/image-638397625280524203
      * coolidea photo: Photo by Ameen Fahmy on Unsplash https://unsplash.com/photos/_gEKtyIbRSM
+     * edmonton skyline https://www.forbes.com/sites/sandramacgregor/2020/01/09/discover-why-edmonton-is-one-of-canadas-hottest-destinations/
      */
     if (response) {
       this.location = {
@@ -275,8 +309,8 @@ export default {
         name: response.data.locations[0].name,
         route: response.data.locations[0].route,
         imgSrc: response.data.locations[0].image.url
-          ? `http://localhost:1337${response.data.locations[0].image.url}`
-          : 'https://images.unsplash.com/photo-1567177662154-dfeb4c93b6ae?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=80',
+          ? `${this.$axios.defaults.baseURL}${response.data.locations[0].image.url}`
+          : `${DEFAULT_LOCATION_IMG_PATH}`,
       };
 
       this.categories = response.data.locations[0].categories;
@@ -288,18 +322,16 @@ export default {
             description: idea.description,
             upvotes: idea.user_upvoters.length,
             ideaCreator: idea.user_creator.username,
-            // temporarily use this now as localhost photos are hit/miss
             src: idea.images.length
-              ? `http://localhost:1337${idea.images[0].url}`
-              : 'https://images.unsplash.com/photo-1567177662154-dfeb4c93b6ae?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=80',
+              ? `${this.$axios.defaults.baseURL}${idea.images[0].url}`
+              : `${DEFAULT_IDEA_IMG_PATH}`,
             volunteers: idea.volunteers.length,
             // TODO fix API to return donated amount
             amountReceived: 100,
             followers: idea.followers.length,
-            // temporarily use this now as localhost photos are hit/miss
             user_avatar: idea.user_creator.avatar
-              ? `http://localhost:1337${idea.user_creator.avatar.url}`
-              : 'https://www.everypixel.com/image-638397625280524203.jpg',
+              ? `${this.$axios.defaults.baseURL}${idea.user_creator.avatar.url}`
+              : `${DEFAULT_AVATAR_IMG_PATH}`,
             featured: idea.featured,
           };
         });

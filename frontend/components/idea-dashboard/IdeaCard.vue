@@ -1,9 +1,6 @@
 <template>
   <v-container fluid>
     <v-row justify="center">
-      <v-col v-if="ideas.length === 0">
-        <h2>No ideas have been found</h2>
-      </v-col>
       <v-col v-for="idea in ideas" :key="idea.title" justify="center">
         <v-card
           d-flex
@@ -14,7 +11,7 @@
         >
           <v-list-item>
             <v-list-item-content>
-              <v-list-item-title class="headline">{{
+              <v-list-item-title class="headline text-sm-left">{{
                 idea.title
               }}</v-list-item-title>
             </v-list-item-content>
@@ -22,7 +19,7 @@
 
             <div v-if="isEditable">
               <v-btn
-                :href="`/manage-idea?id=${idea.id}`"
+                :href="`/manage-idea?id=${idea.slug}`"
                 text
                 class="pa-0 btnSpacing"
               >
@@ -37,7 +34,7 @@
           >
           </v-img>
 
-          <v-card-text class="text--primary">
+          <v-card-text class="text--primary text-sm-left">
             <div>{{ idea.description }}</div>
           </v-card-text>
 
@@ -59,7 +56,23 @@
               <v-spacer class="d-none d-sm-flex d-md-flex d-lg-flex d-xl-flex">
               </v-spacer>
 
-              <v-btn text class="pa-0 btnSpacing">
+              <v-btn
+                v-if="idea.hasUserUpvoted"
+                color="blue"
+                text
+                class="pa-0 btnSpacing"
+                v-on:click.stop="$emit('upvoteOnClick', idea)"
+              >
+                <v-icon>mdi-thumb-up</v-icon>
+                <span class="subheading mr-2">{{ idea.upvotes }}</span>
+              </v-btn>
+              <v-btn
+                v-else
+                color="black"
+                text
+                class="pa-0 btnSpacing"
+                v-on:click.stop="$emit('upvoteOnClick', idea)"
+              >
                 <v-icon>mdi-thumb-up</v-icon>
                 <span class="subheading mr-2">{{ idea.upvotes }}</span>
               </v-btn>
@@ -130,7 +143,7 @@ export default {
       }
 
       this.$router.push({
-        path: `/${locationParam}/${id}`,
+        path: `/${locationParam}/ideas/${slug}`,
       });
     },
   },
