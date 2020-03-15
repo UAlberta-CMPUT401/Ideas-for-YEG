@@ -64,6 +64,10 @@ module.exports = {
       process.env.NODE_ENV !== 'production'
         ? 'http://localhost:1337/'
         : 'http://162.246.157.122:1337/',
+    baseURLSERVICES:
+      process.env.NODE_ENV !== 'production'
+        ? 'http://localhost:1311/'
+        : 'http://162.246.157.122:1311/',
   },
   /*
    ** vuetify module configuration
