@@ -77,7 +77,10 @@
           <ProjectUpdatesDialog :updates="updates" />
         </template>
         <template>
-          <VolunteerListDialog :volunteers="volunteers" />
+          <VolunteerListDialog
+            :volunteers="volunteers"
+            :isVolunteering="isVolunteering"
+          />
         </template>
       </v-list-item>
 
@@ -318,6 +321,11 @@ export default {
         : false;
       this.contactEmail = data.contact_email;
       this.ideaId = data.id;
+      this.isVolunteering = userData
+        ? data.volunteers.filter((user) => {
+            return user.id === userData.user.id;
+          }).length === 1
+        : false;
     }
   },
 
@@ -372,10 +380,12 @@ export default {
           this.volunteers.push({
             username: userData.user.username,
           });
+          this.isVolunteering = true;
         } else if (displayMessage === VOLUNTEER_REMOVAL_MESSAGE) {
           this.volunteers = this.volunteers.filter((volunteer) => {
             return volunteer.username !== userData.user.username;
           });
+          this.isVolunteering = false;
         }
       }
     },
