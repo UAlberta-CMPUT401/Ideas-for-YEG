@@ -45,6 +45,9 @@ import {
 } from '../constants/constants';
 
 const REMOVE_VOLUNTEER = 'Remove your username from the list of volunteers?';
+const ADD_VOLUNTEER = 'Confirm to Sign Up As A Volunteer';
+const ADD_PRIMARY_ACTION = 'Sign Me Up!';
+const REMOVE_PRIMARY_ACTION = 'Yes';
 
 export default {
   props: {
@@ -69,8 +72,8 @@ export default {
   data() {
     return {
       openDialog: false,
-      title: 'Confirm to Sign Up As A Volunteer',
-      primaryAction: 'Sign Me Up!',
+      title: ADD_VOLUNTEER,
+      primaryAction: ADD_PRIMARY_ACTION,
     };
   },
 
@@ -94,7 +97,10 @@ export default {
 
     if (isVolunteerAlready) {
       this.title = REMOVE_VOLUNTEER;
-      this.primaryAction = 'Yes';
+      this.primaryAction = REMOVE_PRIMARY_ACTION;
+    } else {
+      this.title = ADD_VOLUNTEER;
+      this.primaryAction = ADD_PRIMARY_ACTION;
     }
   },
 
@@ -121,8 +127,6 @@ export default {
         },
       };
 
-      console.log(this.$props);
-
       const emailRequest = {
         email: this.$props.ideaCreatorEmail,
         idea_title: this.$props.ideaTitle,
@@ -140,22 +144,30 @@ export default {
           displayMessage = VOLUNTEER_REMOVAL_MESSAGE;
         }
 
-        const emailApi = this.$axios.create({});
-        emailApi.setBaseURL('http://localhost:1311/');
+        if (displayMessage === VOLUNTEER_SUCCESS_MESSAGE) {
+          const emailApi = this.$axios.create({});
+          const baseURL =
+            process.env.NODE_ENV !== 'production'
+              ? 'http://localhost:1311/'
+              : 'http://162.246.157.122:1311/';
+          emailApi.setBaseURL(baseURL);
 
-        const emailResponse = await emailApi
-          .post(`email_volunteer`, emailRequest, config)
-          .catch((error) => console.log(error));
+          const emailResponse = await emailApi
+            .post(`email_volunteer`, emailRequest, config)
+            .catch((error) => console.log(error));
 
-        if (emailResponse) {
-          this.$emit('dialogOperationCallback', displayMessage, true, false);
+          if (emailResponse) {
+            this.$emit('dialogOperationCallback', displayMessage, true, false);
+          } else {
+            this.$emit(
+              'dialogOperationCallback',
+              VOLUNTEER_FAILURE_MESSAGE,
+              false,
+              true,
+            );
+          }
         } else {
-          this.$emit(
-            'dialogOperationCallback',
-            VOLUNTEER_FAILURE_MESSAGE,
-            false,
-            true,
-          );
+          this.$emit('dialogOperationCallback', displayMessage, true, false);
         }
 
         this.openDialog = false;
