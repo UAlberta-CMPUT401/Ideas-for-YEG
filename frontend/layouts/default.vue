@@ -125,6 +125,8 @@ export default {
   methods: {
     logOut() {
       window.localStorage.removeItem(LS_USER_DATA);
+      document.cookie =
+        'accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
       this.$store.commit('userData/clear');
       this.$router.push('/');
     },
