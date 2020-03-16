@@ -145,14 +145,10 @@ export default {
       this.loading = true;
       const formData = new FormData();
 
-      console.log(this.image, this.image.name);
-
       formData.append(`files`, this.image, this.image.name);
 
       const userJSON = window.localStorage.getItem('userData');
       const userData = JSON.parse(userJSON);
-
-      console.log(userData);
 
       const config = {
         headers: {
