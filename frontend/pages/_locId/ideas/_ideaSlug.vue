@@ -223,7 +223,7 @@
           </v-expansion-panel>
         </v-expansion-panels>
       </div>
-      <div v-else>
+      <div v-else class="notFoundWarning">
         <h3>Idea not found</h3>
       </div>
     </v-card>
@@ -313,6 +313,7 @@ export default {
       ideaId: '',
       // assume true unless otherwise proven
       isFound: true,
+      hasUserUpvoted: false,
     };
   },
 
@@ -324,7 +325,7 @@ export default {
       .$get(`/ideas?slug=${this.$route.params.ideaSlug}`)
       .catch((err) => {
         console.log(err);
-        return false;
+        // return false;
       });
 
     if (response && response.length > 0) {

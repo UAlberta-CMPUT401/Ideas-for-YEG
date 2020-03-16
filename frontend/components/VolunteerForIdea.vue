@@ -43,6 +43,7 @@ import {
   MUST_LOGIN_MESSAGE,
   VOLUNTEER_REMOVAL_MESSAGE,
 } from '../constants/constants';
+import { getJWTCookie } from '../constants/helperFunctions';
 
 const REMOVE_VOLUNTEER = 'Remove your username from the list of volunteers?';
 const ADD_VOLUNTEER = 'Confirm to Sign Up As A Volunteer';
@@ -121,7 +122,7 @@ export default {
 
       const config = {
         headers: {
-          Authorization: 'Bearer ' + userData.jwt,
+          Authorization: 'Bearer ' + getJWTCookie(),
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
