@@ -26,6 +26,27 @@
                 <v-icon>mdi-lead-pencil</v-icon>
               </v-btn>
             </div>
+
+            <div v-if="canFollow">
+              <v-btn
+                v-if="idea.doesUserFollow"
+                color="blue"
+                text
+                class="pa-0 btnSpacing"
+                v-on:click.stop="$emit('followOnClick', idea)"
+              >
+                Following
+              </v-btn>
+              <v-btn
+                v-else
+                color="black"
+                text
+                class="pa-0 btnSpacing"
+                v-on:click.stop="$emit('followOnClick', idea)"
+              >
+                Follow
+              </v-btn>
+            </div>
           </v-list-item>
           <v-img
             :src="idea.src"
@@ -116,6 +137,10 @@ export default {
     isEditable: {
       type: Boolean,
       default: false,
+    },
+    canFollow: {
+      type: Boolean,
+      default: true,
     },
     ideas: {
       type: Array,

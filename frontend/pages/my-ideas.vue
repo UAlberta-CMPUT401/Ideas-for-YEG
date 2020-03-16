@@ -10,7 +10,11 @@
             <v-btn href="/manage-idea" class="ma-2" outlined color="indigo"
               >Create an Idea</v-btn
             >
-            <IdeaCard v-bind:isEditable="true" v-bind:ideas="ideas" />
+            <IdeaCard
+              v-bind:isEditable="true"
+              v-bind:canFollow="false"
+              v-bind:ideas="ideas"
+            />
           </v-flex>
         </v-layout>
       </v-tab-item>
@@ -19,7 +23,12 @@
 
       <v-tab-item eager value="tab-2">
         <v-layout column>
-          <IdeaCard v-bind:isEditable="false" v-bind:ideas="isVolunteerideas" />
+          <IdeaCard
+            v-bind:isEditable="false"
+            v-bind:canFollow="true"
+            v-bind:ideas="isVolunteerideas"
+            v-on:followOnClick="updateFollow"
+          />
         </v-layout>
       </v-tab-item>
     </v-tabs>
@@ -76,6 +85,7 @@ export default {
             ? `${this.$axios.defaults.baseURL}${idea.images[0].url}`
             : DEFAULT_IDEA_IMG_PATH,
           volunteerInfo: idea.volunteers,
+
           volunteers: idea.volunteers.length,
           // TODO fix API to return donated amount
           amountReceived: 100,
@@ -109,6 +119,10 @@ export default {
           src: idea.images.length
             ? `${this.$axios.defaults.baseURL}${idea.images[0].url}`
             : DEFAULT_IDEA_IMG_PATH,
+          doesUserFollow:
+            userData && userData.user && userData.user._id
+              ? this.isFollowedByUser(idea, userData.user._id)
+              : false,
           volunteerInfo: idea.volunteers,
           volunteers: idea.volunteers.length,
           // TODO fix API to return donated amount
@@ -124,6 +138,48 @@ export default {
         };
       });
     }
+  },
+
+  methods: {
+    // returns true if user already follows that idea
+    isFollowedByUser(idea, userId) {
+      for (const followerId of idea.followers) {
+        if (followerId === userId) {
+          return true;
+        }
+      }
+      return false;
+    },
+
+    async updateFollow(idea) {
+      console.log('clicked follow');
+
+      const id = idea.id;
+      const userJSON = window.localStorage.getItem('userData');
+      const userData = JSON.parse(userJSON);
+      if (!userData) {
+        return;
+      }
+
+      const config = {
+        headers: {
+          Authorization: 'Bearer ' + userData.jwt,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      };
+
+      const response = await this.$axios
+        .$put(`/ideas/follow/${id}`, config)
+        .catch((error) => console.log(error));
+
+      idea.doesUserFollow = !idea.doesUserFollow;
+
+      if (!response) {
+        console.log('no response');
+        idea.doesUserFollow = !idea.doesUserFollow;
+      }
+    },
   },
 };
 </script>
