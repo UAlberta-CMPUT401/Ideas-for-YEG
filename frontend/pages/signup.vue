@@ -193,6 +193,8 @@ export default {
 
           // const user = data.user;
           const jwt = data.jwt;
+          // Remove jwt property before storing into localStorage
+          delete data.jwt;
           if (process.browser) {
             // Access token like so: console.log(document.cookie.replace(/(?:(?:^|.*;\s*)accessToken\s*=\s*([^;]*).*$)|^.*$/, "$1"));
             document.cookie = 'accessToken=' + jwt;

@@ -51,6 +51,7 @@
   </v-row>
 </template>
 <script>
+import { getJWTCookie } from '../constants/helperFunctions';
 export default {
   data() {
     return {
@@ -64,11 +65,9 @@ export default {
     async addAdmin() {
       this.loading = true;
       // Get the jwt
-      const userJSON = window.localStorage.getItem('userData');
-      const userData = JSON.parse(userJSON);
       const config = {
         headers: {
-          Authorization: 'Bearer ' + userData.jwt,
+          Authorization: 'Bearer ' + getJWTCookie(),
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },

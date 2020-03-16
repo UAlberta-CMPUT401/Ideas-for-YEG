@@ -90,6 +90,7 @@
   </v-row>
 </template>
 <script>
+import { getJWTCookie } from '../constants/helperFunctions';
 const NOTE_MAX_LENGTH = 20;
 export default {
   consts: [NOTE_MAX_LENGTH],
@@ -162,11 +163,9 @@ export default {
 
     async submit() {
       this.loading = true;
-      const userJSON = window.localStorage.getItem('userData');
-      const userData = JSON.parse(userJSON);
       const config = {
         headers: {
-          Authorization: 'Bearer ' + userData.jwt,
+          Authorization: 'Bearer ' + getJWTCookie(),
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },

@@ -9,6 +9,7 @@
   </v-layout>
 </template>
 <script>
+import { getJWTCookie } from '../constants/helperFunctions';
 import IdeaCard from '../components/idea-dashboard/IdeaCard';
 import {
   DEFAULT_IDEA_IMG_PATH,
@@ -32,7 +33,7 @@ export default {
     const userData = JSON.parse(userJSON);
     const config = {
       headers: {
-        Authorization: 'Bearer ' + userData.jwt,
+        Authorization: 'Bearer ' + getJWTCookie(),
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },

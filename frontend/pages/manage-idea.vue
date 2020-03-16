@@ -177,6 +177,7 @@
   </v-card>
 </template>
 <script>
+import { getJWTCookie } from '../constants/helperFunctions';
 import AddIdeaAdmin from '../components/AddIdeaAdmin';
 import IdeaCreatorUpdate from '../components/IdeaCreatorUpdate';
 import CreateHonorarium from '../components/CreateHonorarium';
@@ -290,13 +291,10 @@ export default {
         formData.append(`files`, file, file.name);
       });
 
-      const userJSON = window.localStorage.getItem('userData');
-      const userData = JSON.parse(userJSON);
-
       const imageResponse = await this.$axios
         .$post('/upload', formData, {
           headers: {
-            Authorization: 'Bearer ' + userData.jwt,
+            Authorization: 'Bearer ' + getJWTCookie(),
             'Content-Type': 'multipart/form-data',
           },
         })
@@ -359,11 +357,9 @@ export default {
     },
 
     async onDeleteIdea() {
-      const userJSON = window.localStorage.getItem('userData');
-      const userData = JSON.parse(userJSON);
       const config = {
         headers: {
-          Authorization: 'Bearer ' + userData.jwt,
+          Authorization: 'Bearer ' + getJWTCookie(),
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
@@ -380,11 +376,9 @@ export default {
     },
 
     async imageDeleteOnClick(index) {
-      const userJSON = window.localStorage.getItem('userData');
-      const userData = JSON.parse(userJSON);
       const config = {
         headers: {
-          Authorization: 'Bearer ' + userData.jwt,
+          Authorization: 'Bearer ' + getJWTCookie(),
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
@@ -420,7 +414,7 @@ export default {
       const userData = JSON.parse(userJSON);
       const config = {
         headers: {
-          Authorization: 'Bearer ' + userData.jwt,
+          Authorization: 'Bearer ' + getJWTCookie(),
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },

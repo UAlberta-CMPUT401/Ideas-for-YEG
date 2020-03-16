@@ -199,6 +199,7 @@
 
 <script>
 import moment from 'moment';
+import { getJWTCookie } from '../../../constants/helperFunctions';
 import DonateDialog from '../../../components/DonateDialog';
 import DonateToIdea from '../../../components/DonateToIdea';
 import SubscribeToDigest from '../../../components/SubscribeToDigest';
@@ -328,7 +329,7 @@ export default {
 
       const config = {
         headers: {
-          Authorization: 'Bearer ' + userData.jwt,
+          Authorization: 'Bearer ' + getJWTCookie(),
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
