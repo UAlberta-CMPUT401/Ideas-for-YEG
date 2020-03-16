@@ -20,13 +20,24 @@
       </v-tab-item>
 
       <v-tab href="#tab-2"> Ideas I Volunteer For </v-tab>
-
       <v-tab-item eager value="tab-2">
         <v-layout column>
           <IdeaCard
             v-bind:isEditable="false"
             v-bind:canFollow="true"
-            v-bind:ideas="isVolunteerideas"
+            v-bind:ideas="isVolunteerIdeas"
+            v-on:followOnClick="updateFollow"
+          />
+        </v-layout>
+      </v-tab-item>
+
+      <v-tab href="#tab-3"> Ideas I Follow </v-tab>
+      <v-tab-item eager value="tab-3">
+        <v-layout column>
+          <IdeaCard
+            v-bind:isEditable="false"
+            v-bind:canFollow="true"
+            v-bind:ideas="isFollowingIdeas"
             v-on:followOnClick="updateFollow"
           />
         </v-layout>
@@ -52,7 +63,8 @@ export default {
       ideas: this.$store.getters['ideas/getIdeas'],
       currentUser: this.$store.getters['users/getUser'],
       title: '',
-      isVolunteerideas: [],
+      isVolunteerIdeas: [],
+      isFollowingIdeas: [],
     };
   },
 
@@ -108,7 +120,45 @@ export default {
       });
 
     if (volunteerResponse) {
-      this.isVolunteerideas = volunteerResponse.data.map((idea) => {
+      this.isVolunteerIdeas = volunteerResponse.data.map((idea) => {
+        return {
+          id: idea.id.toString(),
+          title: idea.title,
+          description: idea.description,
+          upvotes: idea.user_upvoters.length,
+          ideaCreator: volunteerResponse.data.username,
+          // temporarily use this now as localhost photos are hit/miss
+          src: idea.images.length
+            ? `${this.$axios.defaults.baseURL}${idea.images[0].url}`
+            : DEFAULT_IDEA_IMG_PATH,
+          doesUserFollow:
+            userData && userData.user && userData.user._id
+              ? this.isFollowedByUser(idea, userData.user._id)
+              : false,
+          volunteerInfo: idea.volunteers,
+          volunteers: idea.volunteers.length,
+          // TODO fix API to return donated amount
+          amountReceived: 100,
+          followers: idea.followers.length,
+          // temporarily use this now as localhost photos are hit/miss
+          user_avatar: idea.user_creator.avatar
+            ? `${this.$axios.defaults.baseURL}${idea.user_creator.avatar.url}`
+            : DEFAULT_AVATAR_IMG_PATH,
+          slug: idea.slug,
+          location: idea.location,
+          featured: idea.featured,
+        };
+      });
+    }
+
+    const followingResponse = await this.$axios
+      .get(`/ideas?followers.id=${userData.user.id}`, config)
+      .catch((error) => {
+        console.log(error);
+      });
+
+    if (followingResponse) {
+      this.isFollowingIdeas = followingResponse.data.map((idea) => {
         return {
           id: idea.id.toString(),
           title: idea.title,
@@ -152,8 +202,6 @@ export default {
     },
 
     async updateFollow(idea) {
-      console.log('clicked follow');
-
       const id = idea.id;
       const userJSON = window.localStorage.getItem('userData');
       const userData = JSON.parse(userJSON);
@@ -169,14 +217,13 @@ export default {
         },
       };
 
-      const response = await this.$axios
-        .$put(`/ideas/follow/${id}`, config)
-        .catch((error) => console.log(error));
-
       idea.doesUserFollow = !idea.doesUserFollow;
 
+      const response = await this.$axios
+        .$put(`/ideas/follow/${id}`, {}, config)
+        .catch((error) => console.log(error));
+
       if (!response) {
-        console.log('no response');
         idea.doesUserFollow = !idea.doesUserFollow;
       }
     },

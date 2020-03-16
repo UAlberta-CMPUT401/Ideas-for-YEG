@@ -253,8 +253,6 @@ export default {
     },
 
     async updateFollow(idea) {
-      console.log('clicked follow');
-
       const id = idea.id;
       const userJSON = window.localStorage.getItem('userData');
       const userData = JSON.parse(userJSON);
@@ -271,13 +269,12 @@ export default {
       };
 
       const response = await this.$axios
-        .$put(`/ideas/follow/${id}`, config)
+        .$put(`/ideas/follow/${id}`, {}, config)
         .catch((error) => console.log(error));
 
       idea.doesUserFollow = !idea.doesUserFollow;
 
       if (!response) {
-        console.log('no response');
         idea.doesUserFollow = !idea.doesUserFollow;
       }
     },
