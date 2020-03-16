@@ -83,17 +83,20 @@ export default {
       ],
     };
   },
+
   computed: {
     isAuthenticated() {
       // double exclamation mark translate object into boolean
       return !!this.$store.state.userData.userData;
     },
+
     username() {
       if (this.$store.state.userData.userData) {
         return this.$store.state.userData.userData.user.username;
       }
       return 'No Name';
     },
+
     currLocationName() {
       if (
         this.$store.state.currLocation.currLocation &&
@@ -106,6 +109,7 @@ export default {
       return '';
     },
   },
+
   beforeMount() {
     // Get stored values from localStorage and put them into vuex
     if (process.browser) {
@@ -122,6 +126,7 @@ export default {
       }
     }
   },
+
   methods: {
     logOut() {
       window.localStorage.removeItem(LS_USER_DATA);
@@ -130,11 +135,13 @@ export default {
       this.$store.commit('userData/clear');
       this.$router.push('/');
     },
+
     clearLocationAndRedirect() {
       window.localStorage.removeItem(LS_CURR_LOCATION);
       this.$store.commit('currLocation/clear');
       this.$router.push('/');
     },
+
     redirect(path) {
       this.$router.push(path);
     },

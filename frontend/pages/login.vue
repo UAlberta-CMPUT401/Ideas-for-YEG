@@ -30,6 +30,10 @@
           <nuxt-link to="/signup">
             Don't have an account yet? Click here to sign up
           </nuxt-link>
+          <br />
+          <nuxt-link to="/forgot-password">
+            Forgot your password? Click here to reset it
+          </nuxt-link>
         </v-card-text>
       </v-card>
 
