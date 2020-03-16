@@ -46,7 +46,7 @@
  * MIT License
  * https://github.com/vuetifyjs/vuetify
  */
-
+import { getJWTCookie } from '../constants/helperFunctions';
 export default {
   props: {
     categories: {
@@ -63,10 +63,6 @@ export default {
   },
   methods: {
     async deleteCategory(categories, category) {
-      // Get the jwt
-      const userJSON = window.localStorage.getItem('userData');
-      const userData = JSON.parse(userJSON);
-
       // Remove the selected category from the category list
       let categoryArray = categories.category;
       const index = categoryArray.indexOf(category);
@@ -112,7 +108,7 @@ export default {
           },
           {
             headers: {
-              Authorization: 'Bearer ' + userData.jwt,
+              Authorization: 'Bearer ' + getJWTCookie(),
               Accept: 'application/json',
               'Content-Type': 'application/json',
             },

@@ -16,10 +16,10 @@
             @click:append="search"
             v-on:keyup="debounceSearch"
             v-on:keydown.enter.prevent="search"
-            rounded="true"
-            outlined="true"
-            solo="true"
-            flat="true"
+            rounded
+            outlined
+            solo
+            flat
             v-model="searchTerm"
             :loading="isLoading"
             append-icon="mdi-magnify"
@@ -60,6 +60,7 @@
 
 <script>
 import _ from 'lodash';
+import { getJWTCookie } from '../../constants/helperFunctions';
 import IdeaCard from '../../components/idea-dashboard/IdeaCard';
 import FeaturedCarousel from '../../components/idea-dashboard/FeaturedCarousel';
 import {
@@ -229,7 +230,7 @@ export default {
 
       const config = {
         headers: {
-          Authorization: 'Bearer ' + userData.jwt,
+          Authorization: 'Bearer ' + getJWTCookie(),
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
@@ -273,7 +274,7 @@ export default {
 
       const config = {
         headers: {
-          Authorization: 'Bearer ' + userData.jwt,
+          Authorization: 'Bearer ' + getJWTCookie(),
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },

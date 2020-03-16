@@ -18,6 +18,7 @@
 </template>
 
 <script>
+import { getJWTCookie } from '../constants/helperFunctions';
 import ConfirmDeleteDialog from '../components/ConfirmDeleteDialog';
 export default {
   components: {
@@ -80,11 +81,9 @@ export default {
         bulletListMarker: '-',
       });
       const markdown = turndownService.turndown(this.content);
-      const userJSON = window.localStorage.getItem('userData');
-      const userData = JSON.parse(userJSON);
       const config = {
         headers: {
-          Authorization: 'Bearer ' + userData.jwt,
+          Authorization: 'Bearer ' + getJWTCookie(),
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
@@ -100,11 +99,9 @@ export default {
     },
 
     async deleteContent() {
-      const userJSON = window.localStorage.getItem('userData');
-      const userData = JSON.parse(userJSON);
       const config = {
         headers: {
-          Authorization: 'Bearer ' + userData.jwt,
+          Authorization: 'Bearer ' + getJWTCookie(),
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },

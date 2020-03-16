@@ -46,6 +46,7 @@
 </template>
 
 <script>
+import { getJWTCookie } from '../constants/helperFunctions';
 import { DEFAULT_AVATAR_IMG_PATH } from '../constants/constants';
 import ConfirmDeleteDialog from '../components/ConfirmDeleteDialog';
 export default {
@@ -70,11 +71,9 @@ export default {
     if (this.$route.query && this.$route.query.id) {
       thisSlugId = this.$route.query.id;
     }
-    const userJSON = window.localStorage.getItem('userData');
-    const userData = JSON.parse(userJSON);
     const config = {
       headers: {
-        Authorization: 'Bearer ' + userData.jwt,
+        Authorization: 'Bearer ' + getJWTCookie(),
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
@@ -123,12 +122,9 @@ export default {
       this.offsetTop = e.target.scrollTop;
     },
     async removeAdmin(admins, admin) {
-      // Get the jwt
-      const userJSON = window.localStorage.getItem('userData');
-      const userData = JSON.parse(userJSON);
       const config = {
         headers: {
-          Authorization: 'Bearer ' + userData.jwt,
+          Authorization: 'Bearer ' + getJWTCookie(),
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },

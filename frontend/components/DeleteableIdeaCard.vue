@@ -95,6 +95,7 @@
  * MIT License
  * https://github.com/vuetifyjs/vuetify
  */
+import { getJWTCookie } from '../constants/helperFunctions';
 import ConfirmDeleteDialog from '../components/ConfirmDeleteDialog';
 export default {
   components: {
@@ -111,10 +112,6 @@ export default {
   },
   methods: {
     async onClick(ideas, idea) {
-      // Get the jwt
-      const userJSON = window.localStorage.getItem('userData');
-      const userData = JSON.parse(userJSON);
-
       // Remove the selected category from the category list
       let ideaArray = ideas;
       const index = ideaArray.indexOf(idea);
@@ -154,7 +151,7 @@ export default {
           },
           {
             headers: {
-              Authorization: 'Bearer ' + userData.jwt,
+              Authorization: 'Bearer ' + getJWTCookie(),
               Accept: 'application/json',
               'Content-Type': 'application/json',
             },
@@ -168,10 +165,6 @@ export default {
       }
     },
     async featured(ideas, idea) {
-      // Get the jwt
-      const userJSON = window.localStorage.getItem('userData');
-      const userData = JSON.parse(userJSON);
-
       // // Remove the selected category from the category list
       // let ideaArray = ideas;
       // const index = ideaArray.indexOf(idea);
@@ -191,7 +184,7 @@ export default {
           { featured: idea.featured },
           {
             headers: {
-              Authorization: 'Bearer ' + userData.jwt,
+              Authorization: 'Bearer ' + getJWTCookie(),
               Accept: 'application/json',
               'Content-Type': 'application/json',
             },
