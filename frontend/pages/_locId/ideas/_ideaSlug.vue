@@ -1,188 +1,199 @@
 <template>
   <v-card class="mx-auto" max-width="700" justify="center">
-    <v-list-item class="d-flex justify-centre">
-      <v-list-item-content>
-        <v-list-item-title class="headline">{{ title }}</v-list-item-title>
-        <v-list-item-subtitle
-          >Posted by {{ ideaCreator.username }}</v-list-item-subtitle
-        >
-      </v-list-item-content>
-      <v-spacer></v-spacer>
-
-      <template v-if="contactEmail">
-        <ContactIdeaCreatorDialog :contactEmail="contactEmail" />
-      </template>
-    </v-list-item>
-
-    <v-carousel
-      cycle
-      height="400"
-      hide-delimiter-background
-      show-arrows-on-hover
-    >
-      <v-carousel-item v-for="(image, i) in images" :key="i">
-        <v-sheet height="100%">
-          <v-row class="fill-height" align="center" justify="center">
-            <v-img
-              :src="
-                image.url === DEFAULT_IDEA_IMG_PATH
-                  ? DEFAULT_IDEA_IMG_PATH
-                  : `${$axios.defaults.baseURL}${image.url}`
-              "
-              gradient="to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)"
-            ></v-img>
-          </v-row>
-        </v-sheet>
-      </v-carousel-item>
-    </v-carousel>
-
-    <v-divider></v-divider>
-
-    <v-list-item class="d-flex justify-center">
-      <v-tooltip bottom>
-        <template v-slot:activator="{ on }">
-          <v-btn
-            v-if="hasUserUpvoted"
-            text
-            class="pa-0"
-            color="blue"
-            v-on="on"
-            v-on:click="updateUpvote"
+    <div v-if="isFound">
+      <v-list-item class="d-flex justify-centre">
+        <v-list-item-content>
+          <v-list-item-title class="headline">{{ title }}</v-list-item-title>
+          <v-list-item-subtitle
+            >Posted by {{ ideaCreator.username }}</v-list-item-subtitle
           >
-            <v-icon>mdi-thumb-up</v-icon>
-            <span class="subheading mr-2">{{ upvotes }}</span>
-          </v-btn>
-          <v-btn v-else text class="pa-0" v-on="on" v-on:click="updateUpvote">
-            <v-icon>mdi-thumb-up</v-icon>
-            <span class="subheading mr-2">{{ upvotes }}</span>
-          </v-btn>
+        </v-list-item-content>
+        <v-spacer></v-spacer>
+
+        <template v-if="contactEmail">
+          <ContactIdeaCreatorDialog :contactEmail="contactEmail" />
         </template>
-        <span>Number of Upvotes</span>
-      </v-tooltip>
-
-      <template>
-        <DonateDialog :donations="donations" />
-      </template>
-      <template>
-        <FollowersListDialog :followers="followers" />
-      </template>
-      <template>
-        <ProjectUpdatesDialog :updates="updates" />
-      </template>
-      <template>
-        <VolunteerListDialog :volunteers="volunteers" />
-      </template>
-    </v-list-item>
-
-    <v-divider></v-divider>
-
-    <v-list subheader three-line>
-      <!-- comment -->
-
-      <v-list-item>
-        <v-list-item-content>
-          <v-list-item-title>Description</v-list-item-title>
-          <div>{{ description }}</div>
-        </v-list-item-content>
       </v-list-item>
-    </v-list>
 
-    <v-divider></v-divider>
+      <v-carousel
+        cycle
+        height="400"
+        hide-delimiter-background
+        show-arrows-on-hover
+      >
+        <v-carousel-item v-for="(image, i) in images" :key="i">
+          <v-sheet height="100%">
+            <v-row class="fill-height" align="center" justify="center">
+              <v-img
+                :src="
+                  image.url === DEFAULT_IDEA_IMG_PATH
+                    ? DEFAULT_IDEA_IMG_PATH
+                    : `${$axios.defaults.baseURL}${image.url}`
+                "
+                gradient="to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)"
+              ></v-img>
+            </v-row>
+          </v-sheet>
+        </v-carousel-item>
+      </v-carousel>
 
-    <v-divider></v-divider>
+      <v-divider></v-divider>
 
-    <v-list subheader three-line>
-      <!-- comment -->
-
-      <v-list-item>
-        <v-list-item-content>
-          <v-list-item-title>Status</v-list-item-title>
-          <v-col sm="3" md="4" lg="8">
-            <v-chip
-              v-if="status === 'Completed'"
-              color="green"
-              text-color="white"
+      <v-list-item class="d-flex justify-center">
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on }">
+            <v-btn
+              v-if="hasUserUpvoted"
+              text
+              class="pa-0"
+              color="blue"
+              v-on="on"
+              v-on:click="updateUpvote"
             >
-              {{ status }}
-              <v-icon right>mdi-star</v-icon>
-            </v-chip>
-            <v-chip
-              v-else-if="status === 'Ongoing'"
-              color="orange"
-              text-color="white"
-            >
-              {{ status }}
-              <v-icon right>mdi-star</v-icon>
-            </v-chip>
-            <v-chip v-else color="red" text-color="white">
-              {{ status }}
-              <v-icon right>mdi-star</v-icon>
-            </v-chip>
-          </v-col>
-        </v-list-item-content>
+              <v-icon>mdi-thumb-up</v-icon>
+              <span class="subheading mr-2">{{ upvotes }}</span>
+            </v-btn>
+            <v-btn v-else text class="pa-0" v-on="on" v-on:click="updateUpvote">
+              <v-icon>mdi-thumb-up</v-icon>
+              <span class="subheading mr-2">{{ upvotes }}</span>
+            </v-btn>
+          </template>
+          <span>Number of Upvotes</span>
+        </v-tooltip>
+
+        <template>
+          <DonateDialog :donations="donations" />
+        </template>
+        <template>
+          <FollowersListDialog :followers="followers" />
+        </template>
+        <template>
+          <ProjectUpdatesDialog :updates="updates" />
+        </template>
+        <template>
+          <VolunteerListDialog :volunteers="volunteers" />
+        </template>
       </v-list-item>
-    </v-list>
 
-    <v-divider></v-divider>
+      <v-divider></v-divider>
 
-    <v-row justify="center">
-      <template>
-        <DonateToIdea />
-      </template>
+      <v-list subheader three-line>
+        <!-- comment -->
 
-      <template>
-        <SubscribeToDigest />
-      </template>
+        <v-list-item>
+          <v-list-item-content>
+            <v-list-item-title>Description</v-list-item-title>
+            <div>{{ description }}</div>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
 
-      <template>
-        <VolunteerForIdea />
-      </template>
-    </v-row>
+      <v-divider></v-divider>
 
-    <v-divider></v-divider>
+      <v-divider></v-divider>
 
-    <v-expansion-panels multiple>
-      <v-expansion-panel>
-        <v-expansion-panel-header>Tags</v-expansion-panel-header>
-        <v-expansion-panel-content>
-          <v-row justify="left">
+      <v-list subheader three-line>
+        <!-- comment -->
+
+        <v-list-item>
+          <v-list-item-content>
+            <v-list-item-title>Status</v-list-item-title>
             <v-col sm="3" md="4" lg="8">
-              <v-chip-group column active-class="primary--text">
-                <v-chip v-for="tag in tags" :key="tag.name">
-                  {{ tag.name }}
-                </v-chip>
-              </v-chip-group>
+              <v-chip
+                v-if="status === 'Completed'"
+                color="green"
+                text-color="white"
+              >
+                {{ status }}
+                <v-icon right>mdi-star</v-icon>
+              </v-chip>
+              <v-chip
+                v-else-if="status === 'Ongoing'"
+                color="orange"
+                text-color="white"
+              >
+                {{ status }}
+                <v-icon right>mdi-star</v-icon>
+              </v-chip>
+              <v-chip v-else color="red" text-color="white">
+                {{ status }}
+                <v-icon right>mdi-star</v-icon>
+              </v-chip>
             </v-col>
-          </v-row>
-        </v-expansion-panel-content>
-      </v-expansion-panel>
-    </v-expansion-panels>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
 
-    <v-divider></v-divider>
+      <v-divider></v-divider>
 
-    <v-expansion-panels multiple>
-      <v-expansion-panel>
-        <v-expansion-panel-header>Honorarium</v-expansion-panel-header>
-        <v-expansion-panel-content>
-          <v-simple-table>
-            <template v-slot:default>
-              <thead>
-                <tr>
-                  <th class="text-left">Item</th>
-                  <th class="text-left">Amount</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="item in honorarium" :key="item.name">
-                  <td>{{ item.note }}</td>
-                  <td>{{ item.amount }}</td>
-                </tr>
-              </tbody>
-            </template>
-          </v-simple-table>
-        </v-expansion-panel-content>
-      </v-expansion-panel>
-    </v-expansion-panels>
+      <v-row justify="center">
+        <template>
+          <DonateToIdea />
+        </template>
+
+        <template>
+          <SubscribeToDigest />
+        </template>
+
+        <template>
+          <VolunteerForIdea />
+        </template>
+      </v-row>
+
+      <v-divider></v-divider>
+
+      <v-expansion-panels multiple>
+        <v-expansion-panel>
+          <v-expansion-panel-header>Tags</v-expansion-panel-header>
+          <v-expansion-panel-content>
+            <v-row justify="left">
+              <v-col sm="3" md="4" lg="8">
+                <v-chip-group column active-class="primary--text">
+                  <v-chip v-for="tag in tags" :key="tag.name">
+                    {{ tag.name }}
+                  </v-chip>
+                </v-chip-group>
+              </v-col>
+            </v-row>
+          </v-expansion-panel-content>
+        </v-expansion-panel>
+      </v-expansion-panels>
+
+      <v-divider></v-divider>
+
+      <v-expansion-panels multiple>
+        <v-expansion-panel>
+          <v-expansion-panel-header>Honorarium</v-expansion-panel-header>
+          <v-expansion-panel-content>
+            <v-simple-table>
+              <template v-slot:default>
+                <thead>
+                  <tr>
+                    <th class="text-left">Item</th>
+                    <th class="text-left">Amount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="item in honorarium" :key="item.name">
+                    <td>{{ item.note }}</td>
+                    <td>{{ item.amount }}</td>
+                  </tr>
+                </tbody>
+              </template>
+            </v-simple-table>
+          </v-expansion-panel-content>
+        </v-expansion-panel>
+      </v-expansion-panels>
+    </div>
+    <div v-else>
+      <v-list subheader three-line class="text-center">
+        <v-list-item>
+          <v-list-item-content>
+            <h3>No idea found</h3>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </div>
   </v-card>
 </template>
 
@@ -258,6 +269,8 @@ export default {
       updates: [],
       contactEmail: '',
       ideaId: '',
+      // assume that the idea exists unless if an error occurs otherwise
+      isFound: true,
     };
   },
 
@@ -299,6 +312,8 @@ export default {
           }).length === 1
         : false;
       this.contactEmail = data.contact_email;
+    } else {
+      this.isFound = false;
     }
   },
 
@@ -324,7 +339,9 @@ export default {
 
       const response = await this.$axios
         .$put(`/ideas/upvote/${this.ideaId}`, {}, config)
-        .catch((error) => console.log(error));
+        .catch(function(error) {
+          console.log(error);
+        });
 
       // undo upvoting if API fails
       if (!response) {
