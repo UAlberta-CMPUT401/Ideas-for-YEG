@@ -19,6 +19,26 @@
         <template v-if="contactEmail">
           <ContactIdeaCreatorDialog :contactEmail="contactEmail" />
         </template>
+        <v-btn
+          v-if="doesUserFollow"
+          color="blue"
+          text
+          v-on="on"
+          class="pa-0 btnSpacing"
+          v-on:click="updateFollow"
+        >
+          Following
+        </v-btn>
+        <v-btn
+          v-else
+          color="black"
+          text
+          class="pa-0 btnSpacing"
+          v-on="on"
+          v-on:click="updateFollow"
+        >
+          Follow
+        </v-btn>
       </v-list-item>
 
       <v-carousel
@@ -319,6 +339,11 @@ export default {
             return user.id === userData.user.id;
           }).length === 1
         : false;
+      this.doesUserFollow = userData
+        ? data.followers.filter((user) => {
+            return user.id === userData.user.id;
+          }).length === 1
+        : false;
       this.contactEmail = data.contact_email;
       this.ideaId = data.id;
       this.isVolunteering = userData
@@ -330,6 +355,36 @@ export default {
   },
 
   methods: {
+    async updateFollow() {
+      const userJSON = window.localStorage.getItem('userData');
+      const userData = JSON.parse(userJSON);
+
+      if (!userData) {
+        return;
+      }
+
+      const config = {
+        headers: {
+          Authorization: 'Bearer ' + userData.jwt,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      };
+
+      this.doesUserFollow = !this.doesUserFollow;
+
+      const response = await this.$axios
+        .$put(`/ideas/follow/${this.ideaId}`, {}, config)
+        .catch((error) => console.log(error));
+
+      if (!response) {
+        this.doesUserFollow = !this.doesUserFollow;
+      }
+
+      // refreshing page b/c button does not change otherwise
+      window.location.reload();
+    },
+
     async updateUpvote() {
       const userJSON = window.localStorage.getItem('userData');
       const userData = JSON.parse(userJSON);

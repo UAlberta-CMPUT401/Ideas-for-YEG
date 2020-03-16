@@ -37,8 +37,10 @@
         </v-form>
         <IdeaCard
           v-bind:isEditable="false"
+          v-bind:canFollow="true"
           v-bind:ideas="ideas"
           v-on:upvoteOnClick="updateUpvote"
+          v-on:followOnClick="updateFollow"
         />
         <v-progress-circular
           v-if="isLoading"
@@ -161,6 +163,10 @@ export default {
                 userData && userData.user && userData.user._id
                   ? this.isUpvotedByUser(idea, userData.user._id)
                   : false,
+              doesUserFollow:
+                userData && userData.user && userData.user._id
+                  ? this.isFollowedByUser(idea, userData.user._id)
+                  : false,
               ideaCreator: idea.user_creator.username,
               src: idea.images.length
                 ? `${this.$axios.defaults.baseURL}${idea.images[0].url}`
@@ -202,7 +208,15 @@ export default {
       }
       return false;
     },
-
+    // returns true if user already follows that idea
+    isFollowedByUser(idea, userId) {
+      for (const followerId of idea.followers) {
+        if (followerId === userId) {
+          return true;
+        }
+      }
+      return false;
+    },
     async updateUpvote(idea) {
       const id = idea.id;
       const index = this.ideas.indexOf(idea);
@@ -246,6 +260,33 @@ export default {
           hasUserUpvoted: !this.ideas[index].hasUserUpvoted,
         };
         this.ideas.splice();
+      }
+    },
+
+    async updateFollow(idea) {
+      const id = idea.id;
+      const userJSON = window.localStorage.getItem('userData');
+      const userData = JSON.parse(userJSON);
+      if (!userData) {
+        return;
+      }
+
+      const config = {
+        headers: {
+          Authorization: 'Bearer ' + userData.jwt,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      };
+
+      const response = await this.$axios
+        .$put(`/ideas/follow/${id}`, {}, config)
+        .catch((error) => console.log(error));
+
+      idea.doesUserFollow = !idea.doesUserFollow;
+
+      if (!response) {
+        idea.doesUserFollow = !idea.doesUserFollow;
       }
     },
 

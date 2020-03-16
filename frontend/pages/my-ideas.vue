@@ -10,16 +10,36 @@
             <v-btn href="/manage-idea" class="ma-2" outlined color="indigo"
               >Create an Idea</v-btn
             >
-            <IdeaCard v-bind:isEditable="true" v-bind:ideas="ideas" />
+            <IdeaCard
+              v-bind:isEditable="true"
+              v-bind:canFollow="false"
+              v-bind:ideas="ideas"
+            />
           </v-flex>
         </v-layout>
       </v-tab-item>
 
       <v-tab href="#tab-2"> Ideas I Volunteer For </v-tab>
-
       <v-tab-item eager value="tab-2">
         <v-layout column>
-          <IdeaCard v-bind:isEditable="false" v-bind:ideas="isVolunteerideas" />
+          <IdeaCard
+            v-bind:isEditable="false"
+            v-bind:canFollow="true"
+            v-bind:ideas="isVolunteerIdeas"
+            v-on:followOnClick="updateFollow"
+          />
+        </v-layout>
+      </v-tab-item>
+
+      <v-tab href="#tab-3"> Ideas I Follow </v-tab>
+      <v-tab-item eager value="tab-3">
+        <v-layout column>
+          <IdeaCard
+            v-bind:isEditable="false"
+            v-bind:canFollow="true"
+            v-bind:ideas="isFollowingIdeas"
+            v-on:followOnClick="updateFollow"
+          />
         </v-layout>
       </v-tab-item>
     </v-tabs>
@@ -43,7 +63,8 @@ export default {
       ideas: [],
       currentUser: this.$store.getters['users/getUser'],
       title: '',
-      isVolunteerideas: [],
+      isVolunteerIdeas: [],
+      isFollowingIdeas: [],
     };
   },
 
@@ -76,6 +97,7 @@ export default {
             ? `${this.$axios.defaults.baseURL}${idea.images[0].url}`
             : DEFAULT_IDEA_IMG_PATH,
           volunteerInfo: idea.volunteers,
+
           volunteers: idea.volunteers.length,
           // TODO fix API to return donated amount
           amountReceived: 100,
@@ -98,7 +120,7 @@ export default {
       });
 
     if (volunteerResponse) {
-      this.isVolunteerideas = volunteerResponse.data.map((idea) => {
+      this.isVolunteerIdeas = volunteerResponse.data.map((idea) => {
         return {
           id: idea.id.toString(),
           title: idea.title,
@@ -109,6 +131,10 @@ export default {
           src: idea.images.length
             ? `${this.$axios.defaults.baseURL}${idea.images[0].url}`
             : DEFAULT_IDEA_IMG_PATH,
+          doesUserFollow:
+            userData && userData.user && userData.user._id
+              ? this.isFollowedByUser(idea, userData.user._id)
+              : false,
           volunteerInfo: idea.volunteers,
           volunteers: idea.volunteers.length,
           // TODO fix API to return donated amount
@@ -124,6 +150,83 @@ export default {
         };
       });
     }
+
+    const followingResponse = await this.$axios
+      .get(`/ideas?followers.id=${userData.user.id}`, config)
+      .catch((error) => {
+        console.log(error);
+      });
+
+    if (followingResponse) {
+      this.isFollowingIdeas = followingResponse.data.map((idea) => {
+        return {
+          id: idea.id.toString(),
+          title: idea.title,
+          description: idea.description,
+          upvotes: idea.user_upvoters.length,
+          ideaCreator: volunteerResponse.data.username,
+          // temporarily use this now as localhost photos are hit/miss
+          src: idea.images.length
+            ? `${this.$axios.defaults.baseURL}${idea.images[0].url}`
+            : DEFAULT_IDEA_IMG_PATH,
+          doesUserFollow:
+            userData && userData.user && userData.user._id
+              ? this.isFollowedByUser(idea, userData.user._id)
+              : false,
+          volunteerInfo: idea.volunteers,
+          volunteers: idea.volunteers.length,
+          // TODO fix API to return donated amount
+          amountReceived: 100,
+          followers: idea.followers.length,
+          // temporarily use this now as localhost photos are hit/miss
+          user_avatar: idea.user_creator.avatar
+            ? `${this.$axios.defaults.baseURL}${idea.user_creator.avatar.url}`
+            : DEFAULT_AVATAR_IMG_PATH,
+          slug: idea.slug,
+          location: idea.location,
+          featured: idea.featured,
+        };
+      });
+    }
+  },
+
+  methods: {
+    // returns true if user already follows that idea
+    isFollowedByUser(idea, userId) {
+      for (const followerId of idea.followers) {
+        if (followerId === userId) {
+          return true;
+        }
+      }
+      return false;
+    },
+
+    async updateFollow(idea) {
+      const id = idea.id;
+      const userJSON = window.localStorage.getItem('userData');
+      const userData = JSON.parse(userJSON);
+      if (!userData) {
+        return;
+      }
+
+      const config = {
+        headers: {
+          Authorization: 'Bearer ' + userData.jwt,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      };
+
+      idea.doesUserFollow = !idea.doesUserFollow;
+
+      const response = await this.$axios
+        .$put(`/ideas/follow/${id}`, {}, config)
+        .catch((error) => console.log(error));
+
+      if (!response) {
+        idea.doesUserFollow = !idea.doesUserFollow;
+      }
+    },
   },
 };
 </script>
