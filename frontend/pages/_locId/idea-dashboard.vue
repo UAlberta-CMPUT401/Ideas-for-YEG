@@ -16,6 +16,10 @@
             @click:append="search"
             v-on:keyup="debounceSearch"
             v-on:keydown.enter.prevent="search"
+            rounded="true"
+            outlined="true"
+            solo="true"
+            flat="true"
             v-model="searchTerm"
             :loading="isLoading"
             append-icon="mdi-magnify"
@@ -26,6 +30,8 @@
             v-on:input="search"
             v-model="sortSelected"
             :items="sortItems"
+            item-text="label"
+            item-value="sortBy"
             label="Sort by"
           ></v-select>
         </v-form>
@@ -78,7 +84,10 @@ export default {
       searchTerm: '',
       isLoading: false,
       ideas: this.$store.getters['ideas/getIdeas'],
-      sortItems: ['New', 'Top'],
+      sortItems: [
+        { label: 'New', sortBy: 'New' },
+        { label: 'Top Voted', sortBy: 'Top' },
+      ],
       sortSelected: 'New',
       // Amount of entries needed to skipped when loading new results. Returns to zero on clear
       skipCount: 0,
@@ -144,6 +153,7 @@ export default {
       if (response) {
         if (response.length > 0) {
           const ideaResults = response.map((idea, index) => {
+            // TODO fix ideacreator and user avatar since API only returns ID
             return {
               id: idea.id.toString(),
               title: idea.title,
@@ -189,6 +199,7 @@ export default {
       }
       this.isLoading = false;
     },
+
     isUpvotedByUser(idea, userId) {
       for (const upvoterId of idea.user_upvoters) {
         if (upvoterId === userId) {

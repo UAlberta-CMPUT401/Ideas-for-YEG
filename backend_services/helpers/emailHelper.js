@@ -49,3 +49,21 @@ module.exports.sendEmail = function (email_obj) {
 		}
 	});
 }
+
+module.exports.sendVolunteerEmailUpdate = function (email_obj, callback) {
+	html = '<p>' + email_obj.volunteer + ' has signed up for your idea: \n\n\"' + email_obj.idea_title + '\".<p>'
+
+	const msg = {
+		to: email_obj.email,
+		from: 'no-reply@ideas4yeg.com',
+		subject: 'A new volunteer has signed up for your idea!' ,
+		html: html,
+	};
+	sgMail
+	.send(msg)
+	.then((response) => {
+		if (response) {
+			callback(response);
+		}
+	});
+}

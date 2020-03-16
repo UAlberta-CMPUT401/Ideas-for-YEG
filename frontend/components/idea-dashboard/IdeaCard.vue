@@ -11,10 +11,11 @@
         >
           <v-list-item>
             <v-list-item-content>
-              <v-list-item-title class="headline">{{
+              <v-list-item-title class="headline text-sm-left">{{
                 idea.title
               }}</v-list-item-title>
             </v-list-item-content>
+
             <v-spacer></v-spacer>
 
             <div v-if="isEditable">
@@ -55,7 +56,7 @@
           >
           </v-img>
 
-          <v-card-text class="text--primary">
+          <v-card-text class="text--primary text-sm-left">
             <div>{{ idea.description }}</div>
           </v-card-text>
 
@@ -112,12 +113,12 @@
                 }}</span>
               </div>
 
-              <v-btn text class="pa-0 btnSpacing">
+              <div class="btnSpacing">
                 <v-icon color="black">mdi-account-multiple-plus</v-icon>
                 <span class="subheading mr-2" color="black">{{
                   idea.followers
                 }}</span>
-              </v-btn>
+              </div>
             </v-list-item>
           </v-card-actions>
         </v-card>

@@ -1,4 +1,4 @@
-## Run Development Environment
+## Run Development Environment and Routes
 
 ```bash
 $ npm run dev
@@ -13,3 +13,10 @@ $ npm run dev
 	"body":"Body"
 }
 "user_group" can be : "donators", "volunteers", "followers"
+
+3) Create a post request to localhost:1311/email_volunteer
+{
+	"email":"test@example.com",
+	"idea_title":"A nice idea",
+	"volunteer":"JimmyJim"
+}

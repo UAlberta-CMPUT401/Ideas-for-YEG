@@ -60,7 +60,7 @@ export default {
 
   data() {
     return {
-      ideas: this.$store.getters['ideas/getIdeas'],
+      ideas: [],
       currentUser: this.$store.getters['users/getUser'],
       title: '',
       isVolunteerIdeas: [],
