@@ -227,7 +227,7 @@ export default {
 
       const config = {
         headers: {
-          Authorization: 'Bearer ' + userData.jwt,
+          Authorization: 'Bearer ' + getJWTCookie(),
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
