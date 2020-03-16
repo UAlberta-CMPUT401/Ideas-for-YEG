@@ -83,7 +83,7 @@
 </template>
 
 <script>
-import { DEFAULT_AVATAR_IMG_PATH } from '../constants/constants';
+import { DEFAULT_AVATAR_IMG_PATH, LS_USER_DATA } from '../constants/constants';
 import { getJWTCookie } from '../constants/helperFunctions';
 
 const PASSWORD_MIN_LENGTH = 6;
@@ -186,6 +186,10 @@ export default {
         this.loading = false;
         this.snackbarMessage = 'Profile avatar successfully changed';
         this.snackbarSuccess = true;
+        // Update localStorage and vuex with the new avatar
+        userData.user.avatar = updateUserResponse.avatar;
+        localStorage.setItem(LS_USER_DATA, JSON.stringify(userData));
+        this.$store.commit('userData/update', userData);
       } else {
         this.loading = false;
         this.snackbarError = true;

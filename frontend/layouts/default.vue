@@ -25,9 +25,18 @@
         >
         <v-menu v-else :offset-y="true">
           <template v-slot:activator="{ on }">
-            <v-btn v-on="on" v-bind:fab="true" color="primary">
-              <v-icon>mdi-account-circle</v-icon>
-            </v-btn>
+            <v-avatar class="avatar" v-on="on" v-bind:fab="true">
+              <img
+                v-if="userAvatarURL"
+                :src="userAvatarURL"
+                alt="Your avatar image"
+              />
+              <img
+                v-else
+                :src="DEFAULT_AVATAR_IMG_PATH"
+                alt="A default avatar image"
+              />
+            </v-avatar>
           </template>
           <v-list>
             <v-subheader>{{ username }}</v-subheader>
@@ -52,8 +61,11 @@
 
 <script>
 import _ from 'lodash';
-
-import { LS_CURR_LOCATION, LS_USER_DATA } from '../constants/constants';
+import {
+  DEFAULT_AVATAR_IMG_PATH,
+  LS_CURR_LOCATION,
+  LS_USER_DATA,
+} from '../constants/constants';
 export default {
   data() {
     return {
@@ -81,6 +93,7 @@ export default {
           onClick: this.logOut,
         },
       ],
+      DEFAULT_AVATAR_IMG_PATH,
     };
   },
 
@@ -95,6 +108,19 @@ export default {
         return this.$store.state.userData.userData.user.username;
       }
       return 'No Name';
+    },
+
+    userAvatarURL() {
+      if (
+        this.$store.state.userData.userData &&
+        this.$store.state.userData.userData.user.avatar
+      ) {
+        return (
+          this.$axios.defaults.baseURL +
+          this.$store.state.userData.userData.user.avatar.url
+        );
+      }
+      return null;
     },
 
     currLocationName() {
@@ -153,5 +179,10 @@ export default {
 a {
   color: inherit; /* blue colors for links too */
   text-decoration: inherit; /* no underline */
+}
+
+.avatar:hover {
+  cursor: pointer;
+  opacity: 0.8;
 }
 </style>
