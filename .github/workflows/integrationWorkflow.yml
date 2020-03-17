@@ -32,7 +32,7 @@ jobs:
           CI: true
 
   system-test:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: build # make sure the build and unit testing worked first
     steps:
       - uses: actions/checkout@v2
@@ -40,7 +40,16 @@ jobs:
         working-directory: .
         run: docker-compose up -d --build
 
-      # TODO: Add system tests here
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+
+      - name: Run End To End Testing with Nightwatch
+        working-directory: ./frontend/
+        run: |
+          npm install
+          npm run e2e
 
       # Bring containers back down after the tests
       - name: Purge Containers
