@@ -31,9 +31,20 @@ jobs:
         env:
           CI: true
 
+  system-test-prep:
+    runs-on: self-hosted
+    needs: build
+    steps:
+      - name: Clean work directory repo
+        working-directory: .
+        run: |
+          cd ..
+          ls
+          sudo rm -rf Ideas-for-YEG
+
   system-test:
     runs-on: self-hosted
-    needs: build # make sure the build and unit testing worked first
+    needs: system-test-prep # make sure our working repo is clean first 
     steps:
       - uses: actions/checkout@v2
       - name: Run Docker Compose
