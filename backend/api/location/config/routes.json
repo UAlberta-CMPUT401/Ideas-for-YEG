@@ -9,6 +9,14 @@
     },
     {
       "method": "GET",
+      "path": "/locations/admin",
+      "handler": "location.isAdmin",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
       "path": "/locations/count",
       "handler": "location.count",
       "config": {
