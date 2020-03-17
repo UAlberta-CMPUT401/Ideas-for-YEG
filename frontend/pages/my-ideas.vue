@@ -218,47 +218,11 @@ export default {
         };
       });
     }
-
-    const participatingResponse = await this.$axios
-      .get(
-        `/ideas?followers.id=${userData.user.id}&volunteers.id=${userData.user.id}`,
-        config,
-      )
-      .catch((error) => {
-        console.log(error);
-      });
-
-    if (participatingResponse) {
-      this.isParticipatingIdeas = participatingResponse.data.map((idea) => {
-        return {
-          id: idea.id.toString(),
-          title: idea.title,
-          description: idea.description,
-          upvotes: idea.user_upvoters.length,
-          ideaCreator: volunteerResponse.data.username,
-          // temporarily use this now as localhost photos are hit/miss
-          src: idea.images.length
-            ? `${this.$axios.defaults.baseURL}${idea.images[0].url}`
-            : DEFAULT_IDEA_IMG_PATH,
-          doesUserFollow:
-            userData && userData.user && userData.user._id
-              ? this.isFollowedByUser(idea, userData.user._id)
-              : false,
-          volunteerInfo: idea.volunteers,
-          volunteers: idea.volunteers.length,
-          // TODO fix API to return donated amount
-          amountReceived: 100,
-          followers: idea.followers.length,
-          // temporarily use this now as localhost photos are hit/miss
-          user_avatar: idea.user_creator.avatar
-            ? `${this.$axios.defaults.baseURL}${idea.user_creator.avatar.url}`
-            : DEFAULT_AVATAR_IMG_PATH,
-          slug: idea.slug,
-          location: idea.location,
-          featured: idea.featured,
-        };
-      });
-    }
+    // Combine both results for ideas that the user is participating in
+    this.isParticipatingIdeas = [
+      ...this.isVolunteerIdeas,
+      ...this.isFollowingIdeas,
+    ];
   },
 
   methods: {
