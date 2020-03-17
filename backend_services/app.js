@@ -1,4 +1,5 @@
 var express       = require("express"),
+    session       = require('express-session'),
     app           = express(),
     bodyParser    = require("body-parser"),
     cron          = require('cron'),
@@ -6,6 +7,7 @@ var express       = require("express"),
     mongoose      = require('mongoose'),
     sgMail        = require('@sendgrid/mail'),
     cors          = require('cors'),
+    flash         = require("connect-flash"),
     email_schema  = require("./models/Email"),
     EmailHelper   = require("./helpers/emailHelper");
 
@@ -28,6 +30,35 @@ app.use(cors());
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
 app.use(express.static(__dirname));
+app.use(express.static("public"));
+app.use(flash());
+app.set("view engine", "ejs");
+sess = session({
+    cookieName: 'session',
+    secret: "Secret L",
+    resave: false,
+    saveUninitialized: false,
+    duration: 30 * 60 * 1000,
+    activeDuration: 5 * 60 * 1000,
+    secure : true
+});
+if (process.env.NODE_ENV === 'production') {
+    // Use secure cookies in production (requires SSL/TLS)
+    // sess.cookie.secure = true;
+
+    // Uncomment the line below if your application is behind a proxy
+    // or if you're encountering the error message:
+    // "Unable to verify authorization request state"
+    // app.set('trust proxy', 1);
+}
+app.use(sess);
+
+app.use(function(request, response, next){
+    //Inside ejs templates
+    response.locals.error = request.flash("error");
+    response.locals.success = request.flash("success");
+    next();
+});
 
 //Routes------------------------------------------------------------------>>>>>>
 var email   = require("./routes/email"),
@@ -38,7 +69,7 @@ app.use(payment);
 
 //Digest Jobs------------------------------------------------------------------>>>>>>
 var Email = db.model('Email', email_schema, 'emails');
-const BASE_URL = 'http://localhost:1337/'
+const BASE_URL = process.env.strapi_base_url;
 function startDigestJob() {
     var CronJob = cron.CronJob;
     var job = new CronJob('0 8 * * * *', function() {

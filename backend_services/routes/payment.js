@@ -1,33 +1,58 @@
-var express       = require("express"),
-    router        = express.Router(),
-    http 		  = require("request");
-    mongoose      = require("mongoose"),
-    email_schema  = require("../models/Email");
+var express         = require("express"),
+    router          = express.Router(),
+    http 		    = require("request");
 
-BASE_URL = 'http://localhost:1337/'
-var db = mongoose.connection;
-var Email = db.model('Email', email_schema, 'emails');
+const key = process.env.NODE_ENV === 'production' ? process.env.stripeKey : process.env.stripeTestKey;
+const secret_key = process.env.NODE_ENV === 'production' ? process.env.stripeSecretKey : process.env.stripeTestSecretKey;
+var stripe = require('stripe')(secret_key);
 
-router.post("/donate", function(request, response){
-	var key = ''
-	if (process.env.NODE_ENV !== 'production') {
-		key = process.env.stripetestapikey;
-	} else {
-		key = process.env.stripeapikey;
-	}
-	const stripe = require("stripe")(key);
-	request_body = request.body;
-	try {
-		if (request_body.email.trim() !== '') {
+const frontend_url = process.env.NODE_ENV === 'production' ? process.env.prodfrontendurl : process.env.devfrontendurl;
+BASE_URL = process.env.strapi_base_url;
 
+router.get('/donate', function(request, response){
+	response.render('../views/donation', {frontend_url : frontend_url});
+});
+
+router.post('/donate', function(request, response){
+	var user;
+	var jwt;
+	const email = request.body.email;
+	http.post({url: BASE_URL + '/auth/local', form: {identifier: 'backend_services', password: '12345678a'}}, function(err, httpResponse, body){
+		if (httpResponse && httpResponse.statusCode == 200) {
+    		jwt = body.jwt;
+    		console.log(BASE_URL + '/users');
+    		const options = {
+				url: BASE_URL + '/users',
+			 	headers: {
+			   		headers: {
+			     		Authorization: 'Bearer ' + jwt,
+			    	},
+			  	}
+			};
+			is_match = http.get(options, function(err2, httpResponse2, body2){
+				if (httpResponse && httpResponse.statusCode == 200) {
+					console.log(body2);
+		    		if (body2.email === email) {
+		    			
+		    		} else {
+		    			request.flash('error', 'Email does not exist!');
+						response.status(403);
+						response.redirect('/donate');
+		    		}
+				} else {
+					console.log('nuhhh');
+					console.log(err);
+					request.flash('error', 'An error occured');
+					response.status(httpResponse2.statusCode);
+					response.redirect('/donate');
+				}
+			});
 		} else {
-			response.status(400);
-			response.send('Email is blank');
+			request.flash('error', 'An error occured');
+			response.status(httpResponse.statusCode);
+			response.redirect('/donate');
 		}
-	} catch (err) {
-		response.status(500);
-		response.send(err);
-	}
+	});
 });
 
 module.exports = router;
