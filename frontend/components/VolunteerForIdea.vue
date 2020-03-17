@@ -27,7 +27,7 @@
           <v-btn @click="openDialog = false" color="blue darken-1" text>
             Cancel
           </v-btn>
-          <v-btn @click="volunteerOnClick()" color="green" text>
+          <v-btn @click="volunteerOnClick()" color="black" text>
             {{ primaryAction }}
           </v-btn>
         </v-card-actions>
@@ -45,7 +45,7 @@ import {
 } from '../constants/constants';
 import { getJWTCookie } from '../constants/helperFunctions';
 
-const REMOVE_VOLUNTEER = 'Remove your username from the list of volunteers?';
+const REMOVE_VOLUNTEER = 'Remove Yourself From Volunteer List';
 const ADD_VOLUNTEER = 'Confirm to Sign Up As A Volunteer';
 const ADD_PRIMARY_ACTION = 'Sign Me Up!';
 const REMOVE_PRIMARY_ACTION = 'Yes';

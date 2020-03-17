@@ -29,9 +29,7 @@
           <v-btn color="blue darken-1" text @click="dialog = false"
             >Close</v-btn
           >
-          <v-btn color="blue darken-1" text @click="donateToIdea"
-            >Proceed</v-btn
-          >
+          <v-btn color="black" text @click="donateToIdea">Proceed</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
