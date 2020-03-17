@@ -646,6 +646,9 @@
                 },
                 "contact_email": {
                   "type": "string"
+                },
+                "archive": {
+                  "type": "boolean"
                 }
               }
             }
@@ -743,6 +746,9 @@
                   "type": "string"
                 },
                 "location": {
+                  "type": "string"
+                },
+                "slug": {
                   "type": "string"
                 }
               }

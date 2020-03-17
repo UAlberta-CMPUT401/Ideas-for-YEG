@@ -1,6 +1,5 @@
 {
-  "routes": [
-    {
+  "routes": [{
       "method": "GET",
       "path": "/sub-pages",
       "handler": "sub-page.find",
@@ -29,7 +28,7 @@
       "path": "/sub-pages",
       "handler": "sub-page.create",
       "config": {
-        "policies": []
+        "policies": ["isLocationAdminSubPage"]
       }
     },
     {
@@ -37,7 +36,7 @@
       "path": "/sub-pages/:id",
       "handler": "sub-page.update",
       "config": {
-        "policies": []
+        "policies": ["isLocationAdminSubPage"]
       }
     },
     {
@@ -45,7 +44,7 @@
       "path": "/sub-pages/:id",
       "handler": "sub-page.delete",
       "config": {
-        "policies": []
+        "policies": ["isLocationAdminSubPage"]
       }
     }
   ]
