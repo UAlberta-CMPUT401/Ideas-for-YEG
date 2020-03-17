@@ -29,14 +29,18 @@
           <v-btn color="blue darken-1" text @click="dialog = false"
             >Close</v-btn
           >
-          <v-btn color="black" text @click="donateToIdea">Proceed</v-btn>
+          <v-btn
+            color="black"
+            text
+            :href="'http://localhost:1311/donate?iid=' + this.$props.ideaId"
+            >Proceed</v-btn
+          >
         </v-card-actions>
       </v-card>
     </v-dialog>
   </v-row>
 </template>
 <script>
-// http://localhost:1311/donate?iid=${this.$props.ideaId}
 export default {
   props: {
     ideaId: {
@@ -47,14 +51,7 @@ export default {
   data() {
     return {
       dialog: false,
-      url: 'http://localhost:1311/donate?iid=' + this.$props.ideaId,
     };
-  },
-  methods: {
-    donateToIdea() {
-      console.log('here : ' + this.$props.ideaId);
-      console.log(this.url);
-    },
   },
 };
 </script>
