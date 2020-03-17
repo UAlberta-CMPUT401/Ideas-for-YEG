@@ -62,6 +62,7 @@
 </template>
 
 <script>
+import _ from 'lodash';
 import { getJWTCookie } from '../constants/helperFunctions';
 import IdeaCard from '../components/idea-dashboard/IdeaCard';
 import {
@@ -218,11 +219,11 @@ export default {
         };
       });
     }
-    // Combine both results for ideas that the user is participating in
-    this.isParticipatingIdeas = [
-      ...this.isVolunteerIdeas,
-      ...this.isFollowingIdeas,
-    ];
+    // Combine both results for ideas that the user is participating in. Create set to remove duplicates
+    this.isParticipatingIdeas = _.uniqBy(
+      [...this.isVolunteerIdeas, ...this.isFollowingIdeas],
+      'id',
+    );
   },
 
   methods: {
