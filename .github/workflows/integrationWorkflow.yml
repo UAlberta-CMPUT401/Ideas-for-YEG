@@ -56,6 +56,7 @@ jobs:
         working-directory: .
         run: docker-compose down
 
+      # Cleanup docker containers and repository if job failed
       - name: Clean runner repository
         if: failure() || cancelled()
         working-directory: .
