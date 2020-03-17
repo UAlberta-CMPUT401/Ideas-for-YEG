@@ -2,12 +2,6 @@
   <v-layout column justify-center align-center>
     <v-flex xs12 sm8 md6>
       <v-card>
-        <v-card-title align-center>
-          <v-btn id="loginBtn" v-on:click="logIn">
-            Log In
-          </v-btn>
-        </v-card-title>
-
         <v-card-text>
           <p v-if="errorMessage !== null" class="red--text">
             {{ errorMessage }}
@@ -27,7 +21,13 @@
               label="Password"
             ></v-text-field>
           </v-form>
-
+        </v-card-text>
+        <v-card-title align-center>
+          <v-btn id="loginBtn" v-on:click="logIn">
+            Log In
+          </v-btn>
+        </v-card-title>
+        <v-card-text>
           <nuxt-link to="/signup">
             Don't have an account yet? Click here to sign up
           </nuxt-link>
