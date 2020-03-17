@@ -160,7 +160,7 @@
 
         <v-row justify="center">
           <template>
-            <DonateToIdea />
+            <DonateToIdea v-bind:ideaId="ideaId" />
           </template>
 
           <template>

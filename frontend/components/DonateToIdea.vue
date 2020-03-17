@@ -38,15 +38,21 @@
   </v-row>
 </template>
 <script>
-// import { getJWTCookie } from '../constants/helperFunctions';
-// must link to  ":1311/donate?iid=(ideaid)"
+// http://localhost:1311/donate?iid=5e640ca12a3be8d70475dea1
+// http://localhost:1311/donate?iid=(this.$props.ideaId)
 export default {
+  props: {
+    ideaId: {
+      type: String,
+      required: true,
+    },
+  },
   data: () => ({
     dialog: false,
   }),
   methods: {
     donateToIdea() {
-      console.log('here');
+      console.log('here : ' + this.$props.ideaId);
     },
   },
 };
