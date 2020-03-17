@@ -42,6 +42,33 @@ describe('Idea Detail Page', () => {
     expect(wrapper.vm.$data.status).toEqual('Completed');
     expect(wrapper.vm.$data.ideaCreator.username).toEqual('tester');
   });
+
+  test('can show that there are no ideas', () => {
+    Vue.use(Vuetify);
+    Vue.use(NuxtLink);
+    const vuetify = new Vuetify();
+    const newWrapper = mount(IdeaDetailPage, {
+      mocks: {
+        $route: {
+          params: {
+            ideaId: 'lmnop',
+          },
+        },
+        $axios: {
+          $get: () => {
+            return new Promise((resolve) => resolve([]));
+          },
+        },
+      },
+      vuetify,
+      stubs: {
+        NuxtLink: RouterLinkStub,
+      },
+    });
+
+    expect(newWrapper.vm.$data.isFound).toEqual(true);
+    expect(newWrapper.find('.notFoundWarning')).toBeTruthy();
+  });
 });
 
 const mockIdea = [

@@ -196,7 +196,8 @@ module.exports = {
       .model.find(queryParams)
       .limit(resLimit)
       .skip(skip)
-      .sort(sortBy);
+      .sort(sortBy)
+      .populate({path:'user_creator', select:['username','avatar']});
 
     return result;
   }
