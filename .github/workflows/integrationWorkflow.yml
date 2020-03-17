@@ -60,6 +60,6 @@ jobs:
         if: always()
         working-directory: .
         run: |
-          cd ../..
-          ls
+          docker-compose down
+          cd ..
           sudo rm -r Ideas-for-YEG
