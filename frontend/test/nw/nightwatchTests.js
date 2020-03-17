@@ -3,12 +3,11 @@ module.exports = {
     browser
       .url('http://localhost:3000')
       .waitForElementVisible('body')
-      .fullscreenWindow()
       .assert.titleContains('frontend - frontend')
       .useXpath()
       .click("//div[text()='Edmonton']")
       .useCss()
-      .assert.urlContains('yeg/idea-dashboard')
+      .assert.urlContains('YEG/idea-dashboard')
       .assert.visible('input[name=searchTerm]')
       .click('input[name=searchTerm]')
       .setValue('input[name=searchTerm]', 'Library')
