@@ -55,3 +55,11 @@ jobs:
       - name: Purge Containers
         working-directory: .
         run: docker-compose down
+
+      - name: Clean runner repository
+        if: always()
+        working-directory: .
+        run: |
+          cd ../..
+          ls
+          sudo rm -r Ideas-for-YEG
