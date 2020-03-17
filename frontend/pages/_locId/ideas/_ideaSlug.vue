@@ -314,6 +314,7 @@ export default {
       // assume true unless otherwise proven
       isFound: true,
       hasUserUpvoted: false,
+      doesUserFollow: false,
     };
   },
 
@@ -397,9 +398,6 @@ export default {
       if (!response) {
         this.doesUserFollow = !this.doesUserFollow;
       }
-
-      // refreshing page b/c button does not change otherwise
-      window.location.reload();
     },
 
     async updateUpvote() {
