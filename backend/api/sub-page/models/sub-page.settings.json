@@ -18,6 +18,9 @@
     "location": {
       "model": "location",
       "via": "sub_pages"
+    },
+    "slug": {
+      "type": "string"
     }
   }
 }
