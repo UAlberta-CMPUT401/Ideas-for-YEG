@@ -38,8 +38,7 @@
   </v-row>
 </template>
 <script>
-// http://localhost:1311/donate?iid=5e640ca12a3be8d70475dea1
-// http://localhost:1311/donate?iid=(this.$props.ideaId)
+// http://localhost:1311/donate?iid=${this.$props.ideaId}
 export default {
   props: {
     ideaId: {
