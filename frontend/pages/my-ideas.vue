@@ -7,7 +7,12 @@
       <v-tab-item eager value="tab-1">
         <v-layout column justify-center align-center>
           <v-flex xs12 sm8 md6>
-            <v-btn href="/manage-idea" class="ma-2" outlined color="indigo"
+            <v-btn
+              href="/manage-idea"
+              class="ma-2"
+              id="createIdeaBtn"
+              outlined
+              color="indigo"
               >Create an Idea</v-btn
             >
             <IdeaCard

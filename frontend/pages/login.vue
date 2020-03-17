@@ -3,8 +3,11 @@
     <v-flex xs12 sm8 md6>
       <v-card>
         <v-card-title align-center>
-          Log In
+          <v-btn id="loginBtn" v-on:click="logIn">
+            Log In
+          </v-btn>
         </v-card-title>
+
         <v-card-text>
           <p v-if="errorMessage !== null" class="red--text">
             {{ errorMessage }}
@@ -23,10 +26,8 @@
               name="Password"
               label="Password"
             ></v-text-field>
-            <v-btn v-on:click="logIn">
-              Log In
-            </v-btn>
           </v-form>
+
           <nuxt-link to="/signup">
             Don't have an account yet? Click here to sign up
           </nuxt-link>

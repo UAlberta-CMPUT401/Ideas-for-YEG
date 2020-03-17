@@ -33,6 +33,7 @@
                 v-if="idea.doesUserFollow"
                 color="blue"
                 text
+                id="following"
                 class="pa-0 btnSpacing"
                 v-on:click.stop="$emit('followOnClick', idea)"
               >
@@ -42,6 +43,7 @@
                 v-else
                 color="black"
                 text
+                id="follow"
                 class="pa-0 btnSpacing"
                 v-on:click.stop="$emit('followOnClick', idea)"
               >
@@ -82,6 +84,7 @@
                 v-if="idea.hasUserUpvoted"
                 color="blue"
                 text
+                id="ideaIsUpvoted"
                 class="pa-0 btnSpacing"
                 v-on:click.stop="$emit('upvoteOnClick', idea)"
               >
@@ -92,6 +95,7 @@
                 v-else
                 color="black"
                 text
+                id="ideaIsNotUpvoted"
                 class="pa-0 btnSpacing"
                 v-on:click.stop="$emit('upvoteOnClick', idea)"
               >
