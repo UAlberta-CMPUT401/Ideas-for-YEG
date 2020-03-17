@@ -14,6 +14,7 @@
               v-bind:isEditable="true"
               v-bind:canFollow="false"
               v-bind:ideas="ideas"
+              v-on:upvoteOnClick="updateUpvote"
             />
           </v-flex>
         </v-layout>
@@ -27,6 +28,7 @@
             v-bind:canFollow="true"
             v-bind:ideas="isParticipatingIdeas"
             v-on:followOnClick="updateFollow"
+            v-on:upvoteOnClick="updateUpvote"
           />
         </v-layout>
       </v-tab-item>
@@ -51,6 +53,7 @@
             v-bind:canFollow="true"
             v-bind:ideas="isFollowingIdeas"
             v-on:followOnClick="updateFollow"
+            v-on:upvoteOnClick="updateUpvote"
           />
         </v-layout>
       </v-tab-item>
@@ -124,6 +127,10 @@ export default {
           slug: idea.slug,
           location: idea.location,
           featured: idea.featured,
+          hasUserUpvoted:
+            userData && userData.user && userData.user.id
+              ? this.isUpvotedByUser(idea, userData.user.id)
+              : false,
         };
       });
     }
@@ -141,14 +148,18 @@ export default {
           title: idea.title,
           description: idea.description,
           upvotes: idea.user_upvoters.length,
-          ideaCreator: volunteerResponse.data.username,
+          ideaCreator: idea.user_creator.username,
           // temporarily use this now as localhost photos are hit/miss
           src: idea.images.length
             ? `${this.$axios.defaults.baseURL}${idea.images[0].url}`
             : DEFAULT_IDEA_IMG_PATH,
           doesUserFollow:
-            userData && userData.user && userData.user._id
-              ? this.isFollowedByUser(idea, userData.user._id)
+            userData && userData.user && userData.user.id
+              ? this.isFollowedByUser(idea, userData.user.id)
+              : false,
+          hasUserUpvoted:
+            userData && userData.user && userData.user.id
+              ? this.isUpvotedByUser(idea, userData.user.id)
               : false,
           volunteerInfo: idea.volunteers,
           volunteers: idea.volunteers.length,
@@ -179,7 +190,7 @@ export default {
           title: idea.title,
           description: idea.description,
           upvotes: idea.user_upvoters.length,
-          ideaCreator: volunteerResponse.data.username,
+          ideaCreator: idea.user_creator.username,
           // temporarily use this now as localhost photos are hit/miss
           src: idea.images.length
             ? `${this.$axios.defaults.baseURL}${idea.images[0].url}`
@@ -187,6 +198,10 @@ export default {
           doesUserFollow:
             userData && userData.user && userData.user._id
               ? this.isFollowedByUser(idea, userData.user._id)
+              : false,
+          hasUserUpvoted:
+            userData && userData.user && userData.user.id
+              ? this.isUpvotedByUser(idea, userData.user.id)
               : false,
           volunteerInfo: idea.volunteers,
           volunteers: idea.volunteers.length,
@@ -281,6 +296,90 @@ export default {
 
       if (!response) {
         idea.doesUserFollow = !idea.doesUserFollow;
+      }
+    },
+
+    isUpvotedByUser(idea, userId) {
+      for (const upvoter of idea.user_upvoters) {
+        if (upvoter.id === userId) {
+          return true;
+        }
+      }
+      return false;
+    },
+
+    async updateUpvote(idea) {
+      const id = idea.id;
+
+      const userJSON = window.localStorage.getItem('userData');
+      const userData = JSON.parse(userJSON);
+      if (!userData) {
+        return;
+      }
+
+      const config = {
+        headers: {
+          Authorization: 'Bearer ' + getJWTCookie(),
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      };
+
+      this.updateIdeaUpvoteList(idea);
+
+      const response = await this.$axios
+        .$put(`/ideas/upvote/${id}`, {}, config)
+        .catch((error) => console.log(error));
+
+      // undo upvoting if API fails
+      if (!response) {
+        this.updateIdeaUpvoteList(idea);
+      }
+    },
+
+    updateIdeaUpvoteList(idea) {
+      const index = this.ideas.findIndex((element) => element.id === idea.id);
+      const volunteerIndex = this.isVolunteerIdeas.findIndex(
+        (element) => element.id === idea.id,
+      );
+      const followerIndex = this.isFollowingIdeas.findIndex(
+        (element) => element.id === idea.id,
+      );
+
+      if (index > -1) {
+        this.ideas[index].hasUserUpvoted
+          ? this.ideas[index].upvotes--
+          : this.ideas[index].upvotes++;
+
+        this.ideas[index] = {
+          ...this.ideas[index],
+          hasUserUpvoted: !this.ideas[index].hasUserUpvoted,
+        };
+        this.ideas.splice();
+      }
+
+      if (volunteerIndex > -1) {
+        this.isVolunteerIdeas[volunteerIndex].hasUserUpvoted
+          ? this.isVolunteerIdeas[volunteerIndex].upvotes--
+          : this.isVolunteerIdeas[volunteerIndex].upvotes++;
+
+        this.isVolunteerIdeas[volunteerIndex] = {
+          ...this.isVolunteerIdeas[volunteerIndex],
+          hasUserUpvoted: !this.isVolunteerIdeas[volunteerIndex].hasUserUpvoted,
+        };
+        this.isVolunteerIdeas.splice();
+      }
+
+      if (followerIndex > -1) {
+        this.isFollowingIdeas[followerIndex].hasUserUpvoted
+          ? this.isFollowingIdeas[followerIndex].upvotes--
+          : this.isFollowingIdeas[followerIndex].upvotes++;
+
+        this.isFollowingIdeas[followerIndex] = {
+          ...this.isFollowingIdeas[followerIndex],
+          hasUserUpvoted: !this.isFollowingIdeas[followerIndex].hasUserUpvoted,
+        };
+        this.isFollowingIdeas.splice();
       }
     },
   },
