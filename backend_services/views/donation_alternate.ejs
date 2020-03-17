@@ -26,23 +26,6 @@
 	                <% if(success && success.length > 0){ %>
 	                    <h3><%= success %></h1>
 	                <% } %>
-					<form id="panel-form" action="/donate" method="POST">
-						<div class="appform-group">
-							<label>Enter Your Account Email</label>
-							<input type="email" name="email" required=""/>
-						</div>
-						<div class="appform-group">
-							<label>Amount</label>
-							<input type="number" step="1" name="amt" required=""/>
-						</div>
-						<br></br>
-						<br></br>
-						<div class="appform-group" style="display: none;">
-							<input type="text" name="iid" value="<%=iid%>" required=""/>
-						</div>
-						<br></br>
-						<input type="submit" class="appform-button" value="Donate!"/>
-					</form><br />
 					<p><a href="<%=frontend_url%>">Return to your dashboard</a></p>
 				</div>
 			</div>
