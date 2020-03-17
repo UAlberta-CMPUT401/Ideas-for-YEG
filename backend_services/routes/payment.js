@@ -3,8 +3,11 @@ var express         = require("express"),
     http 		    = require("request"),
     axios			= require("axios");
 
-const key = process.env.NODE_ENV === 'production' ? process.env.stripeKey : process.env.stripeTestKey;
-const secret_key = process.env.NODE_ENV === 'production' ? process.env.stripeSecretKey : process.env.stripeTestSecretKey;
+// TODO : Uncomment these. We still want to use test credit cards in production until we're 100% ready
+// const key = process.env.NODE_ENV === 'production' ? process.env.stripeKey : process.env.stripeTestKey;
+// const secret_key = process.env.NODE_ENV === 'production' ? process.env.stripeSecretKey : process.env.stripeTestSecretKey;
+const key = process.env.stripeTestKey;
+const secret_key = process.env.stripeTestSecretKey;
 var stripe = require('stripe')(secret_key);
 
 FRONTEND_URL = process.env.NODE_ENV === 'production' ? process.env.prodfrontendurl : process.env.devfrontendurl;
