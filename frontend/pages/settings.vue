@@ -83,7 +83,8 @@
 </template>
 
 <script>
-import { DEFAULT_AVATAR_IMG_PATH } from '../constants/constants';
+import { DEFAULT_AVATAR_IMG_PATH, LS_USER_DATA } from '../constants/constants';
+import { getJWTCookie } from '../constants/helperFunctions';
 
 const PASSWORD_MIN_LENGTH = 6;
 const PASSWORD_MAX_LENGTH = 32;
@@ -119,12 +120,9 @@ export default {
   },
 
   async mounted() {
-    const userJSON = window.localStorage.getItem('userData');
-    const userData = JSON.parse(userJSON);
-
     const config = {
       headers: {
-        Authorization: 'Bearer ' + userData.jwt,
+        Authorization: 'Bearer ' + getJWTCookie(),
         'Content-Type': 'application/json',
       },
     };
@@ -152,7 +150,7 @@ export default {
 
       const config = {
         headers: {
-          Authorization: 'Bearer ' + userData.jwt,
+          Authorization: 'Bearer ' + getJWTCookie(),
           'Content-Type': 'application/json',
         },
       };
@@ -160,7 +158,7 @@ export default {
       const imageResponse = await this.$axios
         .$post('/upload', formData, {
           headers: {
-            Authorization: 'Bearer ' + userData.jwt,
+            Authorization: 'Bearer ' + getJWTCookie(),
             'Content-Type': 'multipart/form-data',
           },
         })
@@ -188,6 +186,10 @@ export default {
         this.loading = false;
         this.snackbarMessage = 'Profile avatar successfully changed';
         this.snackbarSuccess = true;
+        // Update localStorage and vuex with the new avatar
+        userData.user.avatar = updateUserResponse.avatar;
+        localStorage.setItem(LS_USER_DATA, JSON.stringify(userData));
+        this.$store.commit('userData/update', userData);
       } else {
         this.loading = false;
         this.snackbarError = true;

@@ -78,6 +78,7 @@
 
 <script>
 import moment from 'moment';
+import { getJWTCookie } from '../constants/helperFunctions';
 
 export default {
   data() {
@@ -107,11 +108,9 @@ export default {
       }
       this.loading = true;
 
-      const userJSON = window.localStorage.getItem('userData');
-      const userData = JSON.parse(userJSON);
       const config = {
         headers: {
-          Authorization: 'Bearer ' + userData.jwt,
+          Authorization: 'Bearer ' + getJWTCookie(),
           'Content-Type': 'application/json',
         },
       };

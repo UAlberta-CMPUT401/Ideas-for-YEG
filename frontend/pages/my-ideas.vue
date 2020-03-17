@@ -20,8 +20,21 @@
         </v-layout>
       </v-tab-item>
 
-      <v-tab href="#tab-2"> Ideas I Volunteer For </v-tab>
+      <v-tab href="#tab-2"> Ideas I Participate In </v-tab>
       <v-tab-item eager value="tab-2">
+        <v-layout column>
+          <IdeaCard
+            v-bind:isEditable="false"
+            v-bind:canFollow="true"
+            v-bind:ideas="isParticipatingIdeas"
+            v-on:followOnClick="updateFollow"
+            v-on:upvoteOnClick="updateUpvote"
+          />
+        </v-layout>
+      </v-tab-item>
+
+      <v-tab href="#tab-3"> Ideas I Volunteer For </v-tab>
+      <v-tab-item eager value="tab-3">
         <v-layout column>
           <IdeaCard
             v-bind:isEditable="false"
@@ -33,8 +46,8 @@
         </v-layout>
       </v-tab-item>
 
-      <v-tab href="#tab-3"> Ideas I Follow </v-tab>
-      <v-tab-item eager value="tab-3">
+      <v-tab href="#tab-4"> Ideas I Follow </v-tab>
+      <v-tab-item eager value="tab-4">
         <v-layout column>
           <IdeaCard
             v-bind:isEditable="false"
@@ -69,6 +82,8 @@ export default {
       title: '',
       isVolunteerIdeas: [],
       isFollowingIdeas: [],
+      // Ideas that the user is involved in other than owning it (ie. Donated to, volunteer for, follow)
+      isParticipatingIdeas: [],
     };
   },
 
@@ -204,6 +219,51 @@ export default {
         };
       });
     }
+
+    const participatingResponse = await this.$axios
+      .get(
+        `/ideas?followers.id=${userData.user.id}&volunteers.id=${userData.user.id}`,
+        config,
+      )
+      .catch((error) => {
+        console.log(error);
+      });
+
+    if (participatingResponse) {
+      this.isParticipatingIdeas = participatingResponse.data.map((idea) => {
+        return {
+          id: idea.id.toString(),
+          title: idea.title,
+          description: idea.description,
+          upvotes: idea.user_upvoters.length,
+          ideaCreator: volunteerResponse.data.username,
+          // temporarily use this now as localhost photos are hit/miss
+          src: idea.images.length
+            ? `${this.$axios.defaults.baseURL}${idea.images[0].url}`
+            : DEFAULT_IDEA_IMG_PATH,
+          doesUserFollow:
+            userData && userData.user && userData.user._id
+              ? this.isFollowedByUser(idea, userData.user._id)
+              : false,
+          hasUserUpvoted:
+            userData && userData.user && userData.user.id
+              ? this.isUpvotedByUser(idea, userData.user.id)
+              : false,
+          volunteerInfo: idea.volunteers,
+          volunteers: idea.volunteers.length,
+          // TODO fix API to return donated amount
+          amountReceived: 100,
+          followers: idea.followers.length,
+          // temporarily use this now as localhost photos are hit/miss
+          user_avatar: idea.user_creator.avatar
+            ? `${this.$axios.defaults.baseURL}${idea.user_creator.avatar.url}`
+            : DEFAULT_AVATAR_IMG_PATH,
+          slug: idea.slug,
+          location: idea.location,
+          featured: idea.featured,
+        };
+      });
+    }
   },
 
   methods: {
@@ -227,7 +287,7 @@ export default {
 
       const config = {
         headers: {
-          Authorization: 'Bearer ' + userData.jwt,
+          Authorization: 'Bearer ' + getJWTCookie(),
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
@@ -290,6 +350,9 @@ export default {
       const followerIndex = this.isFollowingIdeas.findIndex(
         (element) => element.id === idea.id,
       );
+      const allParticipatingIndex = this.isParticipatingIdeas.findIndex(
+        (element) => element.id === idea.id,
+      );
 
       if (index > -1) {
         this.ideas[index].hasUserUpvoted
@@ -325,6 +388,19 @@ export default {
           hasUserUpvoted: !this.isFollowingIdeas[followerIndex].hasUserUpvoted,
         };
         this.isFollowingIdeas.splice();
+      }
+
+      if (allParticipatingIndex > -1) {
+        this.isParticipatingIdeas[allParticipatingIndex].hasUserUpvoted
+          ? this.isParticipatingIdeas[allParticipatingIndex].upvotes--
+          : this.isParticipatingIdeas[allParticipatingIndex].upvotes++;
+
+        this.isParticipatingIdeas[allParticipatingIndex] = {
+          ...this.isParticipatingIdeas[allParticipatingIndex],
+          hasUserUpvoted: !this.isParticipatingIdeas[allParticipatingIndex]
+            .hasUserUpvoted,
+        };
+        this.isParticipatingIdeas.splice();
       }
     },
   },

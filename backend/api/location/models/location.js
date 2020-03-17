@@ -5,6 +5,18 @@
  */
 
 module.exports = {
+  beforeSave: async model => {
+    if (model.route) {
+      model.route = model.route.toLowerCase();
+    }
+  },
+  beforeUpdate: async model => {
+    if (model.getUpdate() && model.getUpdate().route) {
+      model.update({
+        route: model.getUpdate().route.toLowerCase(),
+      });
+    }
+  },
   // Before saving a value.
   // Fired before an `insert` or `update` query.
   // beforeSave: async (model, attrs, options) => {},

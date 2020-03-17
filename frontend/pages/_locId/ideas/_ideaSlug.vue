@@ -223,7 +223,7 @@
           </v-expansion-panel>
         </v-expansion-panels>
       </div>
-      <div v-else>
+      <div v-else class="notFoundWarning">
         <h3>Idea not found</h3>
       </div>
     </v-card>
@@ -313,6 +313,8 @@ export default {
       ideaId: '',
       // assume true unless otherwise proven
       isFound: true,
+      hasUserUpvoted: false,
+      doesUserFollow: false,
     };
   },
 
@@ -324,7 +326,7 @@ export default {
       .$get(`/ideas?slug=${this.$route.params.ideaSlug}`)
       .catch((err) => {
         console.log(err);
-        return false;
+        // return false;
       });
 
     if (response && response.length > 0) {
@@ -396,9 +398,6 @@ export default {
       if (!response) {
         this.doesUserFollow = !this.doesUserFollow;
       }
-
-      // refreshing page b/c button does not change otherwise
-      window.location.reload();
     },
 
     async updateUpvote() {
