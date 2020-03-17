@@ -44,12 +44,16 @@ export default {
       required: true,
     },
   },
-  data: () => ({
-    dialog: false,
-  }),
+  data() {
+    return {
+      dialog: false,
+      url: 'http://localhost:1311/donate?iid=' + this.$props.ideaId,
+    };
+  },
   methods: {
     donateToIdea() {
       console.log('here : ' + this.$props.ideaId);
+      console.log(this.url);
     },
   },
 };
