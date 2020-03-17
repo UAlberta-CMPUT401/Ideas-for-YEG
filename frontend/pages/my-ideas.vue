@@ -150,14 +150,18 @@ export default {
           title: idea.title,
           description: idea.description,
           upvotes: idea.user_upvoters.length,
-          ideaCreator: volunteerResponse.data.username,
+          ideaCreator: idea.user_creator.username,
           // temporarily use this now as localhost photos are hit/miss
           src: idea.images.length
             ? `${this.$axios.defaults.baseURL}${idea.images[0].url}`
             : DEFAULT_IDEA_IMG_PATH,
           doesUserFollow:
-            userData && userData.user && userData.user._id
-              ? this.isFollowedByUser(idea, userData.user._id)
+            userData && userData.user && userData.user.id
+              ? this.isFollowedByUser(idea, userData.user.id)
+              : false,
+          hasUserUpvoted:
+            userData && userData.user && userData.user.id
+              ? this.isUpvotedByUser(idea, userData.user.id)
               : false,
           volunteerInfo: idea.volunteers,
           volunteers: idea.volunteers.length,
@@ -171,10 +175,6 @@ export default {
           slug: idea.slug,
           location: idea.location,
           featured: idea.featured,
-          hasUserUpvoted:
-            userData && userData.user && userData.user._id
-              ? self.isUpvotedByUser(idea, userData.user._id)
-              : false,
         };
       });
     }
@@ -192,7 +192,7 @@ export default {
           title: idea.title,
           description: idea.description,
           upvotes: idea.user_upvoters.length,
-          ideaCreator: volunteerResponse.data.username,
+          ideaCreator: idea.user_creator.username,
           // temporarily use this now as localhost photos are hit/miss
           src: idea.images.length
             ? `${this.$axios.defaults.baseURL}${idea.images[0].url}`
@@ -200,6 +200,10 @@ export default {
           doesUserFollow:
             userData && userData.user && userData.user._id
               ? this.isFollowedByUser(idea, userData.user._id)
+              : false,
+          hasUserUpvoted:
+            userData && userData.user && userData.user.id
+              ? this.isUpvotedByUser(idea, userData.user.id)
               : false,
           volunteerInfo: idea.volunteers,
           volunteers: idea.volunteers.length,
@@ -213,10 +217,6 @@ export default {
           slug: idea.slug,
           location: idea.location,
           featured: idea.featured,
-          hasUserUpvoted:
-            userData && userData.user && userData.user._id
-              ? self.isUpvotedByUser(idea, userData.user._id)
-              : false,
         };
       });
     }
@@ -355,6 +355,52 @@ export default {
 
       if (!response) {
         idea.doesUserFollow = !idea.doesUserFollow;
+      }
+    },
+
+    updateIdeaUpvoteList(idea) {
+      const index = this.ideas.findIndex((element) => element.id === idea.id);
+      const volunteerIndex = this.isVolunteerIdeas.findIndex(
+        (element) => element.id === idea.id,
+      );
+      const followerIndex = this.isFollowingIdeas.findIndex(
+        (element) => element.id === idea.id,
+      );
+
+      if (index > -1) {
+        this.ideas[index].hasUserUpvoted
+          ? this.ideas[index].upvotes--
+          : this.ideas[index].upvotes++;
+
+        this.ideas[index] = {
+          ...this.ideas[index],
+          hasUserUpvoted: !this.ideas[index].hasUserUpvoted,
+        };
+        this.ideas.splice();
+      }
+
+      if (volunteerIndex > -1) {
+        this.isVolunteerIdeas[volunteerIndex].hasUserUpvoted
+          ? this.isVolunteerIdeas[volunteerIndex].upvotes--
+          : this.isVolunteerIdeas[volunteerIndex].upvotes++;
+
+        this.isVolunteerIdeas[volunteerIndex] = {
+          ...this.isVolunteerIdeas[volunteerIndex],
+          hasUserUpvoted: !this.isVolunteerIdeas[volunteerIndex].hasUserUpvoted,
+        };
+        this.isVolunteerIdeas.splice();
+      }
+
+      if (followerIndex > -1) {
+        this.isFollowingIdeas[followerIndex].hasUserUpvoted
+          ? this.isFollowingIdeas[followerIndex].upvotes--
+          : this.isFollowingIdeas[followerIndex].upvotes++;
+
+        this.isFollowingIdeas[followerIndex] = {
+          ...this.isFollowingIdeas[followerIndex],
+          hasUserUpvoted: !this.isFollowingIdeas[followerIndex].hasUserUpvoted,
+        };
+        this.isFollowingIdeas.splice();
       }
     },
   },
