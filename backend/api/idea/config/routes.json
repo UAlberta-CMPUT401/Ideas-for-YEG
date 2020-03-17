@@ -73,7 +73,7 @@
       "path": "/ideas/:id",
       "handler": "idea.update",
       "config": {
-        "policies": ["isIdeaAdminOrCreator"]
+        "policies": ["ideaAdministration"]
       }
     },
     {
@@ -81,7 +81,7 @@
       "path": "/ideas/:id",
       "handler": "idea.delete",
       "config": {
-        "policies": ["isIdeaCreator"]
+        "policies": ["ideaAdministration"]
       }
     }
   ]

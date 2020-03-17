@@ -580,6 +580,9 @@
                 }
               }
             }
+          },
+          "slug": {
+            "type": "string"
           }
         }
       },
@@ -592,6 +595,9 @@
             "type": "string"
           },
           "location": {
+            "type": "string"
+          },
+          "slug": {
             "type": "string"
           }
         }
