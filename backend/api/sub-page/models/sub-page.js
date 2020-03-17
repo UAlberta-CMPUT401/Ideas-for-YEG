@@ -1,10 +1,23 @@
 'use strict';
+const slugify = require('slugify');
 
 /**
  * Lifecycle callbacks for the `sub-page` model.
  */
 
 module.exports = {
+  beforeSave: async model => {
+    if (model.title) {
+      model.slug = slugify(model.title);
+    }
+  },
+  beforeUpdate: async model => {
+    if (model.getUpdate() && model.getUpdate().title) {
+      model.update({
+        slug: slugify(model.getUpdate().title),
+      });
+    }
+  },
   // Before saving a value.
   // Fired before an `insert` or `update` query.
   // beforeSave: async (model, attrs, options) => {},
@@ -12,7 +25,6 @@ module.exports = {
   // After saving a value.
   // Fired after an `insert` or `update` query.
   // afterSave: async (model, response, options) => {},
-
   // Before fetching a value.
   // Fired before a `fetch` operation.
   // beforeFetch: async (model, columns, options) => {},
