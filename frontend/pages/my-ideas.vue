@@ -41,6 +41,7 @@
             v-bind:canFollow="true"
             v-bind:ideas="isVolunteerIdeas"
             v-on:followOnClick="updateFollow"
+            v-on:upvoteOnClick="updateUpvote"
           />
         </v-layout>
       </v-tab-item>
@@ -244,6 +245,10 @@ export default {
             userData && userData.user && userData.user._id
               ? this.isFollowedByUser(idea, userData.user._id)
               : false,
+          hasUserUpvoted:
+            userData && userData.user && userData.user.id
+              ? this.isUpvotedByUser(idea, userData.user.id)
+              : false,
           volunteerInfo: idea.volunteers,
           volunteers: idea.volunteers.length,
           // TODO fix API to return donated amount
@@ -345,6 +350,9 @@ export default {
       const followerIndex = this.isFollowingIdeas.findIndex(
         (element) => element.id === idea.id,
       );
+      const allParticipatingIndex = this.isParticipatingIdeas.findIndex(
+        (element) => element.id === idea.id,
+      );
 
       if (index > -1) {
         this.ideas[index].hasUserUpvoted
@@ -380,6 +388,19 @@ export default {
           hasUserUpvoted: !this.isFollowingIdeas[followerIndex].hasUserUpvoted,
         };
         this.isFollowingIdeas.splice();
+      }
+
+      if (allParticipatingIndex > -1) {
+        this.isParticipatingIdeas[allParticipatingIndex].hasUserUpvoted
+          ? this.isParticipatingIdeas[allParticipatingIndex].upvotes--
+          : this.isParticipatingIdeas[allParticipatingIndex].upvotes++;
+
+        this.isParticipatingIdeas[allParticipatingIndex] = {
+          ...this.isParticipatingIdeas[allParticipatingIndex],
+          hasUserUpvoted: !this.isParticipatingIdeas[allParticipatingIndex]
+            .hasUserUpvoted,
+        };
+        this.isParticipatingIdeas.splice();
       }
     },
   },
