@@ -34,7 +34,7 @@
                 color="blue"
                 text
                 class="pa-0 btnSpacing"
-                v-on:click.stop="$emit('followOnClick', idea)"
+                v-on:click.stop="$emit('followOnClick', idea, ideas)"
               >
                 Following
               </v-btn>
@@ -43,7 +43,7 @@
                 color="black"
                 text
                 class="pa-0 btnSpacing"
-                v-on:click.stop="$emit('followOnClick', idea)"
+                v-on:click.stop="$emit('followOnClick', idea, ideas)"
               >
                 Follow
               </v-btn>
@@ -83,7 +83,7 @@
                 color="blue"
                 text
                 class="pa-0 btnSpacing"
-                v-on:click.stop="$emit('upvoteOnClick', idea)"
+                v-on:click.stop="$emit('upvoteOnClick', idea, ideas)"
               >
                 <v-icon>mdi-thumb-up</v-icon>
                 <span class="subheading mr-2">{{ idea.upvotes }}</span>
@@ -93,7 +93,7 @@
                 color="black"
                 text
                 class="pa-0 btnSpacing"
-                v-on:click.stop="$emit('upvoteOnClick', idea)"
+                v-on:click.stop="$emit('upvoteOnClick', idea, ideas)"
               >
                 <v-icon>mdi-thumb-up</v-icon>
                 <span class="subheading mr-2">{{ idea.upvotes }}</span>

@@ -13,6 +13,7 @@
             <IdeaCard
               v-bind:isEditable="true"
               v-bind:canFollow="false"
+              v-on:upvoteOnClick="updateUpvote"
               v-bind:ideas="ideas"
             />
           </v-flex>
@@ -27,6 +28,7 @@
             v-bind:canFollow="true"
             v-bind:ideas="isParticipatingIdeas"
             v-on:followOnClick="updateFollow"
+            v-on:upvoteOnClick="updateUpvote"
           />
         </v-layout>
       </v-tab-item>
@@ -39,6 +41,7 @@
             v-bind:canFollow="true"
             v-bind:ideas="isVolunteerIdeas"
             v-on:followOnClick="updateFollow"
+            v-on:upvoteOnClick="updateUpvote"
           />
         </v-layout>
       </v-tab-item>
@@ -51,6 +54,7 @@
             v-bind:canFollow="true"
             v-bind:ideas="isFollowingIdeas"
             v-on:followOnClick="updateFollow"
+            v-on:upvoteOnClick="updateUpvote"
           />
         </v-layout>
       </v-tab-item>
@@ -84,6 +88,7 @@ export default {
   },
 
   async mounted() {
+    const self = this;
     const userJSON = window.localStorage.getItem('userData');
     const userData = JSON.parse(userJSON);
     const config = {
@@ -124,6 +129,10 @@ export default {
           slug: idea.slug,
           location: idea.location,
           featured: idea.featured,
+          hasUserUpvoted:
+            userData && userData.user && userData.user._id
+              ? self.isUpvotedByUser(idea, userData.user._id)
+              : false,
         };
       });
     }
@@ -162,6 +171,10 @@ export default {
           slug: idea.slug,
           location: idea.location,
           featured: idea.featured,
+          hasUserUpvoted:
+            userData && userData.user && userData.user._id
+              ? self.isUpvotedByUser(idea, userData.user._id)
+              : false,
         };
       });
     }
@@ -200,6 +213,10 @@ export default {
           slug: idea.slug,
           location: idea.location,
           featured: idea.featured,
+          hasUserUpvoted:
+            userData && userData.user && userData.user._id
+              ? self.isUpvotedByUser(idea, userData.user._id)
+              : false,
         };
       });
     }
@@ -241,6 +258,10 @@ export default {
           slug: idea.slug,
           location: idea.location,
           featured: idea.featured,
+          hasUserUpvoted:
+            userData && userData.user && userData.user._id
+              ? self.isUpvotedByUser(idea, userData.user._id)
+              : false,
         };
       });
     }
@@ -255,6 +276,59 @@ export default {
         }
       }
       return false;
+    },
+    isUpvotedByUser(idea, userId) {
+      for (const upvoterId of idea.user_upvoters) {
+        if (upvoterId === userId) {
+          return true;
+        }
+      }
+      return false;
+    },
+    async updateUpvote(idea, ideaArr) {
+      const id = idea.id;
+      const index = ideaArr.indexOf(idea);
+
+      const userJSON = window.localStorage.getItem('userData');
+      const userData = JSON.parse(userJSON);
+      if (!userData) {
+        return;
+      }
+
+      const config = {
+        headers: {
+          Authorization: 'Bearer ' + getJWTCookie(),
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      };
+
+      ideaArr[index].hasUserUpvoted
+        ? ideaArr[index].upvotes--
+        : ideaArr[index].upvotes++;
+
+      ideaArr[index] = {
+        ...ideaArr[index],
+        hasUserUpvoted: !ideaArr[index].hasUserUpvoted,
+      };
+      ideaArr.splice();
+
+      const response = await this.$axios
+        .$put(`/ideas/upvote/${id}`, {}, config)
+        .catch((error) => console.log(error));
+
+      // undo upvoting if API fails
+      if (!response) {
+        ideaArr[index].hasUserUpvoted
+          ? ideaArr[index].upvotes--
+          : ideaArr[index].upvotes++;
+
+        ideaArr[index] = {
+          ...ideaArr[index],
+          hasUserUpvoted: !ideaArr[index].hasUserUpvoted,
+        };
+        ideaArr.splice();
+      }
     },
 
     async updateFollow(idea) {
