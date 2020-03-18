@@ -1,9 +1,16 @@
 {
-  "routes": [
-    {
+  "routes": [{
       "method": "GET",
       "path": "/locations",
       "handler": "location.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/locations/admin",
+      "handler": "location.isAdmin",
       "config": {
         "policies": []
       }

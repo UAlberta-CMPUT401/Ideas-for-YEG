@@ -1740,6 +1740,10 @@
           "contact_email": {
             "type": "string",
             "maxLength": 320
+          },
+          "archive": {
+            "type": "boolean",
+            "default": false
           }
         }
       }

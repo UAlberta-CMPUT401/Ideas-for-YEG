@@ -1369,6 +1369,9 @@
                 },
                 "contact_email": {
                   "type": "string"
+                },
+                "archive": {
+                  "type": "boolean"
                 }
               }
             }

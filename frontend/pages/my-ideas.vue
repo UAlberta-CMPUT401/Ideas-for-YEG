@@ -7,7 +7,12 @@
       <v-tab-item eager value="tab-1">
         <v-layout column justify-center align-center>
           <v-flex xs12 sm8 md6>
-            <v-btn href="/manage-idea" class="ma-2" outlined color="indigo"
+            <v-btn
+              href="/manage-idea"
+              class="ma-2"
+              id="createIdeaBtn"
+              outlined
+              color="indigo"
               >Create an Idea</v-btn
             >
             <IdeaCard
@@ -41,6 +46,7 @@
             v-bind:canFollow="true"
             v-bind:ideas="isVolunteerIdeas"
             v-on:followOnClick="updateFollow"
+            v-on:upvoteOnClick="updateUpvote"
           />
         </v-layout>
       </v-tab-item>
@@ -310,6 +316,9 @@ export default {
       const followerIndex = this.isFollowingIdeas.findIndex(
         (element) => element.id === idea.id,
       );
+      const allParticipatingIndex = this.isParticipatingIdeas.findIndex(
+        (element) => element.id === idea.id,
+      );
 
       if (index > -1) {
         this.ideas[index].hasUserUpvoted
@@ -345,6 +354,19 @@ export default {
           hasUserUpvoted: !this.isFollowingIdeas[followerIndex].hasUserUpvoted,
         };
         this.isFollowingIdeas.splice();
+      }
+
+      if (allParticipatingIndex > -1) {
+        this.isParticipatingIdeas[allParticipatingIndex].hasUserUpvoted
+          ? this.isParticipatingIdeas[allParticipatingIndex].upvotes--
+          : this.isParticipatingIdeas[allParticipatingIndex].upvotes++;
+
+        this.isParticipatingIdeas[allParticipatingIndex] = {
+          ...this.isParticipatingIdeas[allParticipatingIndex],
+          hasUserUpvoted: !this.isParticipatingIdeas[allParticipatingIndex]
+            .hasUserUpvoted,
+        };
+        this.isParticipatingIdeas.splice();
       }
     },
   },
