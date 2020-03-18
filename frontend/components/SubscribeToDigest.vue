@@ -21,9 +21,6 @@
       </template>
       <v-card>
         <v-card-title class="headline">Subscribe here!</v-card-title>
-        <v-col cols="12">
-          <v-text-field label="Email*" required></v-text-field>
-        </v-col>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="red" text @click="dialog = false">Cancel</v-btn>
