@@ -9,6 +9,23 @@
         >
       </div>
       <v-spacer />
+      <v-row no-gutters justify="center">
+        <v-col
+          v-for="page in subpages"
+          :key="page.name"
+          align="center"
+          xs12
+          sm4
+          justify="center"
+        >
+          <v-btn :to="page.path" text>
+            <v-toolbar-title>
+              {{ page.name }}
+            </v-toolbar-title>
+          </v-btn>
+        </v-col>
+      </v-row>
+      <v-spacer />
       <!--TODO: Need to have logic to check if a user is logged in-->
       <client-only>
         <v-btn v-on:click="clearLocationAndRedirect" text small class="mr-2"
@@ -94,8 +111,15 @@ export default {
           onClick: this.logOut,
         },
       ],
+      subpages: [],
       DEFAULT_AVATAR_IMG_PATH,
     };
+  },
+
+  watch: {
+    $route(to, from) {
+      this.getSubpages();
+    },
   },
 
   computed: {
@@ -151,10 +175,33 @@ export default {
         const currLocation = JSON.parse(currLocationJSON);
         this.$store.commit('currLocation/update', currLocation);
       }
+      this.getSubpages();
     }
   },
 
   methods: {
+    async getSubpages() {
+      const subpageResponse = await this.$axios
+        .get(`/sub-pages?location.route=${this.$route.params.locId}`)
+        .catch((error) => {
+          console.log(error);
+        });
+      if (subpageResponse) {
+        const subpages = subpageResponse.data.map((subpage) => {
+          return {
+            name: subpage.title,
+            path:
+              '/' +
+              subpage.location.route +
+              '/subpage/' +
+              subpage.title.toLowerCase(),
+          };
+        });
+        this.subpages = subpages;
+        return;
+      }
+      this.subpages = [];
+    },
     logOut() {
       window.localStorage.removeItem(LS_USER_DATA);
       document.cookie =

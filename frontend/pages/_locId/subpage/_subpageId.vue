@@ -9,7 +9,6 @@
 </template>
 
 <script>
-import { getJWTCookie } from '../../../constants/helperFunctions';
 export default {
   data() {
     return {
@@ -21,15 +20,8 @@ export default {
     };
   },
   async mounted() {
-    const config = {
-      headers: {
-        Authorization: 'Bearer ' + getJWTCookie(),
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-    };
     const subpageResponse = await this.$axios
-      .get(`/sub-pages?location.route=${this.$route.params.locId}`, config)
+      .get(`/sub-pages?location.route=${this.$route.params.locId}`)
       .catch((error) => {
         console.log(error);
       });
