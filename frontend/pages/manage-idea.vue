@@ -15,6 +15,7 @@
                 v-model="title"
                 :rules="requiredFieldRules"
                 label="Title"
+                name="ideaTitle"
               ></v-text-field>
             </v-col>
             <v-col cols="12" sm="3">
@@ -159,7 +160,7 @@
         </v-dialog>
 
         <v-spacer></v-spacer>
-        <v-btn href="/my-ideas" text>Cancel</v-btn>
+        <v-btn href="/my-ideas" id="cancelIdeaCreationBtn" text>Cancel</v-btn>
         <v-btn text color="primary" @click="submit">Save</v-btn>
       </v-card-actions>
 

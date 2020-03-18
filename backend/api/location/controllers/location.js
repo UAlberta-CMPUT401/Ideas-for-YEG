@@ -5,4 +5,15 @@
  * to customize this controller
  */
 
-module.exports = {};
+module.exports = {
+  async isAdmin(ctx) {
+    let locations;
+    locations = await strapi.query('location').find({
+      admins: ctx.state.user.id
+    });
+    return {
+      "managedLocations": locations.map(loc => loc.id)
+    };
+  },
+
+};

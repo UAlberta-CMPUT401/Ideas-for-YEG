@@ -21,9 +21,10 @@
           small
           router
           exact
+          id="login"
           >Login</v-btn
         >
-        <v-menu v-else :offset-y="true">
+        <v-menu v-else :offset-y="true" id="navBarMenu">
           <template v-slot:activator="{ on }">
             <v-avatar class="avatar" v-on="on" v-bind:fab="true">
               <img
