@@ -7,7 +7,12 @@
       <v-tab-item eager value="tab-1">
         <v-layout column justify-center align-center>
           <v-flex xs12 sm8 md6>
-            <v-btn href="/manage-idea" class="ma-2" outlined color="indigo"
+            <v-btn
+              href="/manage-idea"
+              class="ma-2"
+              id="createIdeaBtn"
+              outlined
+              color="indigo"
               >Create an Idea</v-btn
             >
             <IdeaCard
@@ -63,6 +68,7 @@
 </template>
 
 <script>
+import _ from 'lodash';
 import { getJWTCookie } from '../constants/helperFunctions';
 import IdeaCard from '../components/idea-dashboard/IdeaCard';
 import {
@@ -219,51 +225,11 @@ export default {
         };
       });
     }
-
-    const participatingResponse = await this.$axios
-      .get(
-        `/ideas?followers.id=${userData.user.id}&volunteers.id=${userData.user.id}`,
-        config,
-      )
-      .catch((error) => {
-        console.log(error);
-      });
-
-    if (participatingResponse) {
-      this.isParticipatingIdeas = participatingResponse.data.map((idea) => {
-        return {
-          id: idea.id.toString(),
-          title: idea.title,
-          description: idea.description,
-          upvotes: idea.user_upvoters.length,
-          ideaCreator: volunteerResponse.data.username,
-          // temporarily use this now as localhost photos are hit/miss
-          src: idea.images.length
-            ? `${this.$axios.defaults.baseURL}${idea.images[0].url}`
-            : DEFAULT_IDEA_IMG_PATH,
-          doesUserFollow:
-            userData && userData.user && userData.user._id
-              ? this.isFollowedByUser(idea, userData.user._id)
-              : false,
-          hasUserUpvoted:
-            userData && userData.user && userData.user.id
-              ? this.isUpvotedByUser(idea, userData.user.id)
-              : false,
-          volunteerInfo: idea.volunteers,
-          volunteers: idea.volunteers.length,
-          // TODO fix API to return donated amount
-          amountReceived: 100,
-          followers: idea.followers.length,
-          // temporarily use this now as localhost photos are hit/miss
-          user_avatar: idea.user_creator.avatar
-            ? `${this.$axios.defaults.baseURL}${idea.user_creator.avatar.url}`
-            : DEFAULT_AVATAR_IMG_PATH,
-          slug: idea.slug,
-          location: idea.location,
-          featured: idea.featured,
-        };
-      });
-    }
+    // Combine both results for ideas that the user is participating in. Create set to remove duplicates
+    this.isParticipatingIdeas = _.uniqBy(
+      [...this.isVolunteerIdeas, ...this.isFollowingIdeas],
+      'id',
+    );
   },
 
   methods: {
