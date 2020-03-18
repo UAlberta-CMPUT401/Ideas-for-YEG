@@ -79,7 +79,6 @@
 
 <script>
 import _ from 'lodash';
-import { getJWTCookie } from '../constants/helperFunctions';
 import {
   DEFAULT_AVATAR_IMG_PATH,
   LS_CURR_LOCATION,
@@ -182,44 +181,26 @@ export default {
 
   methods: {
     async getSubpages() {
-      const userJSON = window.localStorage.getItem('userData');
-      const userData = JSON.parse(userJSON);
-      const config = {
-        headers: {
-          Authorization: 'Bearer ' + getJWTCookie(),
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-      };
-
-      const userResponse = await this.$axios
-        .get(`/users/${userData.user.id}`, config)
+      const subpageResponse = await this.$axios
+        .get(`/sub-pages?location.route=${this.$route.params.locId}`)
         .catch((error) => {
           console.log(error);
         });
-
-      if (userResponse) {
-        const subpageResponse = await this.$axios
-          .get(`/sub-pages?location.route=${this.$route.params.locId}`, config)
-          .catch((error) => {
-            console.log(error);
-          });
-        if (subpageResponse) {
-          const subpages = subpageResponse.data.map((subpage) => {
-            return {
-              name: subpage.title,
-              path:
-                '/' +
-                subpage.location.route +
-                '/subpage/' +
-                subpage.title.toLowerCase(),
-            };
-          });
-          this.subpages = subpages;
-          return;
-        }
-        this.subpages = [];
+      if (subpageResponse) {
+        const subpages = subpageResponse.data.map((subpage) => {
+          return {
+            name: subpage.title,
+            path:
+              '/' +
+              subpage.location.route +
+              '/subpage/' +
+              subpage.title.toLowerCase(),
+          };
+        });
+        this.subpages = subpages;
+        return;
       }
+      this.subpages = [];
     },
     logOut() {
       window.localStorage.removeItem(LS_USER_DATA);

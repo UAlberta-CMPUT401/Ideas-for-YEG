@@ -1,8 +1,12 @@
 <template>
   <v-layout column justify-center align-center>
     <v-flex xs12 sm8 md6>
-      <v-btn v-if="true" class="mr-4" @click="navigateRoute()">
-        Access Location Dashboard
+      <v-btn
+        v-if="locationDashboardAvailable"
+        class="mr-4"
+        @click="navigateRoute()"
+      >
+        Access {{ LocationName }} Location Dashboard
       </v-btn>
       <h2 v-else>No Admin Pages Available</h2>
     </v-flex>
@@ -10,36 +14,58 @@
 </template>
 
 <script>
-import { LS_USER_DATA } from '../constants/constants';
+import { getJWTCookie } from '../constants/helperFunctions';
 export default {
   data() {
     return {
-      adminLocation: '',
+      LocationName: '',
+      locationDashboardAvailable: false,
+      adminLocationDashboards: '',
     };
   },
-  beforeMount() {
-    // Check if user is signed in and a admin role
-    if (process.browser) {
-      const userJSON = window.localStorage.getItem(LS_USER_DATA);
-      if (userJSON !== null) {
-        const userData = JSON.parse(userJSON);
-        if (userData.user.role.type !== 'authenticated') {
-          this.$router.push('/');
-        } else {
-          // TODO: Implement user location admin based routing here
+  async mounted() {
+    const config = {
+      headers: {
+        Authorization: 'Bearer ' + getJWTCookie(),
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    };
+
+    const adminResponse = await this.$axios
+      .get(`/locations/admin`, config)
+      .catch((error) => {
+        console.log(error);
+      });
+
+    if (adminResponse) {
+      if (adminResponse.data.managedLocations.length > 0) {
+        const locationResponse = await this.$axios
+          .get(`/locations/${adminResponse.data.managedLocations[0]}`, config)
+          .catch((error) => {
+            console.log(error);
+          });
+
+        if (locationResponse) {
+          this.LocationName = locationResponse.data.name;
+          this.adminLocationDashboard =
+            '/' + locationResponse.data.route + '/location-dashboard/';
+          this.locationDashboardAvailable = true;
         }
       } else {
+        this.adminLocationDashboard = '';
+        this.locationDashboardAvailable = false;
         this.$router.push('/');
       }
+    } else {
+      this.$router.push('/');
     }
   },
   methods: {
     navigateRoute() {
       // TODO: Implement different versions based on the location admin's role eventually
-      this.$router.push('/yeg/location-dashboard/');
+      this.$router.push(this.adminLocationDashboard);
     },
   },
-
-  middleware: 'currLocationDefined',
 };
 </script>

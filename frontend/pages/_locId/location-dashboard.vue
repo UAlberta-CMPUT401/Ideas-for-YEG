@@ -210,7 +210,7 @@ export default {
     },
   },
 
-  beforeMount() {
+  async beforeMount() {
     // Check if user is signed in and a admin role
     if (process.browser) {
       const userJSON = window.localStorage.getItem(LS_USER_DATA);
@@ -218,6 +218,40 @@ export default {
         const userData = JSON.parse(userJSON);
         if (userData.user.role.type !== 'authenticated') {
           this.$router.push('/');
+        } else {
+          const config = {
+            headers: {
+              Authorization: 'Bearer ' + getJWTCookie(),
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+          };
+
+          const adminResponse = await this.$axios
+            .get(`/locations/admin`, config)
+            .catch((error) => {
+              console.log(error);
+            });
+          if (adminResponse) {
+            if (adminResponse.data.managedLocations.length > 0) {
+              const locationResponse = await this.$axios
+                .get(
+                  `/locations/${adminResponse.data.managedLocations[0]}`,
+                  config,
+                )
+                .catch((error) => {
+                  console.log(error);
+                });
+
+              if (!locationResponse) {
+                this.$route.push('/');
+              }
+            } else {
+              this.$router.push('/');
+            }
+          } else {
+            this.$router.push('/');
+          }
         }
       } else {
         this.$router.push('/');
