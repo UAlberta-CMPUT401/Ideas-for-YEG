@@ -27,6 +27,8 @@ module.exports = {
    ** Global CSS
    */
   css: [
+    // CSS file in the project
+    '@/assets/css/main.scss',
     'quill/dist/quill.snow.css',
     'quill/dist/quill.bubble.css',
     'quill/dist/quill.core.css',

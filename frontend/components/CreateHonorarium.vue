@@ -74,7 +74,7 @@
           <v-btn
             class="ma-2"
             text
-            color="black"
+            color="grey darken-3"
             v-if="0 === honorarium.length"
             @click="addItem"
             >Click here to Start your Honorarium</v-btn

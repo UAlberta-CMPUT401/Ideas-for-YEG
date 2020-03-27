@@ -5,7 +5,7 @@
         <template #activator="{ on: tooltip }">
           <v-btn v-on="{ ...tooltip, ...dialog }" text class="pa-0">
             <v-icon>mdi-cash-usd-outline</v-icon>
-            <span class="subheading mr-2" color="black">{{
+            <span class="subheading mr-2" color="grey darken-3">{{
               donations.length
             }}</span>
           </v-btn>
