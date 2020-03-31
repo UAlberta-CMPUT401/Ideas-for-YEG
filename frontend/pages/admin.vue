@@ -1,15 +1,18 @@
 <template>
   <v-layout column justify-center align-center>
-    <v-flex xs12 sm8 md6>
-      <v-btn
-        v-if="locationDashboardAvailable"
-        class="mr-4"
-        @click="navigateRoute()"
+    <v-container v-if="locationDashboardAvailable" xs12 sm8 md6>
+      <v-row
+        class="ma-6"
+        v-for="location in locations"
+        :key="location.name"
+        justify="center"
       >
-        Access {{ LocationName }} Location Dashboard
-      </v-btn>
-      <h2 v-else>No Admin Pages Available</h2>
-    </v-flex>
+        <v-btn @click="navigateRoute(location)">
+          Access {{ location.name }} Location Dashboard
+        </v-btn>
+      </v-row>
+    </v-container>
+    <h2 v-else>No Admin Pages Available</h2>
   </v-layout>
 </template>
 
@@ -20,7 +23,8 @@ export default {
     return {
       LocationName: '',
       locationDashboardAvailable: false,
-      adminLocationDashboards: '',
+      adminLocationDashboard: '',
+      locations: [],
     };
   },
   async mounted() {
@@ -40,19 +44,26 @@ export default {
 
     if (adminResponse) {
       if (adminResponse.data.managedLocations.length > 0) {
-        const locationResponse = await this.$axios
-          .get(`/locations/${adminResponse.data.managedLocations[0]}`, config)
-          .catch((error) => {
-            console.log(error);
-          });
+        for (let i = 0; i < adminResponse.data.managedLocations.length; i++) {
+          const locationResponse = await this.$axios
+            .get(`/locations/${adminResponse.data.managedLocations[i]}`, config)
+            .catch((error) => {
+              console.log(error);
+            });
 
-        if (locationResponse) {
-          this.LocationName = locationResponse.data.name;
-          this.adminLocationDashboard =
-            '/' + locationResponse.data.route + '/location-dashboard/';
-          this.locationDashboardAvailable = true;
+          if (locationResponse) {
+            this.LocationName = locationResponse.data.name;
+            this.adminLocationDashboard =
+              '/' + locationResponse.data.route + '/location-dashboard/';
+            this.locationDashboardAvailable = true;
+            this.locations.push({
+              name: locationResponse.data.name,
+              route: '/' + locationResponse.data.route + '/location-dashboard/',
+            });
+          }
         }
       } else {
+        this.locations = [];
         this.adminLocationDashboard = '';
         this.locationDashboardAvailable = false;
         this.$router.push('/');
@@ -62,9 +73,8 @@ export default {
     }
   },
   methods: {
-    navigateRoute() {
-      // TODO: Implement different versions based on the location admin's role eventually
-      this.$router.push(this.adminLocationDashboard);
+    navigateRoute(selectedLocation) {
+      this.$router.push(selectedLocation.route);
     },
   },
 };

@@ -86,7 +86,7 @@ export default {
       name: '',
       ideas: this.$store.getters['ideas/getIdeas'],
       categories: {
-        name: 'Calgary',
+        name: 'default',
         id: 'tN',
         category: {
           id: '1',
@@ -324,16 +324,17 @@ export default {
           ? `${this.$axios.defaults.baseURL}${locationResponse[0].image.url}`
           : `${DEFAULT_LOCATION_IMG_PATH}`,
       };
-
-      this.categories = {
-        id: locationResponse[0].categories.id,
-        name: locationResponse[0].categories.name,
-        location: {
-          id: locationResponse[0].categories.location,
-          name: locationResponse[0].name,
-        },
-        category: locationResponse[0].categories.category,
-      };
+      if (locationResponse[0].categories != null) {
+        this.categories = {
+          id: locationResponse[0].categories.id,
+          name: locationResponse[0].categories.name,
+          location: {
+            id: locationResponse[0].categories.location,
+            name: locationResponse[0].name,
+          },
+          category: locationResponse[0].categories.category,
+        };
+      }
     }
   },
 };
