@@ -49,11 +49,15 @@
         :key="i.title"
         :value="i.title"
       >
-        <editor
-          v-model="i.content"
-          v-bind:pageTitle="i.title"
-          v-bind:pageId="i.id"
-        ></editor>
+        <v-container>
+          <v-row>
+            <editor
+              v-model="i.content"
+              v-bind:pageTitle="i.title"
+              v-bind:pageId="i.id"
+            ></editor>
+          </v-row>
+        </v-container>
       </v-tab-item>
     </v-tabs>
   </v-container>
@@ -63,6 +67,12 @@
 import { getJWTCookie } from '../constants/helperFunctions';
 import editor from './MarkdownEditor';
 export default {
+  data() {
+    return {
+      newNameInput: 'Default',
+      dialog: false,
+    };
+  },
   components: {
     editor,
   },
@@ -80,14 +90,6 @@ export default {
       default: () => {
         return { title: 'Default' };
       },
-    },
-    dialog: {
-      type: Boolean,
-      default: false,
-    },
-    newNameInput: {
-      type: String,
-      default: 'Default',
     },
     content: {
       type: String,
