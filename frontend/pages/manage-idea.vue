@@ -91,7 +91,7 @@
               <v-carousel-item v-for="(image, i) in savedImages" :key="i">
                 <div justify="right" align="right">
                   <v-btn text class="pa-0" @click="imageDeleteOnClick(i)">
-                    <v-icon color="black">mdi-delete-circle</v-icon>
+                    <v-icon color="grey darken-3">mdi-delete-circle</v-icon>
                   </v-btn>
                 </div>
                 <v-sheet height="100%">

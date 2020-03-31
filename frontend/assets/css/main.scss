@@ -1,0 +1,27 @@
+.v-content__wrap {
+  background-color: #eee;
+}
+
+.v-toolbar__content {
+  background-color: rgb(44, 152, 240);
+
+  div {
+    color: white;
+  }
+
+  span {
+    color: white;
+  }
+
+  .theme--light.v-btn:not(.v-btn--flat):not(.v-btn--text):not(.v-btn--outlined) {
+    background-color: cornflowerblue;
+  }
+}
+
+.theme--light.v-tabs > .v-tabs-bar {
+  background-color: #eee !important;
+}
+
+.theme--light.v-tabs-items {
+  background-color: #eee !important;
+}
