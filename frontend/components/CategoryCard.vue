@@ -3,7 +3,7 @@
     <v-card-title align-center>
       Category Management
     </v-card-title>
-    <v-row no-gutters justify="center">
+    <v-row v-if="categories.category.length > 0" no-gutters justify="center">
       <v-col
         align="center"
         xs12
@@ -56,7 +56,7 @@ export default {
       category: {
         type: Array,
         default: () => {
-          return [{ id: 'i1', name: 'General' }];
+          return [];
         },
       },
     },
@@ -64,58 +64,24 @@ export default {
   methods: {
     async deleteCategory(categories, category) {
       // Remove the selected category from the category list
-      let categoryArray = categories.category;
+      const categoryArray = categories.category;
       const index = categoryArray.indexOf(category);
       if (index !== -1) categoryArray.splice(index, 1);
 
-      // Format the JSON for insertion into the graphql
-      categoryArray = JSON.stringify(categoryArray);
-      categoryArray.replace(/\\"/g, '\uFFFF');
-      categoryArray = categoryArray
-        .replace(/\"([^"]+)\":/g, '$1:') // eslint-disable-line
-        .replace(/\uFFFF/g, '\\"');
-
-      // Send the graphql post
+      const config = {
+        headers: {
+          Authorization: 'Bearer ' + getJWTCookie(),
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      };
+      const categoryRequest = {
+        category: categoryArray,
+      };
       const response = await this.$axios
-        .$post(
-          '/graphql',
-          {
-            query: `mutation {
-              updateCategory(
-                input: {
-                  where: { id: "${categories.location.id}" }
-                  data: {
-                    name: "${categories.name}",
-                    location: "${categories.location.id}",
-                    category: ${categoryArray},
-                  }
-              })
-              {
-                category {
-                  name
-                  location {
-                    id
-                    name
-                  }
-                  category {
-                    name
-                    id
-                  }
-                }
-              }
-            }
-          `,
-          },
-          {
-            headers: {
-              Authorization: 'Bearer ' + getJWTCookie(),
-              Accept: 'application/json',
-              'Content-Type': 'application/json',
-            },
-          },
-        )
+        .$put(`/categories/${categories.id}`, categoryRequest, config)
         .catch((err) => {
-          console.log(err.response);
+          console.log(err);
         });
       if (response) {
         console.log(response);

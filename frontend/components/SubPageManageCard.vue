@@ -118,20 +118,37 @@ export default {
         },
       };
 
-      const addPageRequest = {
-        title: n,
-        content: '',
-        location: this.subpages.pages[0].location.id,
-      };
-      let response = null;
-      response = await this.$axios
-        .$post('/sub-pages', addPageRequest, config)
+      let locResponse = null;
+      locResponse = await this.$axios
+        .$get('/locations', config)
         .catch((error) => {
           console.log(error);
         });
+      let thisLocId = null;
+      if (locResponse) {
+        for (let i = 0; i < locResponse.length; i++) {
+          if (locResponse[i].route === this.$route.params.locId) {
+            thisLocId = locResponse[i].id;
+          }
+        }
+      }
 
-      if (response) {
-        window.location.reload();
+      if (thisLocId) {
+        const addPageRequest = {
+          title: n,
+          content: '',
+          location: thisLocId,
+        };
+        let response = null;
+        response = await this.$axios
+          .$post('/sub-pages', addPageRequest, config)
+          .catch((error) => {
+            console.log(error);
+          });
+
+        if (response) {
+          window.location.reload();
+        }
       }
     },
   },

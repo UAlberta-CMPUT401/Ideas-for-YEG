@@ -113,7 +113,7 @@ export default {
   methods: {
     async onClick(ideas, idea) {
       // Remove the selected category from the category list
-      let ideaArray = ideas;
+      const ideaArray = ideas;
       const index = ideaArray.indexOf(idea);
       if (index !== -1) ideaArray.splice(index, 1);
 
@@ -122,43 +122,21 @@ export default {
         const temp = ideaArray[i];
         ideaArray[i] = temp.id;
       }
+      const config = {
+        headers: {
+          Authorization: 'Bearer ' + getJWTCookie(),
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      };
+      const ideaRequest = {
+        ideas: ideaArray,
+      };
 
-      // Format the JSON for insertion into the graphql
-      ideaArray = JSON.stringify(ideaArray);
-
-      // Send the graphql post
       const response = await this.$axios
-        .$post(
-          '/graphql',
-          {
-            query: `mutation {
-              updateLocation(
-                input: {
-                  where: { id: "${this.location.id}" }
-                  data: {
-                    ideas: ${ideaArray},
-                  }
-              })
-              {
-                location {
-                  ideas {
-                    title
-                  }
-                }
-              }
-            }
-          `,
-          },
-          {
-            headers: {
-              Authorization: 'Bearer ' + getJWTCookie(),
-              Accept: 'application/json',
-              'Content-Type': 'application/json',
-            },
-          },
-        )
+        .$put(`locations/${this.location.id}`, ideaRequest, config)
         .catch((err) => {
-          console.log(err.response);
+          console.log(err);
         });
       if (response) {
         window.location.reload();
