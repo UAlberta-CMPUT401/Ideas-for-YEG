@@ -25,7 +25,7 @@
                 width="32"
                 align="center"
               >
-                <v-icon color="black" width="32">mdi-close</v-icon>
+                <v-icon color="grey darken-3" width="32">mdi-close</v-icon>
               </v-list-item>
             </div>
           </v-list-item>

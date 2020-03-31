@@ -32,7 +32,7 @@
           </v-btn>
           <v-btn
             v-else
-            color="black"
+            color="grey darken-3"
             text
             class="pa-0 btnSpacing"
             v-on="on"

@@ -18,7 +18,7 @@
             text
             class="pa-0 btnSpacing"
           >
-            <v-icon color="black">mdi-star</v-icon>
+            <v-icon color="grey darken-3">mdi-star</v-icon>
           </v-btn>
           <v-list-item>
             <v-list-item-content>
@@ -62,22 +62,22 @@
               </v-btn>
 
               <div class="btnSpacing">
-                <v-icon color="black">mdi-currency-usd</v-icon>
-                <span class="subheading mr-2" color="black"
+                <v-icon color="grey darken-3">mdi-currency-usd</v-icon>
+                <span class="subheading mr-2" color="grey darken-3"
                   >{{ idea.amountReceived }} raised</span
                 >
               </div>
 
               <div class="btnSpacing">
-                <v-icon color="black">mdi-hand-heart</v-icon>
-                <span class="subheading mr-2" color="black">{{
+                <v-icon color="grey darken-3">mdi-hand-heart</v-icon>
+                <span class="subheading mr-2" color="grey darken-3">{{
                   idea.volunteers
                 }}</span>
               </div>
 
               <div class="btnSpacing">
-                <v-icon color="black">mdi-account-multiple-plus</v-icon>
-                <span class="subheading mr-2" color="black">{{
+                <v-icon color="grey darken-3">mdi-account-multiple-plus</v-icon>
+                <span class="subheading mr-2" color="grey darken-3">{{
                   idea.followers
                 }}</span>
               </div>

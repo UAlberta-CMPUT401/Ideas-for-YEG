@@ -10,7 +10,7 @@
               outlined
               large
               fab
-              color="black"
+              color="grey darken-3"
               v-on="{ ...tooltip, ...dialog }"
             >
               <v-icon>mdi-gift-outline</v-icon>
