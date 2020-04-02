@@ -8,23 +8,25 @@
           ></nuxt-link
         >
       </div>
-      <v-spacer />
-      <v-row no-gutters justify="center">
-        <v-col
-          v-for="page in subpages"
-          :key="page.name"
-          align="center"
-          xs12
-          sm4
-          justify="center"
-        >
-          <v-btn :to="page.path" text>
-            <h5>
-              {{ page.name }}
-            </h5>
-          </v-btn>
-        </v-col>
-      </v-row>
+      <template v-if="Object.keys(subpages).length !== 0">
+        <v-menu offset-y>
+          <template v-slot:activator="{ on }">
+            <v-btn v-on="on" text class="ml-4">
+              <v-icon>mdi-menu</v-icon>
+            </v-btn>
+          </template>
+          <v-list>
+            <v-list-item
+              v-for="page in subpages"
+              :key="page.name"
+              :to="page.path"
+              @click=""
+            >
+              <v-list-item-title>{{ page.name }}</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </template>
       <v-spacer />
       <!--TODO: Need to have logic to check if a user is logged in-->
       <client-only>
