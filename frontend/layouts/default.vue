@@ -19,9 +19,9 @@
           justify="center"
         >
           <v-btn :to="page.path" text>
-            <v-toolbar-title>
+            <h5>
               {{ page.name }}
-            </v-toolbar-title>
+            </h5>
           </v-btn>
         </v-col>
       </v-row>
