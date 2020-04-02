@@ -1,26 +1,42 @@
 <template>
-  <v-layout column justify-center align-center>
+  <v-layout>
     <v-tabs centered>
       <v-tabs-slider></v-tabs-slider>
 
       <v-tab href="#tab-1"> My Ideas </v-tab>
       <v-tab-item eager value="tab-1">
-        <v-layout column justify-center align-center>
+        <v-layout column>
           <v-flex xs12 sm8 md6>
-            <v-btn
-              href="/manage-idea"
-              class="ma-2"
-              id="createIdeaBtn"
-              outlined
-              color="indigo"
-              >Create an Idea</v-btn
-            >
-            <IdeaCard
-              v-bind:isEditable="true"
-              v-bind:canFollow="false"
-              v-bind:ideas="ideas"
-              v-on:upvoteOnClick="updateUpvote"
-            />
+            <div class="text-center">
+              <v-btn
+                class="ma-2"
+                href="/manage-idea"
+                id="createIdeaBtn"
+                color="indigo"
+                dark
+                >Create an Idea
+                <v-icon dark right>mdi-plus-circle</v-icon>
+              </v-btn>
+            </div>
+
+            <v-row align="center" justify="center">
+              <v-col
+                align="center"
+                justify="center"
+                cols="12"
+                sm="9"
+                md="9"
+                lg="8"
+                xl="6"
+              >
+                <IdeaCard
+                  v-bind:isEditable="true"
+                  v-bind:canFollow="false"
+                  v-bind:ideas="ideas"
+                  v-on:upvoteOnClick="updateUpvote"
+                />
+              </v-col>
+            </v-row>
           </v-flex>
         </v-layout>
       </v-tab-item>
@@ -28,39 +44,75 @@
       <v-tab href="#tab-2"> Ideas I Participate In </v-tab>
       <v-tab-item eager value="tab-2">
         <v-layout column>
-          <IdeaCard
-            v-bind:isEditable="false"
-            v-bind:canFollow="true"
-            v-bind:ideas="isParticipatingIdeas"
-            v-on:followOnClick="updateFollow"
-            v-on:upvoteOnClick="updateUpvote"
-          />
+          <v-row align="center" justify="center">
+            <v-col
+              align="center"
+              justify="center"
+              cols="12"
+              sm="9"
+              md="9"
+              lg="8"
+              xl="6"
+            >
+              <IdeaCard
+                v-bind:isEditable="false"
+                v-bind:canFollow="true"
+                v-bind:ideas="isParticipatingIdeas"
+                v-on:followOnClick="updateFollow"
+                v-on:upvoteOnClick="updateUpvote"
+              />
+            </v-col>
+          </v-row>
         </v-layout>
       </v-tab-item>
 
       <v-tab href="#tab-3"> Ideas I Volunteer For </v-tab>
       <v-tab-item eager value="tab-3">
         <v-layout column>
-          <IdeaCard
-            v-bind:isEditable="false"
-            v-bind:canFollow="true"
-            v-bind:ideas="isVolunteerIdeas"
-            v-on:followOnClick="updateFollow"
-            v-on:upvoteOnClick="updateUpvote"
-          />
+          <v-row align="center" justify="center">
+            <v-col
+              align="center"
+              justify="center"
+              cols="12"
+              sm="9"
+              md="9"
+              lg="8"
+              xl="6"
+            >
+              <IdeaCard
+                v-bind:isEditable="false"
+                v-bind:canFollow="true"
+                v-bind:ideas="isVolunteerIdeas"
+                v-on:followOnClick="updateFollow"
+                v-on:upvoteOnClick="updateUpvote"
+              />
+            </v-col>
+          </v-row>
         </v-layout>
       </v-tab-item>
 
       <v-tab href="#tab-4"> Ideas I Follow </v-tab>
       <v-tab-item eager value="tab-4">
         <v-layout column>
-          <IdeaCard
-            v-bind:isEditable="false"
-            v-bind:canFollow="true"
-            v-bind:ideas="isFollowingIdeas"
-            v-on:followOnClick="updateFollow"
-            v-on:upvoteOnClick="updateUpvote"
-          />
+          <v-row align="center" justify="center">
+            <v-col
+              align="center"
+              justify="center"
+              cols="12"
+              sm="9"
+              md="9"
+              lg="8"
+              xl="6"
+            >
+              <IdeaCard
+                v-bind:isEditable="false"
+                v-bind:canFollow="true"
+                v-bind:ideas="isFollowingIdeas"
+                v-on:followOnClick="updateFollow"
+                v-on:upvoteOnClick="updateUpvote"
+              />
+            </v-col>
+          </v-row>
         </v-layout>
       </v-tab-item>
     </v-tabs>
