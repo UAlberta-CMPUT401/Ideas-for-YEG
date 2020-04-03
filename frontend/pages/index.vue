@@ -9,7 +9,10 @@
 
 <script>
 import LocationCard from '../components/LocationCard';
-import { DEFAULT_LOCATION_IMG_PATH } from '../constants/constants';
+import {
+  DEFAULT_LOCATION_IMG_PATH,
+  LS_CURR_LOCATION,
+} from '../constants/constants';
 
 export default {
   components: {
@@ -23,6 +26,13 @@ export default {
   },
 
   async mounted() {
+    if (window.localStorage.getItem(LS_CURR_LOCATION)) {
+      await this.$router.push(
+        '/' +
+          JSON.parse(window.localStorage.getItem(LS_CURR_LOCATION)).code +
+          '/idea-dashboard',
+      );
+    }
     const response = await this.$axios.$get('/locations').catch((err) => {
       console.log(err);
     });
