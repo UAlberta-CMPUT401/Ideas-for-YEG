@@ -92,5 +92,4 @@ sw.*
 # Nightwatch E2E test output
 tests_output/
 /node_modules
-package-lock.json
 .env
