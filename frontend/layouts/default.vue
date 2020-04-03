@@ -2,10 +2,10 @@
   <v-app>
     <v-app-bar :clipped-left="clipped" fixed app>
       <div>
-        <nuxt-link to="/"
+        <v-btn v-on:click="goHome" text
           ><v-toolbar-title
             >Ideas 4{{ currLocationName }}</v-toolbar-title
-          ></nuxt-link
+          ></v-btn
         >
       </div>
       <template v-if="Object.keys(subpages).length !== 0">
@@ -212,6 +212,16 @@ export default {
       this.$router.push('/');
     },
 
+    goHome() {
+      if (this.$store.state.currLocation.currLocation) {
+        this.$router.push(
+          '/' +
+            this.$store.state.currLocation.currLocation.code +
+            '/idea-dashboard',
+        );
+      }
+    },
+
     clearLocationAndRedirect() {
       window.localStorage.removeItem(LS_CURR_LOCATION);
       this.$store.commit('currLocation/clear');
@@ -219,6 +229,7 @@ export default {
     },
 
     redirect(path) {
+      console.log(path);
       this.$router.push(path);
     },
   },
