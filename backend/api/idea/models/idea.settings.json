@@ -33,9 +33,9 @@
       "collection": "user"
     },
     "user_creator": {
+      "via": "ideas",
       "plugin": "users-permissions",
-      "model": "user",
-      "via": "ideas"
+      "model": "user"
     },
     "user_upvoters": {
       "plugin": "users-permissions",
