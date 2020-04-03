@@ -11,7 +11,7 @@ const secret_key = process.env.stripeTestSecretKey;
 var stripe = require('stripe')(secret_key);
 
 FRONTEND_URL = process.env.NODE_ENV === 'production' ? process.env.prodfrontendurl : process.env.devfrontendurl;
-BACKENDSERVICES_URL = process.env.NODE_ENV === 'production' ? process.env.prodfrontendurl : process.env.devfrontendurl;
+BACKENDSERVICES_URL = process.env.NODE_ENV === 'production' ? process.env.prodbackendservices_url : process.env.backendservices_url;
 BASE_URL = process.env.strapi_base_url;
 
 router.get('/donate', function(request, response){
@@ -156,7 +156,10 @@ router.get('/pay_success', function (request, response) {
 				    					console.log(axios_put_response.error);
 	    								error_redirect(request, response);
 				    				}
-				    			});
+				    			}).catch(function(error) {
+					  				console.log('Put request not 200');
+    								error_redirect(request, response);
+					  			});
 			    			} else {
 			    				console.log('User response empty');
 		    					error_redirect(request, response);
