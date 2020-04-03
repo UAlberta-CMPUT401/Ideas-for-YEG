@@ -44,5 +44,5 @@ services:
     environment:
         - NODE_ENV=production
     ports:
-        - 1331:1331
+        - 1311:1311
     command: 'npm run start'
