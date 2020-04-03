@@ -976,8 +976,7 @@
               "username",
               "email",
               "firstName",
-              "lastName",
-              "email_frequency"
+              "lastName"
             ],
             "properties": {
               "id": {
@@ -1033,8 +1032,7 @@
               "username",
               "email",
               "firstName",
-              "lastName",
-              "email_frequency"
+              "lastName"
             ],
             "properties": {
               "id": {
@@ -1090,8 +1088,7 @@
               "username",
               "email",
               "firstName",
-              "lastName",
-              "email_frequency"
+              "lastName"
             ],
             "properties": {
               "id": {
@@ -1147,8 +1144,7 @@
               "username",
               "email",
               "firstName",
-              "lastName",
-              "email_frequency"
+              "lastName"
             ],
             "properties": {
               "id": {
@@ -1286,8 +1282,7 @@
                     "username",
                     "email",
                     "firstName",
-                    "lastName",
-                    "email_frequency"
+                    "lastName"
                   ],
                   "properties": {
                     "id": {
@@ -1369,8 +1364,7 @@
               "username",
               "email",
               "firstName",
-              "lastName",
-              "email_frequency"
+              "lastName"
             ],
             "properties": {
               "id": {
@@ -1617,8 +1611,7 @@
                     "username",
                     "email",
                     "firstName",
-                    "lastName",
-                    "email_frequency"
+                    "lastName"
                   ],
                   "properties": {
                     "id": {
