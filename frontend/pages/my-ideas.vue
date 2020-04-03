@@ -1,21 +1,42 @@
 <template>
-  <v-layout column justify-center align-center>
+  <v-layout>
     <v-tabs centered>
       <v-tabs-slider></v-tabs-slider>
 
       <v-tab href="#tab-1"> My Ideas </v-tab>
       <v-tab-item eager value="tab-1">
-        <v-layout column justify-center align-center>
+        <v-layout column>
           <v-flex xs12 sm8 md6>
-            <v-btn href="/manage-idea" class="ma-2" outlined color="indigo"
-              >Create an Idea</v-btn
-            >
-            <IdeaCard
-              v-bind:isEditable="true"
-              v-bind:canFollow="false"
-              v-bind:ideas="ideas"
-              v-on:upvoteOnClick="updateUpvote"
-            />
+            <div class="text-center">
+              <v-btn
+                class="ma-2"
+                href="/manage-idea"
+                id="createIdeaBtn"
+                color="indigo"
+                dark
+                >Create an Idea
+                <v-icon dark right>mdi-plus-circle</v-icon>
+              </v-btn>
+            </div>
+
+            <v-row align="center" justify="center">
+              <v-col
+                align="center"
+                justify="center"
+                cols="12"
+                sm="9"
+                md="9"
+                lg="8"
+                xl="6"
+              >
+                <IdeaCard
+                  v-bind:isEditable="true"
+                  v-bind:canFollow="false"
+                  v-bind:ideas="ideas"
+                  v-on:upvoteOnClick="updateUpvote"
+                />
+              </v-col>
+            </v-row>
           </v-flex>
         </v-layout>
       </v-tab-item>
@@ -23,39 +44,75 @@
       <v-tab href="#tab-2"> Ideas I Participate In </v-tab>
       <v-tab-item eager value="tab-2">
         <v-layout column>
-          <IdeaCard
-            v-bind:isEditable="false"
-            v-bind:canFollow="true"
-            v-bind:ideas="isParticipatingIdeas"
-            v-on:followOnClick="updateFollow"
-            v-on:upvoteOnClick="updateUpvote"
-          />
+          <v-row align="center" justify="center">
+            <v-col
+              align="center"
+              justify="center"
+              cols="12"
+              sm="9"
+              md="9"
+              lg="8"
+              xl="6"
+            >
+              <IdeaCard
+                v-bind:isEditable="false"
+                v-bind:canFollow="true"
+                v-bind:ideas="isParticipatingIdeas"
+                v-on:followOnClick="updateFollow"
+                v-on:upvoteOnClick="updateUpvote"
+              />
+            </v-col>
+          </v-row>
         </v-layout>
       </v-tab-item>
 
       <v-tab href="#tab-3"> Ideas I Volunteer For </v-tab>
       <v-tab-item eager value="tab-3">
         <v-layout column>
-          <IdeaCard
-            v-bind:isEditable="false"
-            v-bind:canFollow="true"
-            v-bind:ideas="isVolunteerIdeas"
-            v-on:followOnClick="updateFollow"
-            v-on:upvoteOnClick="updateUpvote"
-          />
+          <v-row align="center" justify="center">
+            <v-col
+              align="center"
+              justify="center"
+              cols="12"
+              sm="9"
+              md="9"
+              lg="8"
+              xl="6"
+            >
+              <IdeaCard
+                v-bind:isEditable="false"
+                v-bind:canFollow="true"
+                v-bind:ideas="isVolunteerIdeas"
+                v-on:followOnClick="updateFollow"
+                v-on:upvoteOnClick="updateUpvote"
+              />
+            </v-col>
+          </v-row>
         </v-layout>
       </v-tab-item>
 
       <v-tab href="#tab-4"> Ideas I Follow </v-tab>
       <v-tab-item eager value="tab-4">
         <v-layout column>
-          <IdeaCard
-            v-bind:isEditable="false"
-            v-bind:canFollow="true"
-            v-bind:ideas="isFollowingIdeas"
-            v-on:followOnClick="updateFollow"
-            v-on:upvoteOnClick="updateUpvote"
-          />
+          <v-row align="center" justify="center">
+            <v-col
+              align="center"
+              justify="center"
+              cols="12"
+              sm="9"
+              md="9"
+              lg="8"
+              xl="6"
+            >
+              <IdeaCard
+                v-bind:isEditable="false"
+                v-bind:canFollow="true"
+                v-bind:ideas="isFollowingIdeas"
+                v-on:followOnClick="updateFollow"
+                v-on:upvoteOnClick="updateUpvote"
+              />
+            </v-col>
+          </v-row>
         </v-layout>
       </v-tab-item>
     </v-tabs>
@@ -63,6 +120,7 @@
 </template>
 
 <script>
+import _ from 'lodash';
 import { getJWTCookie } from '../constants/helperFunctions';
 import IdeaCard from '../components/idea-dashboard/IdeaCard';
 import {
@@ -219,51 +277,11 @@ export default {
         };
       });
     }
-
-    const participatingResponse = await this.$axios
-      .get(
-        `/ideas?followers.id=${userData.user.id}&volunteers.id=${userData.user.id}`,
-        config,
-      )
-      .catch((error) => {
-        console.log(error);
-      });
-
-    if (participatingResponse) {
-      this.isParticipatingIdeas = participatingResponse.data.map((idea) => {
-        return {
-          id: idea.id.toString(),
-          title: idea.title,
-          description: idea.description,
-          upvotes: idea.user_upvoters.length,
-          ideaCreator: volunteerResponse.data.username,
-          // temporarily use this now as localhost photos are hit/miss
-          src: idea.images.length
-            ? `${this.$axios.defaults.baseURL}${idea.images[0].url}`
-            : DEFAULT_IDEA_IMG_PATH,
-          doesUserFollow:
-            userData && userData.user && userData.user._id
-              ? this.isFollowedByUser(idea, userData.user._id)
-              : false,
-          hasUserUpvoted:
-            userData && userData.user && userData.user.id
-              ? this.isUpvotedByUser(idea, userData.user.id)
-              : false,
-          volunteerInfo: idea.volunteers,
-          volunteers: idea.volunteers.length,
-          // TODO fix API to return donated amount
-          amountReceived: 100,
-          followers: idea.followers.length,
-          // temporarily use this now as localhost photos are hit/miss
-          user_avatar: idea.user_creator.avatar
-            ? `${this.$axios.defaults.baseURL}${idea.user_creator.avatar.url}`
-            : DEFAULT_AVATAR_IMG_PATH,
-          slug: idea.slug,
-          location: idea.location,
-          featured: idea.featured,
-        };
-      });
-    }
+    // Combine both results for ideas that the user is participating in. Create set to remove duplicates
+    this.isParticipatingIdeas = _.uniqBy(
+      [...this.isVolunteerIdeas, ...this.isFollowingIdeas],
+      'id',
+    );
   },
 
   methods: {

@@ -86,7 +86,7 @@ export default {
       name: '',
       ideas: this.$store.getters['ideas/getIdeas'],
       categories: {
-        name: 'Calgary',
+        name: 'default',
         id: 'tN',
         category: {
           id: '1',
@@ -125,6 +125,23 @@ export default {
   },
 
   methods: {
+    isUpvotedByUser(idea, userId) {
+      for (const upvoterId of idea.user_upvoters) {
+        if (upvoterId === userId) {
+          return true;
+        }
+      }
+      return false;
+    },
+    // returns true if user already follows that idea
+    isFollowedByUser(idea, userId) {
+      for (const followerId of idea.followers) {
+        if (followerId === userId) {
+          return true;
+        }
+      }
+      return false;
+    },
     async createCategory(categories, newCategoryName) {
       this.$v.$touch();
 
@@ -154,63 +171,29 @@ export default {
         name: newCategoryName,
       });
 
-      // Format the JSON for insertion into the graphql
-      categoryArray = JSON.stringify(categoryArray);
-      categoryArray.replace(/\\"/g, '\uFFFF');
-      categoryArray = categoryArray
-        .replace(/\"([^"]+)\":/g, '$1:') // eslint-disable-line
-        .replace(/\uFFFF/g, '\\"');
-
       // Clear the input fields
       this.$v.$reset();
       this.name = '';
 
-      // Send graphql post
+      const config = {
+        headers: {
+          Authorization: 'Bearer ' + getJWTCookie(),
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      };
+      const categoryRequest = {
+        category: categoryArray,
+      };
       const response = await this.$axios
-        .$post(
-          '/graphql',
-          {
-            query: `mutation {
-              updateCategory(
-                input: {
-                  where: { id: "${categories.location.id}" }
-                  data: {
-                    name: "${categories.name}",
-                    location: "${categories.location.id}",
-                    category: ${categoryArray},
-                  }
-              })
-              {
-                category {
-                  name
-                  location {
-                    id
-                    name
-                  }
-                  category {
-                    name
-                    id
-                  }
-                }
-              }
-            }
-          `,
-          },
-          {
-            headers: {
-              Authorization: 'Bearer ' + getJWTCookie(),
-              Accept: 'application/json',
-              'Content-Type': 'application/json',
-            },
-          },
-        )
+        .$put(`/categories/${categories.id}`, categoryRequest, config)
         .catch((err) => {
-          console.log(err.response);
+          console.log(err);
         });
     },
   },
 
-  beforeMount() {
+  async beforeMount() {
     // Check if user is signed in and a admin role
     if (process.browser) {
       const userJSON = window.localStorage.getItem(LS_USER_DATA);
@@ -218,6 +201,40 @@ export default {
         const userData = JSON.parse(userJSON);
         if (userData.user.role.type !== 'authenticated') {
           this.$router.push('/');
+        } else {
+          const config = {
+            headers: {
+              Authorization: 'Bearer ' + getJWTCookie(),
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+          };
+
+          const adminResponse = await this.$axios
+            .get(`/locations/admin`, config)
+            .catch((error) => {
+              console.log(error);
+            });
+          if (adminResponse) {
+            if (adminResponse.data.managedLocations.length > 0) {
+              const locationResponse = await this.$axios
+                .get(
+                  `/locations/${adminResponse.data.managedLocations[0]}`,
+                  config,
+                )
+                .catch((error) => {
+                  console.log(error);
+                });
+
+              if (!locationResponse) {
+                this.$route.push('/');
+              }
+            } else {
+              this.$router.push('/');
+            }
+          } else {
+            this.$router.push('/');
+          }
         }
       } else {
         this.$router.push('/');
@@ -242,59 +259,10 @@ export default {
     if (subpageResponse) {
       this.subpages.pages = subpageResponse.data;
     }
-    const response = await this.$axios
-      .$post('/graphql', {
-        query: `query {
-            locations(where: { route: "${this.$route.params.locId}" }) {
-              id
-              name
-              route
-              image {
-                url
-              }
-              ideas {
-                id
-                title
-                description
-                volunteers {
-                  username
-                }
-                images {
-                  url
-                }
-                user_creator {
-                  username
-                  avatar {
-                    url
-                  }
-                }
-                user_upvoters {
-                  username
-                }
-                followers {
-                  username
-                }
-                featured
-                slug
-              }
-    					categories {
-                id
-                name
-                location {
-                  id
-                  name
-                }
-                category {
-                  id
-                  name
-                }
-              }
-            }
-          }
-          `,
-      })
-      .catch((err) => {
-        console.log(err);
+    const locationResponse = await this.$axios
+      .$get(`/locations?route=${this.$route.params.locId}`, config)
+      .catch((error) => {
+        console.log(error);
       });
 
     /**
@@ -302,41 +270,69 @@ export default {
      * coolidea photo: Photo by Ameen Fahmy on Unsplash https://unsplash.com/photos/_gEKtyIbRSM
      * edmonton skyline https://www.forbes.com/sites/sandramacgregor/2020/01/09/discover-why-edmonton-is-one-of-canadas-hottest-destinations/
      */
-    if (response) {
-      this.location = {
-        id: response.data.locations[0].id,
-        name: response.data.locations[0].name,
-        route: response.data.locations[0].route,
-        imgSrc: response.data.locations[0].image.url
-          ? `${this.$axios.defaults.baseURL}${response.data.locations[0].image.url}`
-          : `${DEFAULT_LOCATION_IMG_PATH}`,
-      };
-
-      this.categories = response.data.locations[0].categories;
-      if (response.data.locations[0].ideas.length > 0) {
-        this.ideas = response.data.locations[0].ideas.map((idea) => {
+    const userJSON = window.localStorage.getItem('userData');
+    const userData = JSON.parse(userJSON);
+    const params = {
+      locId: this.$route.params.locId,
+    };
+    const ideaResponse = await this.$axios
+      .$get(`/ideas?location.route=${this.$route.params.locId}`)
+      .catch((err) => {
+        console.log(err);
+      });
+    if (ideaResponse) {
+      if (ideaResponse.length > 0) {
+        this.ideas = ideaResponse.map((idea, index) => {
+          // TODO fix ideacreator and user avatar since API only returns ID
           return {
             id: idea.id.toString(),
             title: idea.title,
             description: idea.description,
-            upvotes: idea.user_upvoters.length,
+            upvotes: idea.upvote_count,
+            hasUserUpvoted:
+              userData && userData.user && userData.user._id
+                ? this.isUpvotedByUser(idea, userData.user._id)
+                : false,
+            doesUserFollow:
+              userData && userData.user && userData.user._id
+                ? this.isFollowedByUser(idea, userData.user._id)
+                : false,
             ideaCreator: idea.user_creator.username,
             src: idea.images.length
               ? `${this.$axios.defaults.baseURL}${idea.images[0].url}`
-              : `${DEFAULT_IDEA_IMG_PATH}`,
+              : DEFAULT_IDEA_IMG_PATH,
             volunteers: idea.volunteers.length,
             // TODO fix API to return donated amount
             amountReceived: 100,
             followers: idea.followers.length,
             user_avatar: idea.user_creator.avatar
               ? `${this.$axios.defaults.baseURL}${idea.user_creator.avatar.url}`
-              : `${DEFAULT_AVATAR_IMG_PATH}`,
+              : DEFAULT_AVATAR_IMG_PATH,
+            slug: idea.slug,
             featured: idea.featured,
+            index,
           };
         });
-      } else {
-        return {
-          ideas: this.$store.getters['ideas/getIdeas'],
+      }
+    }
+    if (locationResponse) {
+      this.location = {
+        id: locationResponse[0].id,
+        name: locationResponse[0].name,
+        route: locationResponse[0].route,
+        imgSrc: locationResponse[0].image.url
+          ? `${this.$axios.defaults.baseURL}${locationResponse[0].image.url}`
+          : `${DEFAULT_LOCATION_IMG_PATH}`,
+      };
+      if (locationResponse[0].categories != null) {
+        this.categories = {
+          id: locationResponse[0].categories.id,
+          name: locationResponse[0].categories.name,
+          location: {
+            id: locationResponse[0].categories.location,
+            name: locationResponse[0].name,
+          },
+          category: locationResponse[0].categories.category,
         };
       }
     }

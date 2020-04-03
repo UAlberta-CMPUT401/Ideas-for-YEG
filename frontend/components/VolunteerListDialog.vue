@@ -5,7 +5,7 @@
         <template #activator="{ on: tooltip }">
           <v-btn v-on="{ ...tooltip, ...dialog }" text class="pa-0 btnSpacing">
             <v-icon v-if="isVolunteering" color="blue">mdi-hand-heart</v-icon>
-            <v-icon v-else color="black">mdi-hand-heart</v-icon>
+            <v-icon v-else color="grey darken-3">mdi-hand-heart</v-icon>
             <span class="subheading mr-2">{{
               volunteers ? volunteers.length : 0
             }}</span>

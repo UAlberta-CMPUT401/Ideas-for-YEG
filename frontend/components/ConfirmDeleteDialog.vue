@@ -8,7 +8,7 @@
             v-on="{ ...tooltip, ...dialog }"
             text
             class="pa-0 btnSpacing"
-            ><v-icon color="black">mdi-delete</v-icon></v-btn
+            ><v-icon color="grey darken-3">mdi-delete</v-icon></v-btn
           >
           <v-btn
             v-if="contentType == '1'"

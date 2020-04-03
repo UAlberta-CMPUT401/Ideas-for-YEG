@@ -15,6 +15,7 @@
                 v-model="title"
                 :rules="requiredFieldRules"
                 label="Title"
+                name="ideaTitle"
               ></v-text-field>
             </v-col>
             <v-col cols="12" sm="3">
@@ -90,7 +91,7 @@
               <v-carousel-item v-for="(image, i) in savedImages" :key="i">
                 <div justify="right" align="right">
                   <v-btn text class="pa-0" @click="imageDeleteOnClick(i)">
-                    <v-icon color="black">mdi-delete-circle</v-icon>
+                    <v-icon color="grey darken-3">mdi-delete-circle</v-icon>
                   </v-btn>
                 </div>
                 <v-sheet height="100%">
@@ -159,7 +160,7 @@
         </v-dialog>
 
         <v-spacer></v-spacer>
-        <v-btn href="/my-ideas" text>Cancel</v-btn>
+        <v-btn href="/my-ideas" id="cancelIdeaCreationBtn" text>Cancel</v-btn>
         <v-btn text color="primary" @click="submit">Save</v-btn>
       </v-card-actions>
 

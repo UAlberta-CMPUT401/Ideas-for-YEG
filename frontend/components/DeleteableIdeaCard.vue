@@ -18,7 +18,7 @@
             text
             class="pa-0 btnSpacing"
           >
-            <v-icon color="black">mdi-star</v-icon>
+            <v-icon color="grey darken-3">mdi-star</v-icon>
           </v-btn>
           <v-list-item>
             <v-list-item-content>
@@ -62,22 +62,22 @@
               </v-btn>
 
               <div class="btnSpacing">
-                <v-icon color="black">mdi-currency-usd</v-icon>
-                <span class="subheading mr-2" color="black"
+                <v-icon color="grey darken-3">mdi-currency-usd</v-icon>
+                <span class="subheading mr-2" color="grey darken-3"
                   >{{ idea.amountReceived }} raised</span
                 >
               </div>
 
               <div class="btnSpacing">
-                <v-icon color="black">mdi-hand-heart</v-icon>
-                <span class="subheading mr-2" color="black">{{
+                <v-icon color="grey darken-3">mdi-hand-heart</v-icon>
+                <span class="subheading mr-2" color="grey darken-3">{{
                   idea.volunteers
                 }}</span>
               </div>
 
               <div class="btnSpacing">
-                <v-icon color="black">mdi-account-multiple-plus</v-icon>
-                <span class="subheading mr-2" color="black">{{
+                <v-icon color="grey darken-3">mdi-account-multiple-plus</v-icon>
+                <span class="subheading mr-2" color="grey darken-3">{{
                   idea.followers
                 }}</span>
               </div>
@@ -113,7 +113,7 @@ export default {
   methods: {
     async onClick(ideas, idea) {
       // Remove the selected category from the category list
-      let ideaArray = ideas;
+      const ideaArray = ideas;
       const index = ideaArray.indexOf(idea);
       if (index !== -1) ideaArray.splice(index, 1);
 
@@ -122,43 +122,21 @@ export default {
         const temp = ideaArray[i];
         ideaArray[i] = temp.id;
       }
+      const config = {
+        headers: {
+          Authorization: 'Bearer ' + getJWTCookie(),
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      };
+      const ideaRequest = {
+        ideas: ideaArray,
+      };
 
-      // Format the JSON for insertion into the graphql
-      ideaArray = JSON.stringify(ideaArray);
-
-      // Send the graphql post
       const response = await this.$axios
-        .$post(
-          '/graphql',
-          {
-            query: `mutation {
-              updateLocation(
-                input: {
-                  where: { id: "${this.location.id}" }
-                  data: {
-                    ideas: ${ideaArray},
-                  }
-              })
-              {
-                location {
-                  ideas {
-                    title
-                  }
-                }
-              }
-            }
-          `,
-          },
-          {
-            headers: {
-              Authorization: 'Bearer ' + getJWTCookie(),
-              Accept: 'application/json',
-              'Content-Type': 'application/json',
-            },
-          },
-        )
+        .$put(`locations/${this.location.id}`, ideaRequest, config)
         .catch((err) => {
-          console.log(err.response);
+          console.log(err);
         });
       if (response) {
         window.location.reload();

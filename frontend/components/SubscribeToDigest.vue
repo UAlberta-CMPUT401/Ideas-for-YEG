@@ -10,7 +10,7 @@
               outlined
               large
               fab
-              color="black"
+              color="grey darken-3"
               v-on="{ ...tooltip, ...dialog }"
             >
               <v-icon>mdi-email-check</v-icon>
@@ -21,9 +21,6 @@
       </template>
       <v-card>
         <v-card-title class="headline">Subscribe here!</v-card-title>
-        <v-col cols="12">
-          <v-text-field label="Email*" required></v-text-field>
-        </v-col>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="blue darken-1" text @click="dialog = false"

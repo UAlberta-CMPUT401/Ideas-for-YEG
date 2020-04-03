@@ -7,6 +7,9 @@
           justify-center
           class="mx-auto"
           max-width="700"
+          elevation="7"
+          raised
+          color="grey lighten-5"
           v-on:click="onClick(idea.id, idea.slug, idea.location)"
         >
           <v-list-item>
@@ -33,6 +36,7 @@
                 v-if="idea.doesUserFollow"
                 color="blue"
                 text
+                id="following"
                 class="pa-0 btnSpacing"
                 v-on:click.stop="$emit('followOnClick', idea)"
               >
@@ -40,8 +44,9 @@
               </v-btn>
               <v-btn
                 v-else
-                color="black"
+                color="grey darken-3"
                 text
+                id="follow"
                 class="pa-0 btnSpacing"
                 v-on:click.stop="$emit('followOnClick', idea)"
               >
@@ -82,6 +87,7 @@
                 v-if="idea.hasUserUpvoted"
                 color="blue"
                 text
+                id="ideaIsUpvoted"
                 class="pa-0 btnSpacing"
                 v-on:click.stop="$emit('upvoteOnClick', idea)"
               >
@@ -90,8 +96,9 @@
               </v-btn>
               <v-btn
                 v-else
-                color="black"
+                color="grey darken-3"
                 text
+                id="ideaIsNotUpvoted"
                 class="pa-0 btnSpacing"
                 v-on:click.stop="$emit('upvoteOnClick', idea)"
               >
@@ -100,22 +107,22 @@
               </v-btn>
 
               <div class="btnSpacing">
-                <v-icon color="black">mdi-cash-usd-outline</v-icon>
-                <span class="subheading mr-2" color="black"
+                <v-icon color="grey darken-3">mdi-cash-usd-outline</v-icon>
+                <span class="subheading mr-2" color="grey darken-3"
                   >{{ idea.amountReceived }} raised</span
                 >
               </div>
 
               <div class="btnSpacing">
-                <v-icon color="black">mdi-hand-heart</v-icon>
-                <span class="subheading mr-2" color="black">{{
+                <v-icon color="grey darken-3">mdi-hand-heart</v-icon>
+                <span class="subheading mr-2" color="grey darken-3">{{
                   idea.volunteers
                 }}</span>
               </div>
 
               <div class="btnSpacing">
-                <v-icon color="black">mdi-account-multiple-plus</v-icon>
-                <span class="subheading mr-2" color="black">{{
+                <v-icon color="grey darken-3">mdi-account-multiple-plus</v-icon>
+                <span class="subheading mr-2" color="grey darken-3">{{
                   idea.followers
                 }}</span>
               </div>

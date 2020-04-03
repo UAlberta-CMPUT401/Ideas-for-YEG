@@ -1,5 +1,5 @@
 module.exports = {
-  'Demo test to search for idea'(browser) {
+  'Demo test to change locations'(browser) {
     browser
       .url('http://localhost:3000')
       .waitForElementVisible('body')
@@ -10,15 +10,12 @@ module.exports = {
       .click("//div[text()='Edmonton']")
       .useCss()
       .assert.urlContains('yeg/idea-dashboard')
-      .assert.visible('input[name=searchTerm]')
-      .click('input[name=searchTerm]')
-      .setValue('input[name=searchTerm]', 'Library')
-      .click('i[role=button]')
       .useXpath()
+      .click("//*[contains(text(), 'Change Location')]")
       .pause(5000)
-      .waitForElementVisible(
-        "//div[text()='Machine Learning: Exploring Libary Book Data']",
-      )
+      .click("//div[text()='Calgary']")
+      .useCss()
+      .assert.urlContains('yyc/idea-dashboard')
       .end();
   },
 };

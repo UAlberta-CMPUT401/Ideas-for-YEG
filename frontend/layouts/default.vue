@@ -8,6 +8,25 @@
           ></nuxt-link
         >
       </div>
+      <template v-if="Object.keys(subpages).length !== 0">
+        <v-menu offset-y>
+          <template v-slot:activator="{ on }">
+            <v-btn v-on="on" text class="ml-4">
+              <v-icon>mdi-menu</v-icon>
+            </v-btn>
+          </template>
+          <v-list>
+            <v-list-item
+              v-for="page in subpages"
+              :key="page.name"
+              :to="page.path"
+              @click=""
+            >
+              <v-list-item-title>{{ page.name }}</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </template>
       <v-spacer />
       <!--TODO: Need to have logic to check if a user is logged in-->
       <client-only>
@@ -21,9 +40,10 @@
           small
           router
           exact
+          id="login"
           >Login</v-btn
         >
-        <v-menu v-else :offset-y="true">
+        <v-menu v-else :offset-y="true" id="navBarMenu">
           <template v-slot:activator="{ on }">
             <v-avatar class="avatar" v-on="on" v-bind:fab="true">
               <img
@@ -93,8 +113,15 @@ export default {
           onClick: this.logOut,
         },
       ],
+      subpages: [],
       DEFAULT_AVATAR_IMG_PATH,
     };
+  },
+
+  watch: {
+    $route(to, from) {
+      this.getSubpages();
+    },
   },
 
   computed: {
@@ -150,10 +177,33 @@ export default {
         const currLocation = JSON.parse(currLocationJSON);
         this.$store.commit('currLocation/update', currLocation);
       }
+      this.getSubpages();
     }
   },
 
   methods: {
+    async getSubpages() {
+      const subpageResponse = await this.$axios
+        .get(`/sub-pages?location.route=${this.$route.params.locId}`)
+        .catch((error) => {
+          console.log(error);
+        });
+      if (subpageResponse) {
+        const subpages = subpageResponse.data.map((subpage) => {
+          return {
+            name: subpage.title,
+            path:
+              '/' +
+              subpage.location.route +
+              '/subpage/' +
+              subpage.title.toLowerCase(),
+          };
+        });
+        this.subpages = subpages;
+        return;
+      }
+      this.subpages = [];
+    },
     logOut() {
       window.localStorage.removeItem(LS_USER_DATA);
       document.cookie =
