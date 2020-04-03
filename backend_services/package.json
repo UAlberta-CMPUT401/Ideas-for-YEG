@@ -31,7 +31,6 @@
     "express-session": "^1.17.0",
     "mongoose": "^5.9.2",
     "request": "^2.88.2",
-    "stripe": "^8.32.0",
-    "uuid": "^7.0.3"
+    "stripe": "^8.32.0"
   }
 }

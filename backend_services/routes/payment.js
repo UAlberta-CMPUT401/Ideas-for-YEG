@@ -12,7 +12,7 @@ var stripe = require('stripe')(secret_key);
 
 FRONTEND_URL = process.env.NODE_ENV === 'production' ? process.env.prodfrontendurl : process.env.devfrontendurl;
 BACKENDSERVICES_URL = process.env.NODE_ENV === 'production' ? process.env.prodbackendservices_url : process.env.backendservices_url;
-BASE_URL = process.env.strapi_base_url;
+BASE_URL = process.env.NODE_ENV === 'production' ? process.env.prodstrapi_base_url : process.env.strapi_base_url;
 
 router.get('/donate', function(request, response){
 	if (typeof request.query.iid === 'undefined' || request.query.iid.trim === '') {
@@ -28,6 +28,7 @@ router.post('/donate', function(request, response){
 	const email = request.body.email;
 	const amt = request.body.amt;
 	const iid = request.body.iid;
+  console.log(BASE_URL + '/ideas/' + iid);
 	http.get({url: BASE_URL + '/ideas/' + iid}, function(err, iid_response, iid_body){
 		iid_body = JSON.parse(iid_body);
 		var title = '';

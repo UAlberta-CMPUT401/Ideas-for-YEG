@@ -8,6 +8,8 @@ services:
         - NODE_ENV=production
     ports:
         - 3000:3000
+    networks:
+        - ideas
     command: 'npm run start'
   mongodb:
     container_name: mongo
@@ -18,6 +20,8 @@ services:
         - 27017:27017
     volumes:
         - ./backend/db:/data/db
+    networks:
+        - ideas
     restart: always
   strapi:
     container_name: strapi
@@ -37,6 +41,8 @@ services:
         - ./backend/public:/api/public
     depends_on:
         - mongodb
+    networks:
+        - ideas
     command: 'npm run strapi dev'
   backend:
     container_name: backend
@@ -45,4 +51,12 @@ services:
         - NODE_ENV=production
     ports:
         - 1311:1311
+    networks:
+        - ideas
+    depends_on:
+        - mongodb
     command: 'npm run start'
+
+networks:
+    ideas:
+        driver: bridge
