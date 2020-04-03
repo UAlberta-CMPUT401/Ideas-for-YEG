@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  backend:
+    container_name: backend
+    build: .
+    environment:
+        - NODE_ENV=production
+    ports:
+        - 1311:1311
+    command: 'npm run start'

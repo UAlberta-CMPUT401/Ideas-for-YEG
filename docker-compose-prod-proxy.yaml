@@ -38,11 +38,15 @@ services:
     depends_on:
         - mongodb
     command: 'npm run strapi dev'
-  backend:
-    container_name: backend
-    build: ./backend_services/
-    environment:
-        - NODE_ENV=production
-    ports:
-        - 1311:1311
-    command: 'npm run start'
+    nginx: 
+        build : ./proxy/
+        networks:
+          - nginxnet
+        volumes:
+          - /var/run/docker.sock:/var/run/docker.sock
+          - /var/log/nginx/error.log:/var/log/nginx/error.log
+        ports:
+          - 80:80
+
+networks:
+  nginxnet:

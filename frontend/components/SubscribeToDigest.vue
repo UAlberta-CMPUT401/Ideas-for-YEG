@@ -23,10 +23,10 @@
         <v-card-title class="headline">Subscribe here!</v-card-title>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="red" text @click="dialog = false">Cancel</v-btn>
-          <v-btn color="green darken-1" text @click="dialog = false"
-            >Confirm</v-btn
+          <v-btn color="blue darken-1" text @click="dialog = false"
+            >Cancel</v-btn
           >
+          <v-btn color="black" text @click="dialog = false">Confirm</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
