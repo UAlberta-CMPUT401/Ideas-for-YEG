@@ -12,7 +12,7 @@ var stripe = require('stripe')(secret_key);
 
 FRONTEND_URL = process.env.NODE_ENV === 'production' ? process.env.prodfrontendurl : process.env.devfrontendurl;
 BACKENDSERVICES_URL = process.env.NODE_ENV === 'production' ? process.env.prodbackendservices_url : process.env.backendservices_url;
-BASE_URL = process.env.strapi_base_url;
+BASE_URL = process.env.NODE_ENV === 'production' ? process.env.prodstrapi_base_url : process.env.strapi_base_url;
 
 router.get('/donate', function(request, response){
 	if (typeof request.query.iid === 'undefined' || request.query.iid.trim === '') {
@@ -28,6 +28,7 @@ router.post('/donate', function(request, response){
 	const email = request.body.email;
 	const amt = request.body.amt;
 	const iid = request.body.iid;
+  console.log(BASE_URL + '/ideas/' + iid);
 	http.get({url: BASE_URL + '/ideas/' + iid}, function(err, iid_response, iid_body){
 		iid_body = JSON.parse(iid_body);
 		var title = '';
@@ -124,16 +125,16 @@ router.get('/pay_success', function (request, response) {
 			  			axios(options2).then(function(axios_user_response){
 			    			if (axios_user_response.data.length != 0) {
 			    				var idea = axios_idea_response.data;
-			    				if (typeof idea.donation === 'undefined'){
+							if (typeof idea.donation === 'undefined'){
 			    					const donation = [{
 			    						user : axios_user_response.data,
-			    						amount : amt
+			    						amount : Number(amt)
 			    					}];
 			    					idea.donation = donation;
 			    				} else {
 			    					const donation = {
 			    						user : axios_user_response.data,
-			    						amount : amt
+			    						amount : Number(amt)
 			    					};
 			    					idea.donation.push(donation);
 			    				}
@@ -148,7 +149,7 @@ router.get('/pay_success', function (request, response) {
 								    json: true
 					  			};
 					  			axios(options3).then(function(axios_put_response){
-					    			if (axios_user_response.status == 200) {
+					    			if (axios_put_response.status == 200) {
 										response.render('../views/donation_alternate', {frontend_url : FRONTEND_URL, success : 'Your payment succeeded! Thank you!'});
 				    				} else {
 				    					console.log('Put request not 200');

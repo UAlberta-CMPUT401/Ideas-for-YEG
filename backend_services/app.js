@@ -16,7 +16,12 @@ var express       = require("express"),
 //Set up default mongoose connection
 require('dotenv').config();
 
-var mongoDB = 'mongodb://' + process.env.mongousername + ':' + process.env.mongopassword + '@' + process.env.mongohost + ':' + process.env.mongoport + '/ideas4';
+var mongoDB = '';
+if (process.env.NODE_ENV != 'production'){
+    mongoDB = 'mongodb://' + process.env.mongousername + ':' + process.env.mongopassword + '@' + process.env.mongohost + ':' + process.env.mongoport + '/ideas4';
+} else {
+    mongoDB = 'mongodb://' + process.env.mongohost + ':' + process.env.mongoport + '/strapi';
+}
 console.log('\n' + mongoDB + '\n');
 mongoose.connect(mongoDB, { useNewUrlParser: true });
 var db = mongoose.connection;
@@ -104,6 +109,12 @@ process.on('uncaughtException', function (err) {
   console.log("Stripe and Email Server NOT Exiting...");
 });
 
-app.listen(1311, 'localhost', function(){
-    console.log("\nStripe and Email Server Started!\n");
-});
+if (process.env.NODE_ENV != 'production'){
+  app.listen(1311, 'localhost', function(){
+      console.log("\nStripe and Email Server Started On Dev!\n");
+  });
+} else {
+  app.listen(1311, process.env.IP, function(){
+      console.log("\nStripe and Email Server Started On Prod!\n");
+  });
+}
