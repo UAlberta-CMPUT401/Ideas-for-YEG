@@ -63,7 +63,7 @@ export default {
       const data = await this.$axios
         .$post('/auth/forgot-password', {
           email: this.email,
-          url: 'http://162.246.157.122:3000/reset-password',
+          url: 'http://localhost:3000/reset-password',
         })
         .then((response) => {
           // Handle success.
