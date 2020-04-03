@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "03/17/2020 2:50:13 PM"
+    "x-generation-date": "04/03/2020 2:31:34 AM"
   },
   "x-strapi-config": {
     "path": "/documentation",
@@ -4875,8 +4875,7 @@
               "username",
               "email",
               "firstName",
-              "lastName",
-              "email_frequency"
+              "lastName"
             ],
             "properties": {
               "id": {
@@ -4932,8 +4931,7 @@
               "username",
               "email",
               "firstName",
-              "lastName",
-              "email_frequency"
+              "lastName"
             ],
             "properties": {
               "id": {
@@ -4989,8 +4987,7 @@
               "username",
               "email",
               "firstName",
-              "lastName",
-              "email_frequency"
+              "lastName"
             ],
             "properties": {
               "id": {
@@ -5046,8 +5043,7 @@
               "username",
               "email",
               "firstName",
-              "lastName",
-              "email_frequency"
+              "lastName"
             ],
             "properties": {
               "id": {
@@ -5185,8 +5181,7 @@
                     "username",
                     "email",
                     "firstName",
-                    "lastName",
-                    "email_frequency"
+                    "lastName"
                   ],
                   "properties": {
                     "id": {
@@ -5268,8 +5263,7 @@
               "username",
               "email",
               "firstName",
-              "lastName",
-              "email_frequency"
+              "lastName"
             ],
             "properties": {
               "id": {
@@ -5516,8 +5510,7 @@
                     "username",
                     "email",
                     "firstName",
-                    "lastName",
-                    "email_frequency"
+                    "lastName"
                   ],
                   "properties": {
                     "id": {
@@ -5791,8 +5784,7 @@
               "username",
               "email",
               "firstName",
-              "lastName",
-              "email_frequency"
+              "lastName"
             ],
             "properties": {
               "id": {
@@ -6057,8 +6049,7 @@
                 "username",
                 "email",
                 "firstName",
-                "lastName",
-                "email_frequency"
+                "lastName"
               ],
               "properties": {
                 "id": {
@@ -6146,8 +6137,7 @@
           "username",
           "email",
           "firstName",
-          "lastName",
-          "email_frequency"
+          "lastName"
         ],
         "properties": {
           "id": {
@@ -6347,8 +6337,7 @@
           "username",
           "email",
           "firstName",
-          "lastName",
-          "email_frequency"
+          "lastName"
         ],
         "properties": {
           "username": {
